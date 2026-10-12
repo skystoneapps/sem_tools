@@ -1,17 +1,38 @@
-# sem
+# SEM tools
 
-A new Flutter project.
+Calculation tools for the **Sustainable Energy Management** advanced bachelor
+(banaba) programme of [Howest](https://www.howest.be). Each tool shows not only
+its results but also the worked calculation, step by step, with the formulas
+used.
 
-## Getting Started
+Available in English and Dutch.
 
-This project is a starting point for a Flutter application.
+## Tools
 
-A few resources to get you started if this is your first Flutter project:
+- **Heat transport** — heat loss and outlet temperature of an insulated tube,
+  through convection (Newton's law of cooling), conduction (Fourier's law) and
+  radiation (Stefan–Boltzmann law). The fluid temperature along the tube can be
+  calculated exactly or simplified as constant.
+- **Price calculation** — the cost of a heat loss over a usage duration at a
+  given energy market price. The heat loss can be taken over from the heat
+  transport tool.
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+## Disclaimer
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+These tools are provided for educational purposes, as is. I take no
+responsibility for potential errors in the calculations or their results.
+Always verify results before relying on them.
+
+## Running
+
+SEM tools is a [Flutter](https://flutter.dev) app. With Flutter installed:
+
+```sh
+flutter pub get
+flutter run        # pick a device, e.g. -d macos or -d chrome
+flutter test
+```
+
+## License
+
+SEM tools is released under the [MIT License](LICENSE).
