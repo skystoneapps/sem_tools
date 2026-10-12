@@ -1,12 +1,12 @@
 {
-    "name": "sem",
-    "short_name": "sem",
+    "name": "SEM tools",
+    "short_name": "SEM tools",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
-    "orientation": "portrait-primary",
+    "background_color": "#2F6F8F",
+    "theme_color": "#2F6F8F",
+    "description": "Calculation tools for the Sustainable Energy Management advanced bachelor (banaba) programme of Howest.",
+    "orientation": "any",
     "prefer_related_applications": false,
     "icons": [
         {
