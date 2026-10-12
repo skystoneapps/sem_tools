@@ -47,7 +47,7 @@ class ResultsPanel extends StatelessWidget {
         ),
         StatRow([
           (l10n.statInletTemperature, '${fmtTemp(result.inletTemp)} °C'),
-          (l10n.statOutletTemperature, '${fmtFixed(result.outletTemp, 2)} °C'),
+          (l10n.statOutletTemperature, '${fmtTemp(result.outletTemp)} °C'),
           (
             l10n.statFluidChange,
             '${fmt(result.outletTemp - result.inletTemp, 3)} K',
@@ -100,7 +100,7 @@ class ResultsPanel extends StatelessWidget {
                       values: [
                         fmt(s.resistance),
                         fmt(s.deltaT),
-                        fmt(s.heatRate),
+                        fmtValue(s.heatRate),
                       ],
                     ),
                   const Divider(height: 1),
@@ -118,7 +118,7 @@ class ResultsPanel extends StatelessWidget {
                     values: [
                       fmt(result.totalResistance),
                       fmt(result.meanFluidTemp - result.ambientTemp),
-                      fmt(result.heatRate),
+                      fmtValue(result.heatRate),
                     ],
                     valueStyle: theme.textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w700,
@@ -131,7 +131,7 @@ class ResultsPanel extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         FormulaText(
-          "q' = ${fmt(result.heatRatePerMetre)} W/m   ·   "
+          "q' = ${fmtValue(result.heatRatePerMetre)} W/m   ·   "
           'T_s = ${fmtTemp(result.surfaceTemp)} °C   ·   '
           '${l10n.resultsTubeLength(fmtInput(result.inputs.length))}',
           style: muted,

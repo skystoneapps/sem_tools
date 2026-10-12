@@ -65,12 +65,22 @@ String fmt(double value, [int significant = 4]) {
   return '${_localise(mantissa)}×10${superscript.join()}';
 }
 
-/// Formats a temperature in °C with one decimal.
-String fmtTemp(double celsius) => _localise(celsius.toStringAsFixed(1));
+/// Number of decimals for every displayed temperature.
+const temperatureDecimals = 2;
 
-/// Formats a value with [decimals] decimals.
-String fmtFixed(double value, int decimals) =>
-    _localise(value.toStringAsFixed(decimals));
+/// Formats a temperature (°C or K) with [temperatureDecimals] decimals.
+String fmtTemp(double temperature) =>
+    _localise(temperature.toStringAsFixed(temperatureDecimals));
+
+/// Number of decimals for calculated heat flows, areas and coefficients.
+/// Resistances and temperature differences keep [fmt]'s significant digits,
+/// as they are often far below 0.01.
+const valueDecimals = 2;
+
+/// Formats a calculated heat flow, area or coefficient with [valueDecimals]
+/// decimals.
+String fmtValue(double value) =>
+    _localise(value.toStringAsFixed(valueDecimals));
 
 /// Formats a user-entered value without trailing zeros.
 String fmtInput(double value) => _localise(_trimmedInput(value));
@@ -85,12 +95,16 @@ String texNum(double value, [int significant = 4]) {
   return exponent == null ? m : '$m \\times 10^{$exponent}';
 }
 
-/// TeX version of [fmtFixed].
+/// Formats a value with [decimals] decimals, for TeX.
 String texFixed(double value, int decimals) =>
     _texLocalise(value.toStringAsFixed(decimals));
 
+/// TeX version of [fmtValue].
+String texValue(double value) => texFixed(value, valueDecimals);
+
 /// TeX version of [fmtTemp].
-String texTemp(double celsius) => texFixed(celsius, 1);
+String texTemp(double temperature) =>
+    texFixed(temperature, temperatureDecimals);
 
 /// TeX version of [fmtInput].
 String texInput(double value) => _texLocalise(_trimmedInput(value));

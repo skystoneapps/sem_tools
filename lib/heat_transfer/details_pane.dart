@@ -261,7 +261,7 @@ class _StageDetails extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         StatRow([
-          (l10n.statHeatFlow, '${fmt(stage.heatRate)} W'),
+          (l10n.statHeatFlow, '${fmtValue(stage.heatRate)} W'),
           (l10n.statResistance, '${fmt(stage.resistance)} K/W'),
           (l10n.statTemperatureDrop, '${fmt(stage.deltaT)} K'),
         ]),
@@ -350,11 +350,11 @@ class _TotalDetails extends StatelessWidget {
     final sumR = texNum(result.totalResistance);
     final tIn = texTemp(result.inletTemp);
     final tInf = _paren(result.ambientTemp, texTemp);
-    final tOut = texFixed(result.outletTemp, 2);
-    final tMean = texFixed(result.meanFluidTemp, 2);
+    final tOut = texTemp(result.outletTemp);
+    final tMean = texTemp(result.meanFluidTemp);
     final mDot = texInput(i.massFlow);
     final cp = texInput(i.specificHeat);
-    final q = texNum(result.heatRate);
+    final q = texValue(result.heatRate);
     final check =
         (result.meanFluidTemp - result.ambientTemp) / result.totalResistance;
 
@@ -362,8 +362,8 @@ class _TotalDetails extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         StatRow([
-          (l10n.statHeatFlow, '${fmt(result.heatRate)} W'),
-          (l10n.statOutletTemperature, '${fmtFixed(result.outletTemp, 2)} °C'),
+          (l10n.statHeatFlow, '${fmtValue(result.heatRate)} W'),
+          (l10n.statOutletTemperature, '${fmtTemp(result.outletTemp)} °C'),
           (l10n.statTotalResistance, '${fmt(result.totalResistance)} K/W'),
         ]),
         const SizedBox(height: 20),
@@ -418,12 +418,12 @@ class _TotalDetails extends StatelessWidget {
             (
               l10n.stepCheck,
               'Q = \\frac{T_m - T_\\infty}{\\Sigma R} = '
-                  '\\frac{$tMean - $tInf}{$sumR} = ${texNum(check)}$texWatt',
+                  '\\frac{$tMean - $tInf}{$sumR} = ${texValue(check)}$texWatt',
             ),
             (
               l10n.stepHeatFlowPerMetre,
               "q' = \\frac{Q}{L} = \\frac{$q}{${texInput(i.length)}} = "
-                  '${texNum(result.heatRatePerMetre)}$texWattPerMetre',
+                  '${texValue(result.heatRatePerMetre)}$texWattPerMetre',
             ),
           ],
           symbols: const [
@@ -525,7 +525,7 @@ List<_Step> _stepsFor(
   AppLocalizations l10n,
 ) {
   final i = result.inputs;
-  final q = texNum(s.heatRate);
+  final q = texValue(s.heatRate);
   final r = texNum(s.resistance);
   final dt = _paren(s.deltaT, texNum);
   final tIn = texTemp(s.tIn);
@@ -533,7 +533,7 @@ List<_Step> _stepsFor(
   final length = texInput(i.length);
   switch (s.stage) {
     case HeatStage.innerConvection:
-      final area = texNum(s.area!);
+      final area = texValue(s.area!);
       final h = texInput(i.hInner);
       return [
         (
@@ -608,7 +608,7 @@ List<_Step> _stepsFor(
         ),
       ];
     case HeatStage.outerConvection:
-      final area = texNum(s.area!);
+      final area = texValue(s.area!);
       final h = texInput(i.hOuter);
       return [
         (
@@ -628,11 +628,11 @@ List<_Step> _stepsFor(
         ),
       ];
     case HeatStage.outerRadiation:
-      final area = texNum(s.area!);
+      final area = texValue(s.area!);
       final offset = texFixed(kelvinOffset, 2);
-      final tsK = texFixed(s.tIn + kelvinOffset, 2);
-      final tInfK = texFixed(s.tOut + kelvinOffset, 2);
-      final hRad = texNum(s.coefficient!);
+      final tsK = texTemp(s.tIn + kelvinOffset);
+      final tInfK = texTemp(s.tOut + kelvinOffset);
+      final hRad = texValue(s.coefficient!);
       return [
         (
           l10n.stepAbsoluteTemperatures,

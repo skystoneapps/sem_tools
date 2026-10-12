@@ -255,12 +255,12 @@ void main() {
       const TubeInputs(includeRadiation: false),
     );
     // Heat flows in the results table.
-    expect(find.text(fmt(withRadiation.heatRate)), findsWidgets);
+    expect(find.text(fmtValue(withRadiation.heatRate)), findsWidgets);
 
     await tester.tap(find.byTooltip('Ignore radiation'));
     await tester.pump();
-    expect(find.text(fmt(withRadiation.heatRate)), findsNothing);
-    expect(find.text(fmt(without.heatRate)), findsWidgets);
+    expect(find.text(fmtValue(withRadiation.heatRate)), findsNothing);
+    expect(find.text(fmtValue(without.heatRate)), findsWidgets);
     expect(find.byTooltip('Include radiation'), findsOneWidget);
 
     // The detail pane explains that radiation is ignored.

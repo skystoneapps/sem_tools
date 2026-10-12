@@ -354,7 +354,7 @@ class TubePainter extends CustomPainter {
       ])
         _layout(
           '${stage == HeatStage.outerConvection ? l10n.mechanismConvection : l10n.mechanismRadiation}'
-          '  ${fmt(result[stage].heatRate, 3)} W',
+          '  ${fmtValue(result[stage].heatRate)} W',
           style.copyWith(color: palette.mechanism(stage.mechanism)),
         ),
     ];
