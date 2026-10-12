@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../common/number_format.dart';
 import '../l10n/app_localizations.dart';
 import 'formula_text.dart';
 import 'heat_model.dart';

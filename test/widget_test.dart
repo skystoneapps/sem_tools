@@ -6,10 +6,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 
 import 'package:sem/heat_transfer/details_pane.dart';
-import 'package:sem/heat_transfer/formula_text.dart';
+import 'package:sem/common/number_format.dart';
 import 'package:sem/heat_transfer/heat_model.dart';
 import 'package:sem/heat_transfer/inputs_panel.dart';
 import 'package:sem/main.dart';
+import 'package:sem/price/price_model.dart';
+import 'package:sem/price/price_module.dart';
 
 /// Opens the heat transport module from the navigation rail.
 Future<void> openHeatTransfer(WidgetTester tester) async {
@@ -435,6 +437,62 @@ void main() {
       // The module is open (its tabs show) and the drawer has closed.
       expect(find.text('Tube & variables'), findsOneWidget);
       expect(find.byType(NavigationDrawer), findsNothing);
+    });
+  });
+
+  group('price calculation', () {
+    test('energy and cost follow from power, duration and price', () {
+      final result = calculatePrice(
+        const PriceInputs(power: 1000, duration: 3000, marketPrice: 100),
+      );
+      expect(result.energyWattHours, 3e6);
+      expect(result.energyMegawattHours, 3);
+      expect(result.cost, 300);
+      expect(result.costPerHour, closeTo(0.1, 1e-12));
+    });
+
+    test('a typed heat loss is no longer tied to an imported tube', () {
+      final controller = PriceController()..importHeatLoss(3227.85, 75);
+      expect(controller.tubeLength, 75);
+      controller.inputs = controller.inputs.copyWith(duration: 5000);
+      expect(controller.tubeLength, 75);
+      controller.inputs = controller.inputs.copyWith(power: 100);
+      expect(controller.tubeLength, isNull);
+    });
+
+    testWidgets('imports the heat loss and shows the cost', (tester) async {
+      tester.view.physicalSize = const Size(1440, 900);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
+
+      await tester.pumpWidget(const SemToolsApp(initialLocale: Locale('en')));
+      await tester.tap(
+        find.descendant(
+          of: find.byType(NavigationRail),
+          matching: find.text('Price calculation'),
+        ),
+      );
+      await tester.pump();
+      expect(find.text('Cost of energy loss'), findsOneWidget);
+      // Defaults: 1000 W for 3000 h at €100/MWh.
+      expect(find.text('€300.00'), findsOneWidget);
+      expect(find.text('Cost per metre'), findsNothing);
+
+      final heatLoss = calculateHeatTransfer(const TubeInputs()).heatRate;
+      final imported = (heatLoss * 100).roundToDouble() / 100;
+      await tester.tap(
+        find.textContaining('Use heat loss from Heat transport'),
+      );
+      await tester.pump();
+      expect(
+        find.widgetWithText(TextField, fmtInput(imported)),
+        findsOneWidget,
+      );
+      expect(
+        find.text(fmtCurrency(imported * 3000 / 1e6 * 100)),
+        findsOneWidget,
+      );
+      expect(find.text('Cost per metre'), findsOneWidget);
     });
   });
 }

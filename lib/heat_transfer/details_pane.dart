@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
+import '../common/number_format.dart';
 import '../l10n/app_localizations.dart';
 import 'formula_text.dart';
 import 'heat_labels.dart';
 import 'heat_model.dart';
 import 'heat_palette.dart';
 import 'results_panel.dart';
-import 'stat_tiles.dart';
+import '../common/stat_tiles.dart';
 import 'symbol_glossary.dart';
-import 'tex_formula.dart';
+import '../common/tex_formula.dart';
 
 /// Right-hand pane: a picker for the stage to inspect, followed by that
 /// stage's step-by-step calculation. A `null` selection shows how the stages
@@ -152,96 +153,10 @@ class _PickerLabel extends StatelessWidget {
   }
 }
 
-/// A worked step: an explanation and a TeX formula.
-typedef _Step = (String, String);
-
-/// The law box, the worked steps and the "where:" list of symbols.
-class _Derivation extends StatelessWidget {
-  const _Derivation({
-    required this.color,
-    required this.law,
-    required this.formula,
-    required this.steps,
-    required this.symbols,
-  });
-
-  final Color color;
-  final String law;
-
-  /// The governing equation, in TeX.
-  final String formula;
-  final List<_Step> steps;
-  final List<Sym> symbols;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.fromLTRB(14, 10, 14, 14),
-          decoration: BoxDecoration(
-            color: color.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                law,
-                style: theme.textTheme.labelMedium?.copyWith(
-                  color: color,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 8),
-              TexFormula(formula, style: theme.textTheme.titleLarge),
-            ],
-          ),
-        ),
-        for (final (index, (label, formula)) in steps.indexed)
-          Padding(
-            padding: const EdgeInsets.only(top: 18),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CircleAvatar(
-                  radius: 11,
-                  backgroundColor: color.withValues(alpha: 0.15),
-                  child: Text(
-                    '${index + 1}',
-                    style: theme.textTheme.labelSmall?.copyWith(color: color),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        label,
-                        style: theme.textTheme.labelMedium?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-                      TexFormula(formula, style: theme.textTheme.bodyLarge),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        const SizedBox(height: 20),
-        const Divider(height: 1),
-        const SizedBox(height: 12),
-        SymbolLegend(symbols: symbols),
-      ],
-    );
-  }
-}
+/// The "where:" entries for heat transport [symbols].
+List<LegendEntry> _legend(List<Sym> symbols, AppLocalizations l10n) => [
+  for (final sym in symbols) (sym.tex, sym.description(l10n), sym.unit),
+];
 
 class _StageDetails extends StatelessWidget {
   const _StageDetails({required this.result, required this.stage});
@@ -273,12 +188,12 @@ class _StageDetails extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 20),
-        _Derivation(
+        Derivation(
           color: palette.mechanism(stage.stage.mechanism),
           law: stage.stage.mechanism.law(l10n),
           formula: _lawFormula(stage.stage, _fluidTex(result)),
           steps: _stepsFor(result, stage, l10n),
-          symbols: _symbolsFor(stage.stage, result.simplified),
+          legend: _legend(_symbolsFor(stage.stage, result.simplified), l10n),
         ),
         if (outer) ...[
           const SizedBox(height: 16),
@@ -358,7 +273,7 @@ class _TotalDetails extends StatelessWidget {
     final check =
         (result.meanFluidTemp - result.ambientTemp) / result.totalResistance;
 
-    final resistanceSteps = <_Step>[
+    final resistanceSteps = <DerivationStep>[
       if (!i.includeRadiation)
         (
           l10n.stepOnlyConvection,
@@ -397,7 +312,7 @@ class _TotalDetails extends StatelessWidget {
         ]),
         const SizedBox(height: 20),
         if (result.simplified)
-          _Derivation(
+          Derivation(
             color: theme.colorScheme.primary,
             law: l10n.lawSeries,
             formula: r'Q = \frac{T_{\mathrm{in}} - T_\infty}{\Sigma R}',
@@ -416,7 +331,7 @@ class _TotalDetails extends StatelessWidget {
               ),
               perMetre,
             ],
-            symbols: const [
+            legend: _legend([
               Sym.heatFlow,
               Sym.inletTemp,
               Sym.ambientTemp,
@@ -427,10 +342,10 @@ class _TotalDetails extends StatelessWidget {
               Sym.specificHeat,
               Sym.heatFlowPerMetre,
               Sym.length,
-            ],
+            ], l10n),
           )
         else
-          _Derivation(
+          Derivation(
             color: theme.colorScheme.primary,
             law: l10n.lawEnergyBalance,
             formula: r'Q = \dot{m}\,c_p\,(T_{\mathrm{in}} - T_{\mathrm{out}})',
@@ -465,7 +380,7 @@ class _TotalDetails extends StatelessWidget {
               ),
               perMetre,
             ],
-            symbols: const [
+            legend: _legend([
               Sym.heatFlow,
               Sym.massFlow,
               Sym.specificHeat,
@@ -477,7 +392,7 @@ class _TotalDetails extends StatelessWidget {
               Sym.resistanceOuter,
               Sym.heatFlowPerMetre,
               Sym.length,
-            ],
+            ], l10n),
           ),
         if (result.simplified) ...[
           const SizedBox(height: 16),
@@ -621,7 +536,7 @@ List<Sym> _symbolsFor(HeatStage stage, bool simplified) => switch (stage) {
   ],
 };
 
-List<_Step> _stepsFor(
+List<DerivationStep> _stepsFor(
   HeatTransferResult result,
   StageResult s,
   AppLocalizations l10n,

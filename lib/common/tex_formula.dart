@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 
-import 'symbol_glossary.dart';
 import '../l10n/app_localizations.dart';
 
 /// TeX units, typeset upright after a thin space.
@@ -76,11 +75,109 @@ List<String> splitAtRelations(String tex) {
   return parts;
 }
 
-/// Textbook-style "where:" list explaining the [symbols] of a derivation.
-class SymbolLegend extends StatelessWidget {
-  const SymbolLegend({super.key, required this.symbols});
+/// A worked step of a [Derivation]: an explanation and a TeX formula.
+typedef DerivationStep = (String label, String tex);
 
-  final List<Sym> symbols;
+/// An entry of a [SymbolLegend]: a symbol in TeX, what it means and its unit
+/// (`null` when it has none or more than one).
+typedef LegendEntry = (String tex, String description, String? unit);
+
+/// A worked calculation: the governing equation in a [color]ed box headed by
+/// the name of the [law], the numbered [steps], and a "where:" list of the
+/// symbols used.
+class Derivation extends StatelessWidget {
+  const Derivation({
+    super.key,
+    required this.color,
+    required this.law,
+    required this.formula,
+    required this.steps,
+    required this.legend,
+  });
+
+  final Color color;
+  final String law;
+
+  /// The governing equation, in TeX.
+  final String formula;
+  final List<DerivationStep> steps;
+  final List<LegendEntry> legend;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.fromLTRB(14, 10, 14, 14),
+          decoration: BoxDecoration(
+            color: color.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                law,
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: color,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 8),
+              TexFormula(formula, style: theme.textTheme.titleLarge),
+            ],
+          ),
+        ),
+        for (final (index, (label, formula)) in steps.indexed)
+          Padding(
+            padding: const EdgeInsets.only(top: 18),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CircleAvatar(
+                  radius: 11,
+                  backgroundColor: color.withValues(alpha: 0.15),
+                  child: Text(
+                    '${index + 1}',
+                    style: theme.textTheme.labelSmall?.copyWith(color: color),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        label,
+                        style: theme.textTheme.labelMedium?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      TexFormula(formula, style: theme.textTheme.bodyLarge),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        const SizedBox(height: 20),
+        const Divider(height: 1),
+        const SizedBox(height: 12),
+        SymbolLegend(entries: legend),
+      ],
+    );
+  }
+}
+
+/// Textbook-style "where:" list explaining the symbols of a derivation.
+class SymbolLegend extends StatelessWidget {
+  const SymbolLegend({super.key, required this.entries});
+
+  final List<LegendEntry> entries;
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +190,7 @@ class SymbolLegend extends StatelessWidget {
       children: [
         Text(l10n.where, style: style?.copyWith(fontStyle: FontStyle.italic)),
         const SizedBox(height: 6),
-        for (final sym in symbols)
+        for (final (tex, description, unit) in entries)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 3),
             child: Row(
@@ -103,7 +200,7 @@ class SymbolLegend extends StatelessWidget {
                 ConstrainedBox(
                   constraints: const BoxConstraints(minWidth: 64),
                   child: Math.tex(
-                    sym.tex,
+                    tex,
                     textStyle: theme.textTheme.bodyMedium?.copyWith(
                       color: theme.colorScheme.onSurface,
                     ),
@@ -113,9 +210,9 @@ class SymbolLegend extends StatelessWidget {
                 Expanded(
                   child: Text.rich(
                     TextSpan(
-                      text: sym.description(l10n),
+                      text: description,
                       children: [
-                        if (sym.unit case final unit?)
+                        if (unit != null)
                           TextSpan(
                             text: '  [$unit]',
                             style: TextStyle(

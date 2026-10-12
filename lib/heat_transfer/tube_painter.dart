@@ -2,8 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import '../common/number_format.dart';
 import '../l10n/app_localizations.dart';
-import 'formula_text.dart';
 import 'heat_model.dart';
 import 'heat_palette.dart';
 

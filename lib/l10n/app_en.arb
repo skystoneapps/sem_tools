@@ -238,5 +238,50 @@
   "moduleHeatTransferDescription": "Heat loss and outlet temperature of an insulated tube, through convection, conduction and radiation.",
   "@moduleHeatTransfer": {
     "description": "Short module name in the navigation rail or drawer."
+  },
+  "modulePrice": "Price calculation",
+  "modulePriceTitle": "Cost of energy loss",
+  "modulePriceDescription": "Cost of a heat loss over a usage period at a given energy market price.",
+  "calculation": "Calculation",
+  "priceFieldPower": "Heat loss",
+  "priceFieldDuration": "Usage duration",
+  "priceFieldMarketPrice": "Market price",
+  "priceUseHeatLoss": "Use heat loss from Heat transport: {power} W over {length} m",
+  "priceFromHeatTransfer": "Heat loss of {length} m of tube, taken from Heat transport",
+  "presetDay": "Day",
+  "presetWeek": "Week",
+  "presetMonth": "Month",
+  "presetYear": "Year",
+  "statCost": "Cost",
+  "statEnergy": "Energy lost",
+  "statCostPerHour": "Cost per hour",
+  "statCostPerMetre": "Cost per metre",
+  "lawEnergyCost": "Energy and cost",
+  "priceStepEnergy": "Energy lost over the usage duration",
+  "priceStepConvert": "Converted to MWh (1 MWh = 1 000 000 Wh)",
+  "priceStepCost": "Cost at the market price",
+  "priceStepCostPerHour": "Cost per hour of use",
+  "priceStepCostPerMetre": "Cost per metre of tube",
+  "symbolPower": "Heat loss (power)",
+  "symbolDuration": "Usage duration",
+  "symbolMarketPrice": "Energy market price",
+  "symbolEnergy": "Energy lost",
+  "symbolCost": "Cost of the energy lost",
+  "@priceUseHeatLoss": {
+    "placeholders": {
+      "power": {
+        "type": "String"
+      },
+      "length": {
+        "type": "String"
+      }
+    }
+  },
+  "@priceFromHeatTransfer": {
+    "placeholders": {
+      "length": {
+        "type": "String"
+      }
+    }
   }
 }

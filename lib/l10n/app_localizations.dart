@@ -1145,6 +1145,174 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Heat loss and outlet temperature of an insulated tube, through convection, conduction and radiation.'**
   String get moduleHeatTransferDescription;
+
+  /// No description provided for @modulePrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Price calculation'**
+  String get modulePrice;
+
+  /// No description provided for @modulePriceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost of energy loss'**
+  String get modulePriceTitle;
+
+  /// No description provided for @modulePriceDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost of a heat loss over a usage period at a given energy market price.'**
+  String get modulePriceDescription;
+
+  /// No description provided for @calculation.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculation'**
+  String get calculation;
+
+  /// No description provided for @priceFieldPower.
+  ///
+  /// In en, this message translates to:
+  /// **'Heat loss'**
+  String get priceFieldPower;
+
+  /// No description provided for @priceFieldDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Usage duration'**
+  String get priceFieldDuration;
+
+  /// No description provided for @priceFieldMarketPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Market price'**
+  String get priceFieldMarketPrice;
+
+  /// No description provided for @priceUseHeatLoss.
+  ///
+  /// In en, this message translates to:
+  /// **'Use heat loss from Heat transport: {power} W over {length} m'**
+  String priceUseHeatLoss(String power, String length);
+
+  /// No description provided for @priceFromHeatTransfer.
+  ///
+  /// In en, this message translates to:
+  /// **'Heat loss of {length} m of tube, taken from Heat transport'**
+  String priceFromHeatTransfer(String length);
+
+  /// No description provided for @presetDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Day'**
+  String get presetDay;
+
+  /// No description provided for @presetWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Week'**
+  String get presetWeek;
+
+  /// No description provided for @presetMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Month'**
+  String get presetMonth;
+
+  /// No description provided for @presetYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Year'**
+  String get presetYear;
+
+  /// No description provided for @statCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost'**
+  String get statCost;
+
+  /// No description provided for @statEnergy.
+  ///
+  /// In en, this message translates to:
+  /// **'Energy lost'**
+  String get statEnergy;
+
+  /// No description provided for @statCostPerHour.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost per hour'**
+  String get statCostPerHour;
+
+  /// No description provided for @statCostPerMetre.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost per metre'**
+  String get statCostPerMetre;
+
+  /// No description provided for @lawEnergyCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Energy and cost'**
+  String get lawEnergyCost;
+
+  /// No description provided for @priceStepEnergy.
+  ///
+  /// In en, this message translates to:
+  /// **'Energy lost over the usage duration'**
+  String get priceStepEnergy;
+
+  /// No description provided for @priceStepConvert.
+  ///
+  /// In en, this message translates to:
+  /// **'Converted to MWh (1 MWh = 1 000 000 Wh)'**
+  String get priceStepConvert;
+
+  /// No description provided for @priceStepCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost at the market price'**
+  String get priceStepCost;
+
+  /// No description provided for @priceStepCostPerHour.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost per hour of use'**
+  String get priceStepCostPerHour;
+
+  /// No description provided for @priceStepCostPerMetre.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost per metre of tube'**
+  String get priceStepCostPerMetre;
+
+  /// No description provided for @symbolPower.
+  ///
+  /// In en, this message translates to:
+  /// **'Heat loss (power)'**
+  String get symbolPower;
+
+  /// No description provided for @symbolDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Usage duration'**
+  String get symbolDuration;
+
+  /// No description provided for @symbolMarketPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Energy market price'**
+  String get symbolMarketPrice;
+
+  /// No description provided for @symbolEnergy.
+  ///
+  /// In en, this message translates to:
+  /// **'Energy lost'**
+  String get symbolEnergy;
+
+  /// No description provided for @symbolCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost of the energy lost'**
+  String get symbolCost;
 }
 
 class _AppLocalizationsDelegate

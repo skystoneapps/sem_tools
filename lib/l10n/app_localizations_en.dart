@@ -575,4 +575,93 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get moduleHeatTransferDescription =>
       'Heat loss and outlet temperature of an insulated tube, through convection, conduction and radiation.';
+
+  @override
+  String get modulePrice => 'Price calculation';
+
+  @override
+  String get modulePriceTitle => 'Cost of energy loss';
+
+  @override
+  String get modulePriceDescription =>
+      'Cost of a heat loss over a usage period at a given energy market price.';
+
+  @override
+  String get calculation => 'Calculation';
+
+  @override
+  String get priceFieldPower => 'Heat loss';
+
+  @override
+  String get priceFieldDuration => 'Usage duration';
+
+  @override
+  String get priceFieldMarketPrice => 'Market price';
+
+  @override
+  String priceUseHeatLoss(String power, String length) {
+    return 'Use heat loss from Heat transport: $power W over $length m';
+  }
+
+  @override
+  String priceFromHeatTransfer(String length) {
+    return 'Heat loss of $length m of tube, taken from Heat transport';
+  }
+
+  @override
+  String get presetDay => 'Day';
+
+  @override
+  String get presetWeek => 'Week';
+
+  @override
+  String get presetMonth => 'Month';
+
+  @override
+  String get presetYear => 'Year';
+
+  @override
+  String get statCost => 'Cost';
+
+  @override
+  String get statEnergy => 'Energy lost';
+
+  @override
+  String get statCostPerHour => 'Cost per hour';
+
+  @override
+  String get statCostPerMetre => 'Cost per metre';
+
+  @override
+  String get lawEnergyCost => 'Energy and cost';
+
+  @override
+  String get priceStepEnergy => 'Energy lost over the usage duration';
+
+  @override
+  String get priceStepConvert => 'Converted to MWh (1 MWh = 1 000 000 Wh)';
+
+  @override
+  String get priceStepCost => 'Cost at the market price';
+
+  @override
+  String get priceStepCostPerHour => 'Cost per hour of use';
+
+  @override
+  String get priceStepCostPerMetre => 'Cost per metre of tube';
+
+  @override
+  String get symbolPower => 'Heat loss (power)';
+
+  @override
+  String get symbolDuration => 'Usage duration';
+
+  @override
+  String get symbolMarketPrice => 'Energy market price';
+
+  @override
+  String get symbolEnergy => 'Energy lost';
+
+  @override
+  String get symbolCost => 'Cost of the energy lost';
 }

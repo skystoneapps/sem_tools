@@ -583,4 +583,93 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get moduleHeatTransferDescription =>
       'Warmteverlies en uitlaattemperatuur van een geïsoleerde buis, via convectie, conductie en straling.';
+
+  @override
+  String get modulePrice => 'Prijsberekening';
+
+  @override
+  String get modulePriceTitle => 'Kosten van energieverlies';
+
+  @override
+  String get modulePriceDescription =>
+      'Kosten van een warmteverlies over een gebruiksperiode bij een gegeven energiemarktprijs.';
+
+  @override
+  String get calculation => 'Berekening';
+
+  @override
+  String get priceFieldPower => 'Warmteverlies';
+
+  @override
+  String get priceFieldDuration => 'Gebruiksduur';
+
+  @override
+  String get priceFieldMarketPrice => 'Marktprijs';
+
+  @override
+  String priceUseHeatLoss(String power, String length) {
+    return 'Warmteverlies uit Warmtetransport gebruiken: $power W over $length m';
+  }
+
+  @override
+  String priceFromHeatTransfer(String length) {
+    return 'Warmteverlies van $length m buis, overgenomen uit Warmtetransport';
+  }
+
+  @override
+  String get presetDay => 'Dag';
+
+  @override
+  String get presetWeek => 'Week';
+
+  @override
+  String get presetMonth => 'Maand';
+
+  @override
+  String get presetYear => 'Jaar';
+
+  @override
+  String get statCost => 'Kosten';
+
+  @override
+  String get statEnergy => 'Energieverlies';
+
+  @override
+  String get statCostPerHour => 'Kosten per uur';
+
+  @override
+  String get statCostPerMetre => 'Kosten per meter';
+
+  @override
+  String get lawEnergyCost => 'Energie en kosten';
+
+  @override
+  String get priceStepEnergy => 'Energieverlies over de gebruiksduur';
+
+  @override
+  String get priceStepConvert => 'Omgerekend naar MWh (1 MWh = 1 000 000 Wh)';
+
+  @override
+  String get priceStepCost => 'Kosten bij de marktprijs';
+
+  @override
+  String get priceStepCostPerHour => 'Kosten per gebruiksuur';
+
+  @override
+  String get priceStepCostPerMetre => 'Kosten per meter buis';
+
+  @override
+  String get symbolPower => 'Warmteverlies (vermogen)';
+
+  @override
+  String get symbolDuration => 'Gebruiksduur';
+
+  @override
+  String get symbolMarketPrice => 'Energiemarktprijs';
+
+  @override
+  String get symbolEnergy => 'Verloren energie';
+
+  @override
+  String get symbolCost => 'Kosten van de verloren energie';
 }

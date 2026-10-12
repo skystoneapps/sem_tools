@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../heat_transfer/heat_transfer_module.dart';
 import '../l10n/app_localizations.dart';
+import '../price/price_module.dart';
 import 'language_picker.dart';
 import 'overview_page.dart';
 import 'sem_module.dart';
@@ -21,7 +22,14 @@ class AppShell extends StatefulWidget {
 
 class _AppShellState extends State<AppShell> {
   /// Every tool, in navigation order.
-  final List<SemModule> _modules = [HeatTransferModule()];
+  late final List<SemModule> _modules = () {
+    final heatTransfer = HeatTransferModule();
+    return [
+      heatTransfer,
+      // Can take its heat loss from the heat transport module.
+      PriceModule(heatTransfer: heatTransfer.controller),
+    ];
+  }();
 
   /// The open module; `null` is the overview.
   SemModule? _current;
@@ -94,7 +102,12 @@ class _AppShellState extends State<AppShell> {
                   NavigationDrawerDestination(
                     icon: Icon(icon),
                     selectedIcon: Icon(selectedIcon),
-                    label: Text(label),
+                    // The drawer gives labels no flexible space; keep long
+                    // ones within the tile.
+                    label: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 200),
+                      child: Text(label, overflow: TextOverflow.ellipsis),
+                    ),
                   ),
               ],
             ),
