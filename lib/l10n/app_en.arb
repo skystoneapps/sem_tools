@@ -1,0 +1,194 @@
+{
+  "@@locale": "en",
+  "appTitle": "Heat transport",
+  "@appTitle": {
+    "description": "Title of the app in the OS task switcher."
+  },
+  "screenTitle": "Heat transport in an insulated tube",
+  "@screenTitle": {
+    "description": "App bar title."
+  },
+  "resetTooltip": "Reset to defaults",
+  "languageTooltip": "Language",
+  "tabTubeAndVariables": "Tube & variables",
+  "tabDetails": "Details",
+  "mechanismConvection": "Convection",
+  "mechanismConduction": "Conduction",
+  "mechanismRadiation": "Radiation",
+  "lawNewton": "Newton's Law of Cooling",
+  "lawFourier": "Fourier's Law",
+  "lawStefanBoltzmann": "Stefan–Boltzmann Law",
+  "stageInnerConvection": "Inner convection",
+  "stageInnerConvectionPath": "Fluid → inner pipe wall",
+  "stagePipeConduction": "Pipe wall conduction",
+  "stagePipeConductionPath": "Through the pipe wall",
+  "stageInsulationConduction": "Insulation conduction",
+  "stageInsulationConductionPath": "Through the insulation layer",
+  "stageOuterConvection": "Outer convection",
+  "stageOuterConvectionPath": "Outer surface → ambient air",
+  "stageOuterRadiation": "Surface radiation",
+  "stageOuterRadiationPath": "Outer surface → surroundings",
+  "total": "Total",
+  "totalSubtitle": "How the stages combine",
+  "totalPath": "Fluid → surroundings",
+  "statHeatFlow": "Heat flow",
+  "statResistance": "Resistance",
+  "statTemperatureDrop": "Temperature drop",
+  "statTotalResistance": "Total resistance",
+  "lawSeries": "Thermal resistances in series",
+  "stepParallel": "Convection and radiation act in parallel at the surface",
+  "stepSeries": "The other stages are in series with it",
+  "stepTotalHeatFlow": "Total heat flow",
+  "stepHeatFlowPerMetre": "Heat flow per metre of tube",
+  "stepInnerArea": "Area of the inner pipe wall",
+  "stepThermalResistance": "Thermal resistance",
+  "stepInnerHeatFlow": "Heat flow from the fluid into the wall",
+  "stepInnerWallTemperature": "Inner wall temperature",
+  "stepIntegratedWall": "Integrated over the cylindrical wall, with A(r) = 2πrL",
+  "stepWallHeatFlow": "Heat flow through the wall",
+  "stepOuterPipeTemperature": "Outer pipe temperature",
+  "stepIntegratedLayer": "Integrated over the cylindrical layer, with A(r) = 2πrL",
+  "stepInsulationHeatFlow": "Heat flow through the insulation",
+  "stepSurfaceTemperature": "Outer surface temperature",
+  "stepOuterArea": "Area of the outer surface",
+  "stepConvectionHeatFlow": "Heat carried away by the air",
+  "stepAbsoluteTemperatures": "Radiation needs absolute temperatures",
+  "stepRadiatedHeat": "Heat radiated to the surroundings",
+  "stepLinearisedCoefficient": "Linearised radiation coefficient",
+  "stepEquivalentResistance": "Equivalent thermal resistance",
+  "surfaceIterationNote": "T_s is not known in advance: it is solved iteratively so that the heat arriving at the surface equals the heat leaving it by convection and radiation together.",
+  "@surfaceIterationNote": {
+    "description": "T_s is formula markup: the underscore makes 's' a subscript. Keep it as is."
+  },
+  "variables": "Variables",
+  "sectionTemperatures": "Temperatures",
+  "sectionGeometry": "Geometry",
+  "sectionMaterials": "Materials",
+  "sectionSurfaces": "Surfaces",
+  "fieldFluidTemperature": "Fluid",
+  "fieldAmbientTemperature": "Ambient",
+  "fieldLength": "Tube length",
+  "fieldInnerDiameter": "Inner diameter",
+  "fieldWallThickness": "Wall thickness",
+  "fieldInsulationThickness": "Insulation",
+  "fieldPipeConductivity": "Pipe conductivity",
+  "fieldInsulationConductivity": "Insulation conductivity",
+  "fieldInnerConvection": "Inner convection",
+  "fieldOuterConvection": "Outer convection",
+  "fieldEmissivity": "Surface emissivity",
+  "presetsTooltip": "Presets",
+  "errorEnterNumber": "Enter a number",
+  "presetCarbonSteel": "Carbon steel",
+  "presetStainlessSteel": "Stainless steel",
+  "presetCopper": "Copper",
+  "presetAluminium": "Aluminium",
+  "presetPvc": "PVC",
+  "presetMineralWool": "Mineral wool",
+  "presetPolyurethaneFoam": "Polyurethane foam",
+  "presetElastomericFoam": "Elastomeric foam",
+  "presetCalciumSilicate": "Calcium silicate",
+  "presetAerogelBlanket": "Aerogel blanket",
+  "presetGasForced": "Gas, forced flow",
+  "presetOilForced": "Oil, forced flow",
+  "presetWaterForced": "Water, forced flow",
+  "presetWaterTurbulent": "Water, turbulent",
+  "presetCondensingSteam": "Condensing steam",
+  "presetStillAir": "Still air",
+  "presetIndoorAir": "Indoor air",
+  "presetLightWind": "Light wind",
+  "presetStrongWind": "Strong wind",
+  "presetPolishedAluminium": "Polished aluminium",
+  "presetOxidisedAluminium": "Oxidised aluminium",
+  "presetStainlessJacket": "Stainless steel jacket",
+  "presetPvcJacket": "PVC jacket",
+  "presetPaintedSurface": "Painted surface",
+  "tubeAmbient": "Ambient",
+  "@tubeAmbient": {
+    "description": "Label in the tube drawing, followed by the ambient temperature."
+  },
+  "tubeOuterSurface": "outer surface",
+  "@tubeOuterSurface": {
+    "description": "Small label above the surface temperature in the tube drawing."
+  },
+  "tubeFluid": "Fluid",
+  "tubePipeWall": "Pipe wall",
+  "tubeInsulation": "Insulation",
+  "results": "Results",
+  "resultsStage": "Stage",
+  "@resultsStage": {
+    "description": "Column header of the results table."
+  },
+  "inParallel": "in parallel",
+  "errorGreaterThan": "Must be > {value}",
+  "@errorGreaterThan": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "errorAtLeast": "Must be ≥ {value}",
+  "@errorAtLeast": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "errorAtMost": "Must be ≤ {value}",
+  "@errorAtMost": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "resultsTubeLength": "over {length} m of tube",
+  "@resultsTubeLength": {
+    "placeholders": {
+      "length": {
+        "type": "String"
+      }
+    }
+  },
+  "symbolHeatFlow": "Heat flow",
+  "symbolHeatFlowConvection": "Heat carried away by outer convection",
+  "symbolHeatFlowRadiation": "Heat radiated by the outer surface",
+  "symbolHeatFlowPerMetre": "Heat flow per metre of tube",
+  "symbolArea": "Heat transfer area",
+  "symbolAreaInner": "Inner surface area of the pipe",
+  "symbolAreaOuter": "Outer surface area of the insulation",
+  "symbolConvectionCoefficient": "Convection heat transfer coefficient",
+  "symbolConvectionCoefficientInner": "Convection coefficient on the fluid side",
+  "symbolConvectionCoefficientOuter": "Convection coefficient on the air side",
+  "symbolRadiationCoefficient": "Linearised radiation coefficient",
+  "symbolConductivity": "Thermal conductivity",
+  "symbolConductivityPipe": "Thermal conductivity of the pipe wall",
+  "symbolConductivityInsulation": "Thermal conductivity of the insulation",
+  "symbolFluidTemperature": "Fluid temperature",
+  "symbolAmbientTemperature": "Ambient temperature",
+  "symbolSurfaceTemperature": "Outer surface temperature",
+  "symbolInnerWallTemperature": "Temperature of the inner pipe wall",
+  "symbolInterfaceTemperature": "Temperature between pipe and insulation",
+  "symbolSurroundingsTemperature": "Temperature of the surroundings",
+  "symbolTemperatureDifference": "Temperature difference across the stage",
+  "symbolTemperatureGradient": "Temperature gradient in the radial direction",
+  "symbolRadius": "Radius",
+  "symbolRadiusInner": "Inner radius of the pipe",
+  "symbolRadiusPipe": "Outer radius of the pipe",
+  "symbolRadiusOuter": "Outer radius of the insulation",
+  "symbolLength": "Tube length",
+  "symbolResistance": "Thermal resistance",
+  "symbolResistanceInnerConvection": "Thermal resistance of inner convection",
+  "symbolResistancePipe": "Thermal resistance of the pipe wall",
+  "symbolResistanceInsulation": "Thermal resistance of the insulation",
+  "symbolResistanceOuterConvection": "Thermal resistance of outer convection",
+  "symbolResistanceRadiation": "Thermal resistance of surface radiation",
+  "symbolResistanceOuter": "Combined resistance at the outer surface: convection and radiation in parallel",
+  "symbolResistanceTotal": "Total thermal resistance from fluid to surroundings",
+  "symbolEmissivity": "Emissivity of the outer surface, from 0 (mirror) to 1 (black body)",
+  "symbolStefanBoltzmann": "Stefan–Boltzmann constant",
+  "@symbolHeatFlow": {
+    "description": "Tooltip for the symbol Q in formulas. The symbol* keys are all hover descriptions of formula symbols."
+  }
+}
