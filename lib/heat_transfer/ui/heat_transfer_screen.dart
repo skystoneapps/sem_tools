@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../l10n/app_localizations.dart';
+import '../../l10n/app_localizations.dart';
 import 'details_pane.dart';
-import 'heat_model.dart';
+import '../domain/heat_model.dart';
 import 'heat_palette.dart';
-import 'heat_transfer_module.dart';
+import 'heat_transfer_controller.dart';
 import 'inputs_panel.dart';
 import 'results_panel.dart';
 import 'tube_painter.dart';

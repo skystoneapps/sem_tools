@@ -1,5 +1,5 @@
-import '../l10n/app_localizations.dart';
-import 'heat_model.dart';
+import '../../l10n/app_localizations.dart';
+import '../domain/heat_model.dart';
 
 /// Localised display names for the model enums.
 extension MechanismLabels on Mechanism {

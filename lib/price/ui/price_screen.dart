@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../common/number_field.dart';
-import '../common/number_format.dart';
-import '../common/stat_tiles.dart';
-import '../common/tex_formula.dart';
-import '../heat_transfer/heat_model.dart';
-import '../heat_transfer/heat_transfer_module.dart';
-import '../l10n/app_localizations.dart';
-import 'price_model.dart';
-import 'price_module.dart';
+import '../../common/ui/number_field.dart';
+import '../../common/ui/number_format.dart';
+import '../../common/ui/stat_tiles.dart';
+import '../../common/ui/tex_formula.dart';
+import '../../heat_transfer/domain/heat_model.dart';
+import '../../heat_transfer/ui/heat_transfer_controller.dart';
+import '../../l10n/app_localizations.dart';
+import '../domain/price_model.dart';
+import 'price_controller.dart';
 
 /// Euro in TeX formulas, after a thin space. Written as the ISO code: the
 /// math fonts have no € glyph.

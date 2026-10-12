@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'heat_model.dart';
+import '../domain/heat_model.dart';
 
 /// Colours used by the tube drawing and the detail pane, per brightness.
 class HeatPalette {

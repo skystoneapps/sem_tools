@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 
-import 'package:sem/heat_transfer/details_pane.dart';
-import 'package:sem/common/number_format.dart';
-import 'package:sem/heat_transfer/heat_model.dart';
-import 'package:sem/heat_transfer/inputs_panel.dart';
+import 'package:sem/heat_transfer/ui/details_pane.dart';
+import 'package:sem/common/ui/number_format.dart';
+import 'package:sem/heat_transfer/domain/heat_model.dart';
+import 'package:sem/heat_transfer/ui/inputs_panel.dart';
 import 'package:sem/main.dart';
-import 'package:sem/price/price_model.dart';
-import 'package:sem/price/price_module.dart';
+import 'package:sem/price/domain/price_model.dart';
+import 'package:sem/price/ui/price_controller.dart';
 
 /// Opens the heat transport module from the navigation rail.
 Future<void> openHeatTransfer(WidgetTester tester) async {

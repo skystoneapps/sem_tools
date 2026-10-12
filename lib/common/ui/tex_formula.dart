@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 
-import '../l10n/app_localizations.dart';
+import '../../l10n/app_localizations.dart';
 
 /// TeX units, typeset upright after a thin space.
 const texWatt = r'\,\mathrm{W}';

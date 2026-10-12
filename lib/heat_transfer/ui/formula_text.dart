@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../l10n/app_localizations.dart';
+import '../../l10n/app_localizations.dart';
 import 'symbol_glossary.dart';
 
 /// Renders a formula written in a tiny markup: `_x` / `_{xy}` for subscripts

@@ -1,4 +1,4 @@
-import '../l10n/app_localizations.dart';
+import '../../l10n/app_localizations.dart';
 
 /// Every symbol used in the formulas, with its [FormulaText] markup, its TeX
 /// form and its unit (`null` for temperatures, which appear in both °C and K,

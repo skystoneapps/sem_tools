@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-import '../common/number_format.dart';
-import '../l10n/app_localizations.dart';
+import '../../common/ui/number_format.dart';
+import '../../l10n/app_localizations.dart';
 import 'formula_text.dart';
 import 'heat_labels.dart';
-import 'heat_model.dart';
+import '../domain/heat_model.dart';
 import 'heat_palette.dart';
 import 'results_panel.dart';
-import '../common/stat_tiles.dart';
+import '../../common/ui/stat_tiles.dart';
 import 'symbol_glossary.dart';
-import '../common/tex_formula.dart';
+import '../../common/ui/tex_formula.dart';
 
 /// Right-hand pane: a picker for the stage to inspect, followed by that
 /// stage's step-by-step calculation. A `null` selection shows how the stages

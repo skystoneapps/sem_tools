@@ -2,9 +2,9 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../common/number_format.dart';
-import '../l10n/app_localizations.dart';
-import 'heat_model.dart';
+import '../../common/ui/number_format.dart';
+import '../../l10n/app_localizations.dart';
+import '../domain/heat_model.dart';
 import 'heat_palette.dart';
 
 /// Draws a cut-away view of the insulated tube: the bare pipe with a window

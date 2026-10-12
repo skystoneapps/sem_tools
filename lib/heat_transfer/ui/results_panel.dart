@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../common/number_format.dart';
-import '../l10n/app_localizations.dart';
+import '../../common/ui/number_format.dart';
+import '../../l10n/app_localizations.dart';
 import 'formula_text.dart';
 import 'heat_labels.dart';
-import 'heat_model.dart';
+import '../domain/heat_model.dart';
 import 'heat_palette.dart';
-import '../common/stat_tiles.dart';
+import '../../common/ui/stat_tiles.dart';
 
 /// Result of every stage and the total, as a table. Tapping a row selects it
 /// for the detail pane; the `null` selection is the total. The eye button on

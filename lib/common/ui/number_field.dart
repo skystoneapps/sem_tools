@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../l10n/app_localizations.dart';
+import '../../l10n/app_localizations.dart';
 import 'number_format.dart';
 
 /// Text field for a number with a symbol, label, unit, range check and

@@ -2,40 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../app/sem_module.dart';
 import '../l10n/app_localizations.dart';
-import 'heat_model.dart';
-import 'heat_transfer_screen.dart';
-
-/// State of the heat transport module, kept while the user visits other
-/// modules.
-class HeatTransferController extends ChangeNotifier {
-  TubeInputs _inputs = const TubeInputs();
-  HeatStage? _selected = HeatStage.innerConvection;
-  int _resetCount = 0;
-
-  TubeInputs get inputs => _inputs;
-
-  set inputs(TubeInputs value) {
-    _inputs = value;
-    notifyListeners();
-  }
-
-  /// Stage shown in the detail pane; `null` shows the total.
-  HeatStage? get selected => _selected;
-
-  set selected(HeatStage? value) {
-    _selected = value;
-    notifyListeners();
-  }
-
-  /// Changes on every [reset], so input fields can rebuild from scratch.
-  int get resetCount => _resetCount;
-
-  void reset() {
-    _inputs = const TubeInputs();
-    _resetCount++;
-    notifyListeners();
-  }
-}
+import 'ui/heat_transfer_controller.dart';
+import 'ui/heat_transfer_screen.dart';
 
 class HeatTransferModule extends SemModule {
   final controller = HeatTransferController();
