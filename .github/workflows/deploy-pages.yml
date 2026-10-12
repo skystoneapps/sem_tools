@@ -36,11 +36,10 @@ jobs:
 
       - run: flutter test
 
-      # Served from https://<owner>.github.io/<repository>/, so the app needs
-      # the repository name as its base path.
-      - run: >-
-          flutter build web --release
-          --base-href "/${{ github.event.repository.name }}/"
+      # Served from the root of the custom domain https://sem.skystoneapps.com
+      # (configured in Settings → Pages); <owner>.github.io/<repository>/
+      # redirects there.
+      - run: flutter build web --release --base-href /
 
       - uses: actions/configure-pages@v5
 
