@@ -664,4 +664,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get symbolCost => 'Cost of the energy lost';
+
+  @override
+  String get sourceCode => 'Source code on GitHub';
+
+  @override
+  String get about => 'About';
+
+  @override
+  String get aboutText =>
+      'SEM tools are calculation tools for the Sustainable Energy Management advanced bachelor (banaba) of Howest. Open source under the MIT license.';
+
+  @override
+  String get disclaimer =>
+      'Provided as is, for educational use. No responsibility is taken for potential errors; always verify results before relying on them.';
 }

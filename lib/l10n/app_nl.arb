@@ -201,5 +201,9 @@
   "symbolDuration": "Gebruiksduur",
   "symbolMarketPrice": "Energiemarktprijs",
   "symbolEnergy": "Verloren energie",
-  "symbolCost": "Kosten van de verloren energie"
+  "symbolCost": "Kosten van de verloren energie",
+  "sourceCode": "Broncode op GitHub",
+  "about": "Over",
+  "aboutText": "SEM tools zijn rekentools voor de banaba Sustainable Energy Management van Howest. Open source onder de MIT-licentie.",
+  "disclaimer": "Aangeboden zoals ze zijn, voor educatief gebruik. Er wordt geen verantwoordelijkheid genomen voor eventuele fouten; controleer resultaten altijd voor je erop vertrouwt."
 }

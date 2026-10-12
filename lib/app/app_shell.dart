@@ -5,6 +5,7 @@ import '../l10n/app_localizations.dart';
 import '../price/price_module.dart';
 import 'language_picker.dart';
 import 'overview_page.dart';
+import 'repository_link.dart';
 import 'sem_module.dart';
 
 /// Frame of SEM tools: a top bar with the language picker, and navigation
@@ -109,6 +110,22 @@ class _AppShellState extends State<AppShell> {
                       child: Text(label, overflow: TextOverflow.ellipsis),
                     ),
                   ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 28, vertical: 8),
+                  child: Divider(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: ListTile(
+                    leading: const Icon(Icons.code),
+                    title: Text(
+                      l10n.sourceCode,
+                      style: theme.textTheme.labelLarge,
+                    ),
+                    trailing: const Icon(Icons.open_in_new, size: 18),
+                    onTap: openRepository,
+                  ),
+                ),
               ],
             ),
       body: wide
@@ -119,6 +136,15 @@ class _AppShellState extends State<AppShell> {
                   selectedIndex: _selectedIndex,
                   onDestinationSelected: _select,
                   labelType: NavigationRailLabelType.all,
+                  trailing: const Expanded(
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: 12),
+                        child: RepositoryIconButton(),
+                      ),
+                    ),
+                  ),
                   destinations: [
                     for (final (icon, selectedIcon, label) in destinations)
                       NavigationRailDestination(

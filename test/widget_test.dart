@@ -383,6 +383,14 @@ void main() {
       await tester.pumpWidget(const SemToolsApp(initialLocale: Locale('en')));
       expect(find.byType(NavigationRail), findsOneWidget);
       expect(find.text('SEM tools'), findsWidgets);
+      // The repository is linked from the overview and the rail.
+      expect(
+        find.text(
+          'Source code on GitHub  ·  github.com/skystoneapps/sem_tools',
+        ),
+        findsOneWidget,
+      );
+      expect(find.byTooltip('Source code on GitHub'), findsOneWidget);
 
       // The module card on the overview opens the module.
       await tester.tap(find.text('Heat transport in an insulated tube'));

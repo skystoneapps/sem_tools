@@ -283,5 +283,9 @@
         "type": "String"
       }
     }
-  }
+  },
+  "sourceCode": "Source code on GitHub",
+  "about": "About",
+  "aboutText": "SEM tools are calculation tools for the Sustainable Energy Management advanced bachelor (banaba) of Howest. Open source under the MIT license.",
+  "disclaimer": "Provided as is, for educational use. No responsibility is taken for potential errors; always verify results before relying on them."
 }

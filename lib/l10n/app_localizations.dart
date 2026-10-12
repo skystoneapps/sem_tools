@@ -1313,6 +1313,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cost of the energy lost'**
   String get symbolCost;
+
+  /// No description provided for @sourceCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Source code on GitHub'**
+  String get sourceCode;
+
+  /// No description provided for @about.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get about;
+
+  /// No description provided for @aboutText.
+  ///
+  /// In en, this message translates to:
+  /// **'SEM tools are calculation tools for the Sustainable Energy Management advanced bachelor (banaba) of Howest. Open source under the MIT license.'**
+  String get aboutText;
+
+  /// No description provided for @disclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Provided as is, for educational use. No responsibility is taken for potential errors; always verify results before relying on them.'**
+  String get disclaimer;
 }
 
 class _AppLocalizationsDelegate
