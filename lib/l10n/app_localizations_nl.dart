@@ -31,7 +31,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get mechanismConvection => 'Convectie';
 
   @override
-  String get mechanismConduction => 'Geleiding';
+  String get mechanismConduction => 'Conductie';
 
   @override
   String get mechanismRadiation => 'Straling';
@@ -52,13 +52,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get stageInnerConvectionPath => 'Medium → binnenwand buis';
 
   @override
-  String get stagePipeConduction => 'Geleiding door buiswand';
+  String get stagePipeConduction => 'Conductie door buiswand';
 
   @override
   String get stagePipeConductionPath => 'Door de buiswand';
 
   @override
-  String get stageInsulationConduction => 'Geleiding door isolatie';
+  String get stageInsulationConduction => 'Conductie door isolatie';
 
   @override
   String get stageInsulationConductionPath => 'Door de isolatielaag';
