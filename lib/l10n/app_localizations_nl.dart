@@ -10,7 +10,7 @@ class AppLocalizationsNl extends AppLocalizations {
   AppLocalizationsNl([String locale = 'nl']) : super(locale);
 
   @override
-  String get appTitle => 'Warmtetransport';
+  String get appTitle => 'SEM tools';
 
   @override
   String get screenTitle => 'Warmtetransport in een geïsoleerde buis';
@@ -569,4 +569,18 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get simplificationInvalid =>
       'De vereenvoudiging is hier niet geldig: het medium zou voorbij de omgevingstemperatuur gaan. Gebruik de exacte berekening.';
+
+  @override
+  String get navOverview => 'Overzicht';
+
+  @override
+  String get overviewSubtitle =>
+      'Technische rekentools. Kies er een om te beginnen.';
+
+  @override
+  String get moduleHeatTransfer => 'Warmtetransport';
+
+  @override
+  String get moduleHeatTransferDescription =>
+      'Warmteverlies en uitlaattemperatuur van een geïsoleerde buis, via convectie, conductie en straling.';
 }

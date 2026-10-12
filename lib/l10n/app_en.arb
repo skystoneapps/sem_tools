@@ -1,8 +1,8 @@
 {
   "@@locale": "en",
-  "appTitle": "Heat transport",
+  "appTitle": "SEM tools",
   "@appTitle": {
-    "description": "Title of the app in the OS task switcher."
+    "description": "Name of the app; a product name, not translated."
   },
   "screenTitle": "Heat transport in an insulated tube",
   "@screenTitle": {
@@ -231,5 +231,12 @@
         "type": "String"
       }
     }
+  },
+  "navOverview": "Overview",
+  "overviewSubtitle": "Engineering calculation tools. Pick one to get started.",
+  "moduleHeatTransfer": "Heat transport",
+  "moduleHeatTransferDescription": "Heat loss and outlet temperature of an insulated tube, through convection, conduction and radiation.",
+  "@moduleHeatTransfer": {
+    "description": "Short module name in the navigation rail or drawer."
   }
 }

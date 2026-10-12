@@ -1,6 +1,6 @@
 {
   "@@locale": "nl",
-  "appTitle": "Warmtetransport",
+  "appTitle": "SEM tools",
   "screenTitle": "Warmtetransport in een geïsoleerde buis",
   "resetTooltip": "Standaardwaarden herstellen",
   "languageTooltip": "Taal",
@@ -169,5 +169,9 @@
   "stepConstantFluid": "Vereenvoudigd: het medium blijft over de hele buis op de inlaattemperatuur",
   "stepOutletEnergyBalance": "Uitlaattemperatuur uit de energiebalans van het medium",
   "simplificationComparison": "Zonder vereenvoudiging (afkoeling langs de buis) is de warmtestroom {exact} W; de vereenvoudiging wijkt daar {difference} W ({percent} %) van af.",
-  "simplificationInvalid": "De vereenvoudiging is hier niet geldig: het medium zou voorbij de omgevingstemperatuur gaan. Gebruik de exacte berekening."
+  "simplificationInvalid": "De vereenvoudiging is hier niet geldig: het medium zou voorbij de omgevingstemperatuur gaan. Gebruik de exacte berekening.",
+  "navOverview": "Overzicht",
+  "overviewSubtitle": "Technische rekentools. Kies er een om te beginnen.",
+  "moduleHeatTransfer": "Warmtetransport",
+  "moduleHeatTransferDescription": "Warmteverlies en uitlaattemperatuur van een geïsoleerde buis, via convectie, conductie en straling."
 }

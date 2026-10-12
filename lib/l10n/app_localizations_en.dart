@@ -10,7 +10,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'Heat transport';
+  String get appTitle => 'SEM tools';
 
   @override
   String get screenTitle => 'Heat transport in an insulated tube';
@@ -561,4 +561,18 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get simplificationInvalid =>
       'The simplification is not valid here: the fluid would pass the ambient temperature. Use the exact calculation.';
+
+  @override
+  String get navOverview => 'Overview';
+
+  @override
+  String get overviewSubtitle =>
+      'Engineering calculation tools. Pick one to get started.';
+
+  @override
+  String get moduleHeatTransfer => 'Heat transport';
+
+  @override
+  String get moduleHeatTransferDescription =>
+      'Heat loss and outlet temperature of an insulated tube, through convection, conduction and radiation.';
 }

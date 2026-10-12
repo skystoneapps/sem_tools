@@ -11,6 +11,17 @@ import 'package:sem/heat_transfer/heat_model.dart';
 import 'package:sem/heat_transfer/inputs_panel.dart';
 import 'package:sem/main.dart';
 
+/// Opens the heat transport module from the navigation rail.
+Future<void> openHeatTransfer(WidgetTester tester) async {
+  await tester.tap(
+    find.descendant(
+      of: find.byType(NavigationRail),
+      matching: find.text('Heat transport'),
+    ),
+  );
+  await tester.pump();
+}
+
 void main() {
   group('calculateHeatTransfer', () {
     const inputs = TubeInputs();
@@ -145,7 +156,8 @@ void main() {
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
 
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(const SemToolsApp());
+    await openHeatTransfer(tester);
     expect(find.text('Heat transport in an insulated tube'), findsOneWidget);
     // Inner convection is selected initially.
     expect(find.text('Inner wall temperature'), findsOneWidget);
@@ -195,7 +207,8 @@ void main() {
     addTearDown(tester.view.reset);
     addTearDown(() => Intl.defaultLocale = null);
 
-    await tester.pumpWidget(const MyApp(initialLocale: Locale('en')));
+    await tester.pumpWidget(const SemToolsApp(initialLocale: Locale('en')));
+    await openHeatTransfer(tester);
     expect(find.text('Heat transport in an insulated tube'), findsOneWidget);
     expect(find.text('0.04'), findsOneWidget);
 
@@ -226,7 +239,8 @@ void main() {
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
 
-    await tester.pumpWidget(const MyApp(initialLocale: Locale('en')));
+    await tester.pumpWidget(const SemToolsApp(initialLocale: Locale('en')));
+    await openHeatTransfer(tester);
     // The "where:" list under the inner convection derivation.
     expect(find.text('where'), findsOneWidget);
     expect(
@@ -267,7 +281,8 @@ void main() {
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
 
-    await tester.pumpWidget(const MyApp(initialLocale: Locale('en')));
+    await tester.pumpWidget(const SemToolsApp(initialLocale: Locale('en')));
+    await openHeatTransfer(tester);
     final left = find
         .descendant(
           of: find.ancestor(
@@ -314,7 +329,8 @@ void main() {
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
 
-    await tester.pumpWidget(const MyApp(initialLocale: Locale('en')));
+    await tester.pumpWidget(const SemToolsApp(initialLocale: Locale('en')));
+    await openHeatTransfer(tester);
     expect(find.text('Simplified'), findsNothing);
 
     await tester.tap(find.text('Constant fluid temperature (simplified)'));
@@ -352,5 +368,73 @@ void main() {
     await tester.pump();
     expect(find.text('${fmtValue(simplified.heatRate)} W'), findsOneWidget);
     expect(find.textContaining('Without the simplification'), findsOneWidget);
+  });
+
+  group('app shell', () {
+    testWidgets('starts on the overview and opens modules from it', (
+      tester,
+    ) async {
+      tester.view.physicalSize = const Size(1440, 900);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
+
+      await tester.pumpWidget(const SemToolsApp(initialLocale: Locale('en')));
+      expect(find.byType(NavigationRail), findsOneWidget);
+      expect(find.text('SEM tools'), findsWidgets);
+
+      // The module card on the overview opens the module.
+      await tester.tap(find.text('Heat transport in an insulated tube'));
+      await tester.pump();
+      expect(find.text('Inner wall temperature'), findsOneWidget);
+      expect(find.byTooltip('Reset to defaults'), findsOneWidget);
+    });
+
+    testWidgets('module state survives switching modules', (tester) async {
+      tester.view.physicalSize = const Size(1440, 900);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
+
+      await tester.pumpWidget(const SemToolsApp(initialLocale: Locale('en')));
+      await openHeatTransfer(tester);
+      await tester.enterText(find.widgetWithText(TextField, '150'), '90');
+      await tester.pump();
+
+      await tester.tap(
+        find.descendant(
+          of: find.byType(NavigationRail),
+          matching: find.text('Overview'),
+        ),
+      );
+      await tester.pump();
+      expect(find.byTooltip('Reset to defaults'), findsNothing);
+
+      await openHeatTransfer(tester);
+      expect(find.widgetWithText(TextField, '90'), findsOneWidget);
+    });
+
+    testWidgets('narrow screens navigate with a drawer', (tester) async {
+      tester.view.physicalSize = const Size(420, 900);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
+
+      await tester.pumpWidget(const SemToolsApp(initialLocale: Locale('en')));
+      expect(find.byType(NavigationRail), findsNothing);
+
+      await tester.tap(find.byTooltip('Open navigation menu'));
+      // Let the drawer finish sliding in before tapping a destination.
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 400));
+      await tester.tap(
+        find.descendant(
+          of: find.byType(NavigationDrawer),
+          matching: find.text('Heat transport'),
+        ),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 400));
+      // The module is open (its tabs show) and the drawer has closed.
+      expect(find.text('Tube & variables'), findsOneWidget);
+      expect(find.byType(NavigationDrawer), findsNothing);
+    });
   });
 }

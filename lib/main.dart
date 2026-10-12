@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'heat_transfer/heat_transfer_screen.dart';
+import 'app/app_shell.dart';
 import 'l10n/app_localizations.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const SemToolsApp());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key, this.initialLocale});
+/// SEM tools: a collection of engineering calculation modules sharing one
+/// language setting.
+class SemToolsApp extends StatefulWidget {
+  const SemToolsApp({super.key, this.initialLocale});
 
   /// Language to start in; `null` follows the system language, falling back
   /// to English when it is not supported.
   final Locale? initialLocale;
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<SemToolsApp> createState() => _SemToolsAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _SemToolsAppState extends State<SemToolsApp> {
   late Locale? _locale = widget.initialLocale;
 
   @override
@@ -43,7 +45,7 @@ class _MyAppState extends State<MyApp> {
         Intl.defaultLocale = Localizations.localeOf(context).toLanguageTag();
         return child!;
       },
-      home: HeatTransferScreen(
+      home: AppShell(
         onLocaleChanged: (locale) => setState(() => _locale = locale),
       ),
     );

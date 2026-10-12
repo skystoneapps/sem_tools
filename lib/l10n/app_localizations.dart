@@ -98,10 +98,10 @@ abstract class AppLocalizations {
     Locale('nl'),
   ];
 
-  /// Title of the app in the OS task switcher.
+  /// Name of the app; a product name, not translated.
   ///
   /// In en, this message translates to:
-  /// **'Heat transport'**
+  /// **'SEM tools'**
   String get appTitle;
 
   /// App bar title.
@@ -1121,6 +1121,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The simplification is not valid here: the fluid would pass the ambient temperature. Use the exact calculation.'**
   String get simplificationInvalid;
+
+  /// No description provided for @navOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get navOverview;
+
+  /// No description provided for @overviewSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Engineering calculation tools. Pick one to get started.'**
+  String get overviewSubtitle;
+
+  /// Short module name in the navigation rail or drawer.
+  ///
+  /// In en, this message translates to:
+  /// **'Heat transport'**
+  String get moduleHeatTransfer;
+
+  /// No description provided for @moduleHeatTransferDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Heat loss and outlet temperature of an insulated tube, through convection, conduction and radiation.'**
+  String get moduleHeatTransferDescription;
 }
 
 class _AppLocalizationsDelegate
