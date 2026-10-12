@@ -161,5 +161,13 @@
   "ignoreRadiation": "Straling negeren",
   "includeRadiation": "Straling meenemen",
   "radiationIgnored": "Straling wordt genegeerd in de berekening.",
-  "stepOnlyConvection": "Straling wordt genegeerd, dus alleen convectie werkt aan het oppervlak"
+  "stepOnlyConvection": "Straling wordt genegeerd, dus alleen convectie werkt aan het oppervlak",
+  "simplifyConstantTemperature": "Constante temperatuur van het medium (vereenvoudigd)",
+  "simplifyConstantTemperatureHint": "Negeer de afkoeling langs de buis: elke meter verliest warmte alsof het medium op de inlaattemperatuur is.",
+  "simplifiedBadge": "Vereenvoudigd",
+  "lawSeries": "Thermische weerstanden in serie",
+  "stepConstantFluid": "Vereenvoudigd: het medium blijft over de hele buis op de inlaattemperatuur",
+  "stepOutletEnergyBalance": "Uitlaattemperatuur uit de energiebalans van het medium",
+  "simplificationComparison": "Zonder vereenvoudiging (afkoeling langs de buis) is de warmtestroom {exact} W; de vereenvoudiging wijkt daar {difference} W ({percent} %) van af.",
+  "simplificationInvalid": "De vereenvoudiging is hier niet geldig: het medium zou voorbij de omgevingstemperatuur gaan. Gebruik de exacte berekening."
 }

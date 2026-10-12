@@ -276,9 +276,9 @@ class _StageDetails extends StatelessWidget {
         _Derivation(
           color: palette.mechanism(stage.stage.mechanism),
           law: stage.stage.mechanism.law(l10n),
-          formula: _lawFormula(stage.stage),
+          formula: _lawFormula(stage.stage, _fluidTex(result)),
           steps: _stepsFor(result, stage, l10n),
-          symbols: _symbolsFor(stage.stage),
+          symbols: _symbolsFor(stage.stage, result.simplified),
         ),
         if (outer) ...[
           const SizedBox(height: 16),
@@ -358,6 +358,35 @@ class _TotalDetails extends StatelessWidget {
     final check =
         (result.meanFluidTemp - result.ambientTemp) / result.totalResistance;
 
+    final resistanceSteps = <_Step>[
+      if (!i.includeRadiation)
+        (
+          l10n.stepOnlyConvection,
+          'R_{\\mathrm{out}} = R_{\\mathrm{conv,o}} = '
+              '${texNum(result.outerResistance)}$texResistance',
+        )
+      else
+        (
+          l10n.stepParallel,
+          'R_{\\mathrm{out}} = \\left(\\frac{1}{R_{\\mathrm{conv,o}}} + '
+              '\\frac{1}{R_{\\mathrm{rad}}}\\right)^{-1} = '
+              '\\left(\\frac{1}{${texNum(conv.resistance)}} + '
+              '\\frac{1}{${texNum(rad.resistance)}}\\right)^{-1} = '
+              '${texNum(result.outerResistance)}$texResistance',
+        ),
+      (
+        l10n.stepSeries,
+        '\\Sigma R = R_{\\mathrm{conv,i}} + R_{\\mathrm{pipe}} + '
+            'R_{\\mathrm{ins}} + R_{\\mathrm{out}} = $series + '
+            '${texNum(result.outerResistance)} = $sumR$texResistance',
+      ),
+    ];
+    final perMetre = (
+      l10n.stepHeatFlowPerMetre,
+      "q' = \\frac{Q}{L} = \\frac{$q}{${texInput(i.length)}} = "
+          '${texValue(result.heatRatePerMetre)}$texWattPerMetre',
+    );
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -367,80 +396,149 @@ class _TotalDetails extends StatelessWidget {
           (l10n.statTotalResistance, '${fmt(result.totalResistance)} K/W'),
         ]),
         const SizedBox(height: 20),
-        _Derivation(
-          color: theme.colorScheme.primary,
-          law: l10n.lawEnergyBalance,
-          formula: r'Q = \dot{m}\,c_p\,(T_{\mathrm{in}} - T_{\mathrm{out}})',
-          steps: [
-            if (!i.includeRadiation)
+        if (result.simplified)
+          _Derivation(
+            color: theme.colorScheme.primary,
+            law: l10n.lawSeries,
+            formula: r'Q = \frac{T_{\mathrm{in}} - T_\infty}{\Sigma R}',
+            steps: [
+              ...resistanceSteps,
               (
-                l10n.stepOnlyConvection,
-                'R_{\\mathrm{out}} = R_{\\mathrm{conv,o}} = '
-                    '${texNum(result.outerResistance)}$texResistance',
-              )
-            else
-              (
-                l10n.stepParallel,
-                'R_{\\mathrm{out}} = \\left(\\frac{1}{R_{\\mathrm{conv,o}}} + '
-                    '\\frac{1}{R_{\\mathrm{rad}}}\\right)^{-1} = '
-                    '\\left(\\frac{1}{${texNum(conv.resistance)}} + '
-                    '\\frac{1}{${texNum(rad.resistance)}}\\right)^{-1} = '
-                    '${texNum(result.outerResistance)}$texResistance',
+                l10n.stepConstantFluid,
+                'Q = \\frac{T_{\\mathrm{in}} - T_\\infty}{\\Sigma R} = '
+                    '\\frac{$tIn - $tInf}{$sumR} = $q$texWatt',
               ),
-            (
-              l10n.stepSeries,
-              '\\Sigma R = R_{\\mathrm{conv,i}} + R_{\\mathrm{pipe}} + '
-                  'R_{\\mathrm{ins}} + R_{\\mathrm{out}} = $series + '
-                  '${texNum(result.outerResistance)} = $sumR$texResistance',
-            ),
-            (
-              l10n.stepOutletTemperature,
-              'T_{\\mathrm{out}} = T_\\infty + (T_{\\mathrm{in}} - T_\\infty)'
-                  '\\exp\\left(-\\frac{1}{\\Sigma R\\,\\dot{m}\\,c_p}\\right) = '
-                  '${texTemp(result.ambientTemp)} + ($tIn - $tInf)'
-                  '\\exp\\left(-\\frac{1}{$sumR \\cdot $mDot \\cdot $cp}\\right)'
-                  ' = $tOut$texCelsius',
-            ),
-            (
-              l10n.stepTotalHeatFlow,
-              'Q = \\dot{m}\\,c_p\\,(T_{\\mathrm{in}} - T_{\\mathrm{out}}) = '
-                  '$mDot \\cdot $cp \\cdot '
-                  '${_paren(result.inletTemp - result.outletTemp, texNum)}'
-                  '$texKelvin = $q$texWatt',
-            ),
-            (
-              l10n.stepMeanTemperature,
-              'T_m = T_\\infty + \\frac{T_{\\mathrm{in}} - T_{\\mathrm{out}}}'
-                  '{\\ln\\left[(T_{\\mathrm{in}} - T_\\infty)/'
-                  '(T_{\\mathrm{out}} - T_\\infty)\\right]} = '
-                  '$tMean$texCelsius',
-            ),
-            (
-              l10n.stepCheck,
-              'Q = \\frac{T_m - T_\\infty}{\\Sigma R} = '
-                  '\\frac{$tMean - $tInf}{$sumR} = ${texValue(check)}$texWatt',
-            ),
-            (
-              l10n.stepHeatFlowPerMetre,
-              "q' = \\frac{Q}{L} = \\frac{$q}{${texInput(i.length)}} = "
-                  '${texValue(result.heatRatePerMetre)}$texWattPerMetre',
-            ),
-          ],
-          symbols: const [
-            Sym.heatFlow,
-            Sym.massFlow,
-            Sym.specificHeat,
-            Sym.inletTemp,
-            Sym.outletTemp,
-            Sym.meanFluidTemp,
-            Sym.ambientTemp,
-            Sym.resistanceTotal,
-            Sym.resistanceOuter,
-            Sym.heatFlowPerMetre,
-            Sym.length,
-          ],
-        ),
+              (
+                l10n.stepOutletEnergyBalance,
+                'T_{\\mathrm{out}} = T_{\\mathrm{in}} - '
+                    '\\frac{Q}{\\dot{m}\\,c_p} = $tIn - '
+                    '\\frac{$q}{$mDot \\cdot $cp} = $tOut$texCelsius',
+              ),
+              perMetre,
+            ],
+            symbols: const [
+              Sym.heatFlow,
+              Sym.inletTemp,
+              Sym.ambientTemp,
+              Sym.resistanceTotal,
+              Sym.resistanceOuter,
+              Sym.outletTemp,
+              Sym.massFlow,
+              Sym.specificHeat,
+              Sym.heatFlowPerMetre,
+              Sym.length,
+            ],
+          )
+        else
+          _Derivation(
+            color: theme.colorScheme.primary,
+            law: l10n.lawEnergyBalance,
+            formula: r'Q = \dot{m}\,c_p\,(T_{\mathrm{in}} - T_{\mathrm{out}})',
+            steps: [
+              ...resistanceSteps,
+              (
+                l10n.stepOutletTemperature,
+                'T_{\\mathrm{out}} = T_\\infty + (T_{\\mathrm{in}} - T_\\infty)'
+                    '\\exp\\left(-\\frac{1}{\\Sigma R\\,\\dot{m}\\,c_p}\\right) = '
+                    '${texTemp(result.ambientTemp)} + ($tIn - $tInf)'
+                    '\\exp\\left(-\\frac{1}{$sumR \\cdot $mDot \\cdot $cp}\\right)'
+                    ' = $tOut$texCelsius',
+              ),
+              (
+                l10n.stepTotalHeatFlow,
+                'Q = \\dot{m}\\,c_p\\,(T_{\\mathrm{in}} - T_{\\mathrm{out}}) = '
+                    '$mDot \\cdot $cp \\cdot '
+                    '${_paren(result.inletTemp - result.outletTemp, texNum)}'
+                    '$texKelvin = $q$texWatt',
+              ),
+              (
+                l10n.stepMeanTemperature,
+                'T_m = T_\\infty + \\frac{T_{\\mathrm{in}} - T_{\\mathrm{out}}}'
+                    '{\\ln\\left[(T_{\\mathrm{in}} - T_\\infty)/'
+                    '(T_{\\mathrm{out}} - T_\\infty)\\right]} = '
+                    '$tMean$texCelsius',
+              ),
+              (
+                l10n.stepCheck,
+                'Q = \\frac{T_m - T_\\infty}{\\Sigma R} = '
+                    '\\frac{$tMean - $tInf}{$sumR} = ${texValue(check)}$texWatt',
+              ),
+              perMetre,
+            ],
+            symbols: const [
+              Sym.heatFlow,
+              Sym.massFlow,
+              Sym.specificHeat,
+              Sym.inletTemp,
+              Sym.outletTemp,
+              Sym.meanFluidTemp,
+              Sym.ambientTemp,
+              Sym.resistanceTotal,
+              Sym.resistanceOuter,
+              Sym.heatFlowPerMetre,
+              Sym.length,
+            ],
+          ),
+        if (result.simplified) ...[
+          const SizedBox(height: 16),
+          _SimplificationNote(result: result),
+        ],
       ],
+    );
+  }
+}
+
+/// How far the simplified heat flow is from the exact one, or a warning when
+/// the simplification does not hold.
+class _SimplificationNote extends StatelessWidget {
+  const _SimplificationNote({required this.result});
+
+  final HeatTransferResult result;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context);
+    final valid = result.simplificationValid;
+    final exact = result.exactHeatRate!;
+    final difference = result.heatRate - exact;
+    final percent = exact == 0 ? 0.0 : difference / exact * 100;
+    String signed(double v) => v > 0 ? '+${fmtValue(v)}' : fmtValue(v);
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: valid ? scheme.secondaryContainer : scheme.errorContainer,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(
+            valid ? Icons.info_outline : Icons.warning_amber_rounded,
+            size: 20,
+            color: valid
+                ? scheme.onSecondaryContainer
+                : scheme.onErrorContainer,
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              valid
+                  ? l10n.simplificationComparison(
+                      fmtValue(exact),
+                      signed(difference),
+                      signed(percent),
+                    )
+                  : l10n.simplificationInvalid,
+              style: TextStyle(
+                color: valid
+                    ? scheme.onSecondaryContainer
+                    : scheme.onErrorContainer,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -450,8 +548,12 @@ class _TotalDetails extends StatelessWidget {
 String _paren(double value, String Function(double) format) =>
     value < 0 ? '(${format(value)})' : format(value);
 
-String _lawFormula(HeatStage stage) => switch (stage) {
-  HeatStage.innerConvection => r'Q = h_i\,A_i\,(T_m - T_1)',
+/// TeX symbol of the fluid temperature the stages are evaluated at.
+String _fluidTex(HeatTransferResult result) =>
+    result.simplified ? r'T_{\mathrm{in}}' : 'T_m';
+
+String _lawFormula(HeatStage stage, String fluid) => switch (stage) {
+  HeatStage.innerConvection => 'Q = h_i\\,A_i\\,($fluid - T_1)',
   HeatStage.pipeConduction =>
     r'Q = -k_p\,(2\pi r L)\,\frac{\mathrm{d}T}{\mathrm{d}r}',
   HeatStage.insulationConduction =>
@@ -462,12 +564,12 @@ String _lawFormula(HeatStage stage) => switch (stage) {
     r'Q_{\mathrm{rad}} = \varepsilon\,\sigma\,A_o\,(T_s^4 - T_\infty^4)',
 };
 
-List<Sym> _symbolsFor(HeatStage stage) => switch (stage) {
-  HeatStage.innerConvection => const [
+List<Sym> _symbolsFor(HeatStage stage, bool simplified) => switch (stage) {
+  HeatStage.innerConvection => [
     Sym.heatFlow,
     Sym.hInner,
     Sym.areaInner,
-    Sym.meanFluidTemp,
+    simplified ? Sym.inletTemp : Sym.meanFluidTemp,
     Sym.innerWallTemp,
     Sym.radiusInner,
     Sym.length,
@@ -533,6 +635,7 @@ List<_Step> _stepsFor(
   final length = texInput(i.length);
   switch (s.stage) {
     case HeatStage.innerConvection:
+      final fluid = _fluidTex(result);
       final area = texValue(s.area!);
       final h = texInput(i.hInner);
       return [
@@ -548,12 +651,12 @@ List<_Step> _stepsFor(
         ),
         (
           l10n.stepInnerHeatFlow,
-          'Q = h_i A_i\\,(T_m - T_1) = $h \\cdot $area \\cdot '
+          'Q = h_i A_i\\,($fluid - T_1) = $h \\cdot $area \\cdot '
               '$dt$texKelvin = $q$texWatt',
         ),
         (
           l10n.stepInnerWallTemperature,
-          'T_1 = T_m - Q\\,R_{\\mathrm{conv,i}} = $tIn - $dt = '
+          'T_1 = $fluid - Q\\,R_{\\mathrm{conv,i}} = $tIn - $dt = '
               '${texTemp(s.tOut)}$texCelsius',
         ),
       ];

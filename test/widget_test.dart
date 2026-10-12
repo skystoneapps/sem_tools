@@ -72,6 +72,41 @@ void main() {
       );
     });
 
+    test('the simplification keeps the fluid at its inlet temperature', () {
+      final simplified = calculateHeatTransfer(
+        inputs.copyWith(constantFluidTemp: true),
+      );
+      final exact = calculateHeatTransfer(inputs);
+      expect(
+        simplified.heatRate,
+        closeTo(
+          (inputs.inletTemp - inputs.ambientTemp) / simplified.totalResistance,
+          1e-6,
+        ),
+      );
+      expect(
+        simplified.outletTemp,
+        closeTo(
+          inputs.inletTemp - simplified.heatRate / inputs.capacityRate,
+          1e-9,
+        ),
+      );
+      expect(simplified.meanFluidTemp, inputs.inletTemp);
+      expect(simplified.exactHeatRate, closeTo(exact.heatRate, 1e-9));
+      // Ignoring the cooling along the tube overestimates the loss slightly.
+      expect(simplified.heatRate, greaterThan(exact.heatRate));
+      expect(simplified.heatRate / exact.heatRate, lessThan(1.01));
+      expect(simplified.simplificationValid, isTrue);
+    });
+
+    test('the simplification is flagged when the flow is too small', () {
+      final result = calculateHeatTransfer(
+        inputs.copyWith(constantFluidTemp: true, massFlow: 0.0005),
+      );
+      expect(result.outletTemp, lessThan(inputs.ambientTemp));
+      expect(result.simplificationValid, isFalse);
+    });
+
     test('a very large flow keeps the fluid at its inlet temperature', () {
       final result = calculateHeatTransfer(inputs.copyWith(massFlow: 1e6));
       expect(result.outletTemp, closeTo(inputs.inletTemp, 1e-4));
@@ -270,5 +305,52 @@ void main() {
       find.text('Radiation is ignored in the calculation.'),
       findsOneWidget,
     );
+  });
+
+  testWidgets('the simplification checkbox switches the calculation', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1440, 900);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+
+    await tester.pumpWidget(const MyApp(initialLocale: Locale('en')));
+    expect(find.text('Simplified'), findsNothing);
+
+    await tester.tap(find.text('Constant fluid temperature (simplified)'));
+    await tester.pump();
+    // The results are marked as simplified.
+    final left = find
+        .descendant(
+          of: find.ancestor(
+            of: find.byType(InputsPanel),
+            matching: find.byType(ListView),
+          ),
+          matching: find.byType(Scrollable),
+        )
+        .first;
+    await tester.scrollUntilVisible(
+      find.text('Simplified'),
+      300,
+      scrollable: left,
+    );
+    expect(find.text('Simplified'), findsOneWidget);
+
+    final simplified = calculateHeatTransfer(
+      const TubeInputs(constantFluidTemp: true),
+    );
+    // The Total explains the simplified calculation and compares it.
+    await tester.tap(
+      find.descendant(
+        of: find.byType(DetailsPane),
+        matching: find.byIcon(Icons.arrow_drop_down),
+      ),
+    );
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.tap(find.widgetWithText(MenuItemButton, 'Total'));
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.pump();
+    expect(find.text('${fmtValue(simplified.heatRate)} W'), findsOneWidget);
+    expect(find.textContaining('Without the simplification'), findsOneWidget);
   });
 }

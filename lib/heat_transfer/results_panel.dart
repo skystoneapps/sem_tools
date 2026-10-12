@@ -38,11 +38,38 @@ class ResultsPanel extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 20, bottom: 8),
-          child: Text(
-            l10n.results,
-            style: theme.textTheme.labelLarge?.copyWith(
-              color: theme.colorScheme.primary,
-            ),
+          child: Row(
+            children: [
+              Text(
+                l10n.results,
+                style: theme.textTheme.labelLarge?.copyWith(
+                  color: theme.colorScheme.primary,
+                ),
+              ),
+              if (result.simplified) ...[
+                const SizedBox(width: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 2,
+                  ),
+                  decoration: BoxDecoration(
+                    color: result.simplificationValid
+                        ? theme.colorScheme.secondaryContainer
+                        : theme.colorScheme.errorContainer,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    l10n.simplifiedBadge,
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: result.simplificationValid
+                          ? theme.colorScheme.onSecondaryContainer
+                          : theme.colorScheme.onErrorContainer,
+                    ),
+                  ),
+                ),
+              ],
+            ],
           ),
         ),
         StatRow([

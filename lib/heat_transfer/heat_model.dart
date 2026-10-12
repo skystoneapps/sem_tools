@@ -41,6 +41,7 @@ class TubeInputs {
     this.hOuter = 10,
     this.emissivity = 0.9,
     this.includeRadiation = true,
+    this.constantFluidTemp = false,
   });
 
   /// Fluid temperature where it enters the tube.
@@ -64,6 +65,10 @@ class TubeInputs {
 
   /// When false, the surface is treated as if it does not radiate (ε = 0).
   final bool includeRadiation;
+
+  /// Simplification: the fluid keeps its inlet temperature along the whole
+  /// tube when calculating the heat loss.
+  final bool constantFluidTemp;
 
   /// Emissivity used in the calculation.
   double get effectiveEmissivity => includeRadiation ? emissivity : 0;
@@ -95,6 +100,7 @@ class TubeInputs {
     double? hOuter,
     double? emissivity,
     bool? includeRadiation,
+    bool? constantFluidTemp,
   }) {
     return TubeInputs(
       inletTemp: inletTemp ?? this.inletTemp,
@@ -111,6 +117,7 @@ class TubeInputs {
       hOuter: hOuter ?? this.hOuter,
       emissivity: emissivity ?? this.emissivity,
       includeRadiation: includeRadiation ?? this.includeRadiation,
+      constantFluidTemp: constantFluidTemp ?? this.constantFluidTemp,
     );
   }
 }
@@ -153,6 +160,7 @@ class HeatTransferResult {
     required this.surfaceTemp,
     required this.outletTemp,
     required this.meanFluidTemp,
+    this.exactHeatRate,
   });
 
   final TubeInputs inputs;
@@ -170,8 +178,21 @@ class HeatTransferResult {
   /// Fluid temperature where it leaves the tube.
   final double outletTemp;
 
-  /// Logarithmic mean fluid temperature T_m between inlet and outlet.
+  /// Fluid temperature at which the stages are evaluated: the logarithmic
+  /// mean between inlet and outlet, or the inlet temperature when
+  /// [simplified].
   final double meanFluidTemp;
+
+  /// With the simplification, the heat flow of the exact calculation, to
+  /// show how much the simplification differs. `null` otherwise.
+  final double? exactHeatRate;
+
+  bool get simplified => inputs.constantFluidTemp;
+
+  /// The simplification breaks down when the fluid would cool (or heat) past
+  /// the ambient temperature.
+  bool get simplificationValid =>
+      (outletTemp - ambientTemp) * (inletTemp - ambientTemp) >= 0;
 
   double get inletTemp => inputs.inletTemp;
   double get ambientTemp => inputs.ambientTemp;
@@ -216,7 +237,27 @@ double logMeanTemperature(double tIn, double tOut, double tInf) {
 /// bisection. Along the tube, the fluid temperature approaches ambient
 /// exponentially; the stages are evaluated at the logarithmic mean fluid
 /// temperature, which is iterated together with the outlet temperature.
+///
+/// With [TubeInputs.constantFluidTemp], the fluid temperature is instead
+/// taken as constant: the heat loss follows from the inlet temperature and
+/// the outlet temperature from a plain energy balance on the fluid.
 HeatTransferResult calculateHeatTransfer(TubeInputs inputs) {
+  final exact = _calculateExact(inputs);
+  if (!inputs.constantFluidTemp) return exact;
+
+  final cross = _solveCrossSection(inputs, inputs.inletTemp);
+  return HeatTransferResult(
+    inputs: inputs,
+    stages: cross.stages,
+    heatRate: cross.heatRate,
+    surfaceTemp: cross.surfaceTemp,
+    outletTemp: inputs.inletTemp - cross.heatRate / inputs.capacityRate,
+    meanFluidTemp: inputs.inletTemp,
+    exactHeatRate: exact.heatRate,
+  );
+}
+
+HeatTransferResult _calculateExact(TubeInputs inputs) {
   final tIn = inputs.inletTemp;
   final tInf = inputs.ambientTemp;
 

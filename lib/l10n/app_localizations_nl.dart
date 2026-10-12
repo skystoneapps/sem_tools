@@ -534,4 +534,39 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get stepOnlyConvection =>
       'Straling wordt genegeerd, dus alleen convectie werkt aan het oppervlak';
+
+  @override
+  String get simplifyConstantTemperature =>
+      'Constante temperatuur van het medium (vereenvoudigd)';
+
+  @override
+  String get simplifyConstantTemperatureHint =>
+      'Negeer de afkoeling langs de buis: elke meter verliest warmte alsof het medium op de inlaattemperatuur is.';
+
+  @override
+  String get simplifiedBadge => 'Vereenvoudigd';
+
+  @override
+  String get lawSeries => 'Thermische weerstanden in serie';
+
+  @override
+  String get stepConstantFluid =>
+      'Vereenvoudigd: het medium blijft over de hele buis op de inlaattemperatuur';
+
+  @override
+  String get stepOutletEnergyBalance =>
+      'Uitlaattemperatuur uit de energiebalans van het medium';
+
+  @override
+  String simplificationComparison(
+    String exact,
+    String difference,
+    String percent,
+  ) {
+    return 'Zonder vereenvoudiging (afkoeling langs de buis) is de warmtestroom $exact W; de vereenvoudiging wijkt daar $difference W ($percent %) van af.';
+  }
+
+  @override
+  String get simplificationInvalid =>
+      'De vereenvoudiging is hier niet geldig: het medium zou voorbij de omgevingstemperatuur gaan. Gebruik de exacte berekening.';
 }

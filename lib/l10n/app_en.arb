@@ -210,5 +210,26 @@
   "ignoreRadiation": "Ignore radiation",
   "includeRadiation": "Include radiation",
   "radiationIgnored": "Radiation is ignored in the calculation.",
-  "stepOnlyConvection": "Radiation is ignored, so only convection acts at the surface"
+  "stepOnlyConvection": "Radiation is ignored, so only convection acts at the surface",
+  "simplifyConstantTemperature": "Constant fluid temperature (simplified)",
+  "simplifyConstantTemperatureHint": "Ignore the cooling along the tube: every metre loses heat as if the fluid were at its inlet temperature.",
+  "simplifiedBadge": "Simplified",
+  "lawSeries": "Thermal resistances in series",
+  "stepConstantFluid": "Simplified: the fluid stays at its inlet temperature along the whole tube",
+  "stepOutletEnergyBalance": "Outlet temperature from the energy balance on the fluid",
+  "simplificationComparison": "Without the simplification (fluid cooling along the tube) the heat flow is {exact} W; the simplification differs by {difference} W ({percent} %).",
+  "simplificationInvalid": "The simplification is not valid here: the fluid would pass the ambient temperature. Use the exact calculation.",
+  "@simplificationComparison": {
+    "placeholders": {
+      "exact": {
+        "type": "String"
+      },
+      "difference": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  }
 }

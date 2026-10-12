@@ -526,4 +526,39 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get stepOnlyConvection =>
       'Radiation is ignored, so only convection acts at the surface';
+
+  @override
+  String get simplifyConstantTemperature =>
+      'Constant fluid temperature (simplified)';
+
+  @override
+  String get simplifyConstantTemperatureHint =>
+      'Ignore the cooling along the tube: every metre loses heat as if the fluid were at its inlet temperature.';
+
+  @override
+  String get simplifiedBadge => 'Simplified';
+
+  @override
+  String get lawSeries => 'Thermal resistances in series';
+
+  @override
+  String get stepConstantFluid =>
+      'Simplified: the fluid stays at its inlet temperature along the whole tube';
+
+  @override
+  String get stepOutletEnergyBalance =>
+      'Outlet temperature from the energy balance on the fluid';
+
+  @override
+  String simplificationComparison(
+    String exact,
+    String difference,
+    String percent,
+  ) {
+    return 'Without the simplification (fluid cooling along the tube) the heat flow is $exact W; the simplification differs by $difference W ($percent %).';
+  }
+
+  @override
+  String get simplificationInvalid =>
+      'The simplification is not valid here: the fluid would pass the ambient temperature. Use the exact calculation.';
 }

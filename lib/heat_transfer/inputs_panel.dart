@@ -47,6 +47,32 @@ class _Field {
   }
 }
 
+final _flowFields = <_Field>[
+  _Field(
+    symbol: 'ṁ',
+    label: (l) => l.fieldMassFlow,
+    unit: 'kg/s',
+    read: (i) => i.massFlow,
+    write: (i, v) => i.copyWith(massFlow: v),
+    min: 0,
+  ),
+  _Field(
+    symbol: 'c_p',
+    label: (l) => l.fieldSpecificHeat,
+    unit: 'J/kg·K',
+    read: (i) => i.specificHeat,
+    write: (i, v) => i.copyWith(specificHeat: v),
+    min: 0,
+    presets: [
+      ((l) => l.presetWater, 4186),
+      ((l) => l.presetGlycol, 3300),
+      ((l) => l.presetThermalOil, 2100),
+      ((l) => l.presetSteam, 2080),
+      ((l) => l.presetAir, 1005),
+    ],
+  ),
+];
+
 final _sections = <(String Function(AppLocalizations), List<_Field>)>[
   (
     (l) => l.sectionTemperatures,
@@ -69,34 +95,7 @@ final _sections = <(String Function(AppLocalizations), List<_Field>)>[
       ),
     ],
   ),
-  (
-    (l) => l.sectionFlow,
-    [
-      _Field(
-        symbol: 'ṁ',
-        label: (l) => l.fieldMassFlow,
-        unit: 'kg/s',
-        read: (i) => i.massFlow,
-        write: (i, v) => i.copyWith(massFlow: v),
-        min: 0,
-      ),
-      _Field(
-        symbol: 'c_p',
-        label: (l) => l.fieldSpecificHeat,
-        unit: 'J/kg·K',
-        read: (i) => i.specificHeat,
-        write: (i, v) => i.copyWith(specificHeat: v),
-        min: 0,
-        presets: [
-          ((l) => l.presetWater, 4186),
-          ((l) => l.presetGlycol, 3300),
-          ((l) => l.presetThermalOil, 2100),
-          ((l) => l.presetSteam, 2080),
-          ((l) => l.presetAir, 1005),
-        ],
-      ),
-    ],
-  ),
+  ((l) => l.sectionFlow, _flowFields),
   (
     (l) => l.sectionGeometry,
     [
@@ -327,6 +326,18 @@ class _InputsPanelState extends State<InputsPanel> {
               );
             },
           ),
+          if (identical(fields, _flowFields))
+            CheckboxListTile(
+              value: widget.inputs.constantFluidTemp,
+              onChanged: (value) => widget.onChanged(
+                widget.inputs.copyWith(constantFluidTemp: value),
+              ),
+              controlAffinity: ListTileControlAffinity.leading,
+              contentPadding: EdgeInsets.zero,
+              dense: true,
+              title: Text(l10n.simplifyConstantTemperature),
+              subtitle: Text(l10n.simplifyConstantTemperatureHint),
+            ),
         ],
       ],
     );

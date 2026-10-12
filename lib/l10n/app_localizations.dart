@@ -1069,6 +1069,58 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Radiation is ignored, so only convection acts at the surface'**
   String get stepOnlyConvection;
+
+  /// No description provided for @simplifyConstantTemperature.
+  ///
+  /// In en, this message translates to:
+  /// **'Constant fluid temperature (simplified)'**
+  String get simplifyConstantTemperature;
+
+  /// No description provided for @simplifyConstantTemperatureHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Ignore the cooling along the tube: every metre loses heat as if the fluid were at its inlet temperature.'**
+  String get simplifyConstantTemperatureHint;
+
+  /// No description provided for @simplifiedBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Simplified'**
+  String get simplifiedBadge;
+
+  /// No description provided for @lawSeries.
+  ///
+  /// In en, this message translates to:
+  /// **'Thermal resistances in series'**
+  String get lawSeries;
+
+  /// No description provided for @stepConstantFluid.
+  ///
+  /// In en, this message translates to:
+  /// **'Simplified: the fluid stays at its inlet temperature along the whole tube'**
+  String get stepConstantFluid;
+
+  /// No description provided for @stepOutletEnergyBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Outlet temperature from the energy balance on the fluid'**
+  String get stepOutletEnergyBalance;
+
+  /// No description provided for @simplificationComparison.
+  ///
+  /// In en, this message translates to:
+  /// **'Without the simplification (fluid cooling along the tube) the heat flow is {exact} W; the simplification differs by {difference} W ({percent} %).'**
+  String simplificationComparison(
+    String exact,
+    String difference,
+    String percent,
+  );
+
+  /// No description provided for @simplificationInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'The simplification is not valid here: the fluid would pass the ambient temperature. Use the exact calculation.'**
+  String get simplificationInvalid;
 }
 
 class _AppLocalizationsDelegate
