@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 
 import 'package:sem/heat_transfer/details_pane.dart';
+import 'package:sem/heat_transfer/formula_text.dart';
 import 'package:sem/heat_transfer/heat_model.dart';
 import 'package:sem/heat_transfer/inputs_panel.dart';
 import 'package:sem/main.dart';
@@ -14,7 +15,7 @@ void main() {
   group('calculateHeatTransfer', () {
     const inputs = TubeInputs();
 
-    test('without radiation it matches a series hand calculation', () {
+    test('without radiation it matches a hand calculation', () {
       final result = calculateHeatTransfer(inputs.copyWith(emissivity: 0));
       final l = inputs.length;
       final rTotal =
@@ -23,32 +24,72 @@ void main() {
           math.log(inputs.r3 / inputs.r2) /
               (2 * math.pi * inputs.kInsulation * l) +
           1 / (inputs.hOuter * 2 * math.pi * inputs.r3 * l);
-      final expected = (inputs.fluidTemp - inputs.ambientTemp) / rTotal;
-      expect(result.heatRate, closeTo(expected, 1e-6));
+      final tInf = inputs.ambientTemp;
+      final tOut =
+          tInf +
+          (inputs.inletTemp - tInf) *
+              math.exp(-1 / (rTotal * inputs.massFlow * inputs.specificHeat));
+      final expected =
+          inputs.massFlow * inputs.specificHeat * (inputs.inletTemp - tOut);
       expect(result.totalResistance, closeTo(rTotal, 1e-9));
+      expect(result.outletTemp, closeTo(tOut, 1e-9));
+      expect(result.heatRate, closeTo(expected, 1e-6));
       expect(result[HeatStage.outerRadiation].heatRate, 0);
     });
 
-    test('energy balance holds at the surface with radiation', () {
+    test('energy balances hold at the surface and along the tube', () {
       final result = calculateHeatTransfer(inputs);
       final conv = result[HeatStage.outerConvection];
       final rad = result[HeatStage.outerRadiation];
       final ins = result[HeatStage.insulationConduction];
       expect(conv.heatRate + rad.heatRate, closeTo(result.heatRate, 1e-6));
       expect(ins.deltaT / ins.resistance, closeTo(result.heatRate, 1e-6));
+      // What the fluid loses is what leaves through the wall.
       expect(
-        (result.fluidTemp - result.ambientTemp) / result.totalResistance,
+        inputs.massFlow *
+            inputs.specificHeat *
+            (result.inletTemp - result.outletTemp),
         closeTo(result.heatRate, 1e-6),
       );
-      expect(result.surfaceTemp, greaterThan(inputs.ambientTemp));
-      expect(result.surfaceTemp, lessThan(inputs.fluidTemp));
+      expect(result.outletTemp, inExclusiveRange(20, inputs.inletTemp));
+      expect(
+        result.meanFluidTemp,
+        inExclusiveRange(result.outletTemp, inputs.inletTemp),
+      );
+      expect(result.surfaceTemp, inExclusiveRange(20, result.meanFluidTemp));
+    });
+
+    test('ignoring radiation is the same as a non-radiating surface', () {
+      final ignored = calculateHeatTransfer(
+        inputs.copyWith(includeRadiation: false),
+      );
+      final black = calculateHeatTransfer(inputs.copyWith(emissivity: 0));
+      expect(ignored.heatRate, closeTo(black.heatRate, 1e-9));
+      expect(ignored[HeatStage.outerRadiation].heatRate, 0);
+      expect(
+        ignored.heatRate,
+        lessThan(calculateHeatTransfer(inputs).heatRate),
+      );
+    });
+
+    test('a very large flow keeps the fluid at its inlet temperature', () {
+      final result = calculateHeatTransfer(inputs.copyWith(massFlow: 1e6));
+      expect(result.outletTemp, closeTo(inputs.inletTemp, 1e-4));
+      expect(
+        result.heatRate,
+        closeTo(
+          (inputs.inletTemp - inputs.ambientTemp) / result.totalResistance,
+          1e-3,
+        ),
+      );
     });
 
     test('heat flows inward when the fluid is colder than ambient', () {
       final result = calculateHeatTransfer(
-        inputs.copyWith(fluidTemp: 5, ambientTemp: 25),
+        inputs.copyWith(inletTemp: 5, ambientTemp: 25),
       );
       expect(result.heatRate, lessThan(0));
+      expect(result.outletTemp, inExclusiveRange(5, 25));
       expect(result.surfaceTemp, inInclusiveRange(5, 25));
     });
 
@@ -57,7 +98,8 @@ void main() {
         inputs.copyWith(hOuter: 0, emissivity: 0),
       );
       expect(result.heatRate, closeTo(0, 1e-9));
-      expect(result.surfaceTemp, closeTo(inputs.fluidTemp, 1e-6));
+      expect(result.outletTemp, closeTo(inputs.inletTemp, 1e-9));
+      expect(result.surfaceTemp, closeTo(inputs.inletTemp, 1e-6));
     });
   });
 
@@ -142,24 +184,91 @@ void main() {
     expect(find.text('Inwendige convectie'), findsWidgets);
   });
 
-  testWidgets('hovering a formula symbol explains it', (tester) async {
+  testWidgets('symbols are explained in the derivation and on hover', (
+    tester,
+  ) async {
     tester.view.physicalSize = const Size(1440, 900);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
 
     await tester.pumpWidget(const MyApp(initialLocale: Locale('en')));
-    const message = 'Inner surface area of the pipe  [m²]';
+    // The "where:" list under the inner convection derivation.
+    expect(find.text('where'), findsOneWidget);
+    expect(
+      find.textContaining('Inner surface area of the pipe', findRichText: true),
+      findsOneWidget,
+    );
+
+    // Symbols in the results table header explain themselves on hover.
+    final left = find
+        .descendant(
+          of: find.ancestor(
+            of: find.byType(InputsPanel),
+            matching: find.byType(ListView),
+          ),
+          matching: find.byType(Scrollable),
+        )
+        .first;
+    await tester.scrollUntilVisible(find.text('Stage'), 300, scrollable: left);
+    await tester.drag(left, const Offset(0, -200));
+    await tester.pump();
+    const message = 'Temperature difference across the stage  [K]';
     final symbol = find.byTooltip(message);
-    expect(symbol, findsWidgets);
-    // Units such as "m" or "K" are not treated as symbols.
-    expect(find.byTooltip('m'), findsNothing);
+    expect(symbol, findsOneWidget);
+    // Units such as "K" are not treated as symbols.
+    expect(find.byTooltip('K'), findsNothing);
 
     final mouse = await tester.createGesture(kind: PointerDeviceKind.mouse);
     await mouse.addPointer(location: Offset.zero);
     addTearDown(mouse.removePointer);
-    await mouse.moveTo(tester.getCenter(symbol.first));
+    await mouse.moveTo(tester.getCenter(symbol));
     await tester.pump(const Duration(milliseconds: 400));
     await tester.pump(const Duration(milliseconds: 200));
     expect(find.text(message), findsOneWidget);
+  });
+
+  testWidgets('the eye button ignores and includes radiation', (tester) async {
+    tester.view.physicalSize = const Size(1440, 900);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+
+    await tester.pumpWidget(const MyApp(initialLocale: Locale('en')));
+    final left = find
+        .descendant(
+          of: find.ancestor(
+            of: find.byType(InputsPanel),
+            matching: find.byType(ListView),
+          ),
+          matching: find.byType(Scrollable),
+        )
+        .first;
+    await tester.scrollUntilVisible(
+      find.byTooltip('Ignore radiation'),
+      300,
+      scrollable: left,
+    );
+    await tester.drag(left, const Offset(0, -200));
+    await tester.pump();
+
+    final withRadiation = calculateHeatTransfer(const TubeInputs());
+    final without = calculateHeatTransfer(
+      const TubeInputs(includeRadiation: false),
+    );
+    // Heat flows in the results table.
+    expect(find.text(fmt(withRadiation.heatRate)), findsWidgets);
+
+    await tester.tap(find.byTooltip('Ignore radiation'));
+    await tester.pump();
+    expect(find.text(fmt(withRadiation.heatRate)), findsNothing);
+    expect(find.text(fmt(without.heatRate)), findsWidgets);
+    expect(find.byTooltip('Include radiation'), findsOneWidget);
+
+    // The detail pane explains that radiation is ignored.
+    await tester.tap(find.text('Surface radiation'));
+    await tester.pump();
+    expect(
+      find.text('Radiation is ignored in the calculation.'),
+      findsOneWidget,
+    );
   });
 }

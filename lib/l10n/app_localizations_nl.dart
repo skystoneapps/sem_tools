@@ -97,9 +97,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String get statTotalResistance => 'Totale weerstand';
 
   @override
-  String get lawSeries => 'Thermische weerstanden in serie';
-
-  @override
   String get stepParallel =>
       'Convectie en straling werken parallel aan het oppervlak';
 
@@ -183,9 +180,6 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get sectionSurfaces => 'Oppervlakken';
-
-  @override
-  String get fieldFluidTemperature => 'Medium';
 
   @override
   String get fieldAmbientTemperature => 'Omgeving';
@@ -302,9 +296,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String get tubeOuterSurface => 'buitenoppervlak';
 
   @override
-  String get tubeFluid => 'Medium';
-
-  @override
   String get tubePipeWall => 'Buiswand';
 
   @override
@@ -354,17 +345,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get symbolHeatFlowPerMetre => 'Warmtestroom per meter buis';
 
   @override
-  String get symbolArea => 'Warmteoverdragend oppervlak';
-
-  @override
   String get symbolAreaInner => 'Binnenoppervlak van de buis';
 
   @override
   String get symbolAreaOuter => 'Buitenoppervlak van de isolatie';
-
-  @override
-  String get symbolConvectionCoefficient =>
-      'Warmteoverdrachtscoëfficiënt voor convectie';
 
   @override
   String get symbolConvectionCoefficientInner =>
@@ -379,18 +363,12 @@ class AppLocalizationsNl extends AppLocalizations {
       'Gelineariseerde stralingscoëfficiënt';
 
   @override
-  String get symbolConductivity => 'Warmtegeleidingscoëfficiënt';
-
-  @override
   String get symbolConductivityPipe =>
       'Warmtegeleidingscoëfficiënt van de buiswand';
 
   @override
   String get symbolConductivityInsulation =>
       'Warmtegeleidingscoëfficiënt van de isolatie';
-
-  @override
-  String get symbolFluidTemperature => 'Temperatuur van het medium';
 
   @override
   String get symbolAmbientTemperature => 'Omgevingstemperatuur';
@@ -405,9 +383,6 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get symbolInterfaceTemperature =>
       'Temperatuur tussen buis en isolatie';
-
-  @override
-  String get symbolSurroundingsTemperature => 'Temperatuur van de omgeving';
 
   @override
   String get symbolTemperatureDifference => 'Temperatuurverschil over de stap';
@@ -467,4 +442,96 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get symbolStefanBoltzmann => 'Constante van Stefan-Boltzmann';
+
+  @override
+  String get fieldInletTemperature => 'Inlaat medium';
+
+  @override
+  String get sectionFlow => 'Stroming';
+
+  @override
+  String get fieldMassFlow => 'Massadebiet';
+
+  @override
+  String get fieldSpecificHeat => 'Soortelijke warmte';
+
+  @override
+  String get presetWater => 'Water';
+
+  @override
+  String get presetThermalOil => 'Thermische olie';
+
+  @override
+  String get presetGlycol => 'Water/glycol 50 %';
+
+  @override
+  String get presetAir => 'Lucht';
+
+  @override
+  String get presetSteam => 'Oververhitte stoom';
+
+  @override
+  String get tubeInlet => 'Inlaat';
+
+  @override
+  String get tubeOutlet => 'Uitlaat';
+
+  @override
+  String get where => 'waarbij';
+
+  @override
+  String get lawEnergyBalance => 'Energiebalans van het medium';
+
+  @override
+  String get stepOutletTemperature =>
+      'Langs de buis nadert de temperatuur van het medium exponentieel de omgevingstemperatuur';
+
+  @override
+  String get stepMeanTemperature =>
+      'Logaritmisch gemiddelde temperatuur van het medium, gebruikt voor elke stap';
+
+  @override
+  String get stepCheck =>
+      'Controle: dezelfde warmtestroom door de thermische weerstanden';
+
+  @override
+  String get statInletTemperature => 'Inlaattemperatuur';
+
+  @override
+  String get statOutletTemperature => 'Uitlaattemperatuur';
+
+  @override
+  String get statFluidChange => 'Verandering langs de buis';
+
+  @override
+  String get symbolInletTemperature =>
+      'Temperatuur van het medium aan de inlaat';
+
+  @override
+  String get symbolOutletTemperature =>
+      'Temperatuur van het medium aan de uitlaat (einde van de buis)';
+
+  @override
+  String get symbolMeanFluidTemperature =>
+      'Logaritmisch gemiddelde temperatuur van het medium';
+
+  @override
+  String get symbolMassFlow => 'Massadebiet van het medium';
+
+  @override
+  String get symbolSpecificHeat =>
+      'Soortelijke warmtecapaciteit van het medium';
+
+  @override
+  String get ignoreRadiation => 'Straling negeren';
+
+  @override
+  String get includeRadiation => 'Straling meenemen';
+
+  @override
+  String get radiationIgnored => 'Straling wordt genegeerd in de berekening.';
+
+  @override
+  String get stepOnlyConvection =>
+      'Straling wordt genegeerd, dus alleen convectie werkt aan het oppervlak';
 }

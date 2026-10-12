@@ -52,11 +52,11 @@ final _sections = <(String Function(AppLocalizations), List<_Field>)>[
     (l) => l.sectionTemperatures,
     [
       _Field(
-        symbol: 'T_f',
-        label: (l) => l.fieldFluidTemperature,
+        symbol: 'T_{in}',
+        label: (l) => l.fieldInletTemperature,
         unit: '°C',
-        read: (i) => i.fluidTemp,
-        write: (i, v) => i.copyWith(fluidTemp: v),
+        read: (i) => i.inletTemp,
+        write: (i, v) => i.copyWith(inletTemp: v),
         min: -kelvinOffset,
       ),
       _Field(
@@ -66,6 +66,34 @@ final _sections = <(String Function(AppLocalizations), List<_Field>)>[
         read: (i) => i.ambientTemp,
         write: (i, v) => i.copyWith(ambientTemp: v),
         min: -kelvinOffset,
+      ),
+    ],
+  ),
+  (
+    (l) => l.sectionFlow,
+    [
+      _Field(
+        symbol: 'ṁ',
+        label: (l) => l.fieldMassFlow,
+        unit: 'kg/s',
+        read: (i) => i.massFlow,
+        write: (i, v) => i.copyWith(massFlow: v),
+        min: 0,
+      ),
+      _Field(
+        symbol: 'c_p',
+        label: (l) => l.fieldSpecificHeat,
+        unit: 'J/kg·K',
+        read: (i) => i.specificHeat,
+        write: (i, v) => i.copyWith(specificHeat: v),
+        min: 0,
+        presets: [
+          ((l) => l.presetWater, 4186),
+          ((l) => l.presetGlycol, 3300),
+          ((l) => l.presetThermalOil, 2100),
+          ((l) => l.presetSteam, 2080),
+          ((l) => l.presetAir, 1005),
+        ],
       ),
     ],
   ),
@@ -406,7 +434,8 @@ class _InputsSectionState extends State<InputsSection> {
         subtitle: _expanded
             ? null
             : FormulaText(
-                'T_f = ${fmtInput(i.fluidTemp)} °C  ·  '
+                'T_{in} = ${fmtInput(i.inletTemp)} °C  ·  '
+                'ṁ = ${fmtInput(i.massFlow)} kg/s  ·  '
                 'T_∞ = ${fmtInput(i.ambientTemp)} °C  ·  '
                 'L = ${fmtInput(i.length)} m  ·  '
                 'D_i = ${fmtInput(i.innerDiameter)} mm  ·  '

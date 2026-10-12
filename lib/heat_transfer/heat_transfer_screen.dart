@@ -62,6 +62,8 @@ class _HeatTransferScreenState extends State<HeatTransferScreen>
       ),
     );
     void select(HeatStage? stage) => setState(() => _selected = stage);
+    void includeRadiation(bool value) =>
+        setState(() => _inputs = _inputs.copyWith(includeRadiation: value));
     ResultsPanel results({VoidCallback? afterSelect}) => ResultsPanel(
       result: result,
       selected: _selected,
@@ -69,11 +71,13 @@ class _HeatTransferScreenState extends State<HeatTransferScreen>
         select(stage);
         afterSelect?.call();
       },
+      onIncludeRadiationChanged: includeRadiation,
     );
     final details = DetailsPane(
       result: result,
       selected: _selected,
       onSelected: select,
+      onIncludeRadiationChanged: includeRadiation,
     );
 
     return Scaffold(

@@ -49,7 +49,8 @@ class TubePainter extends CustomPainter {
     final f2 = math.max(inputs.r2 / inputs.r3, f1 + 0.07).clamp(0.0, 0.95);
     final pipeR = r * f2;
     final fluidR = r * f1;
-    final fluidColor = temperatureColor(result.fluidTemp);
+    final inletColor = temperatureColor(result.inletTemp);
+    final outletColor = temperatureColor(result.outletTemp);
 
     final outlinePaint = Paint()
       ..style = PaintingStyle.stroke
@@ -91,15 +92,26 @@ class TubePainter extends CustomPainter {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color.lerp(fluidColor, Colors.white, 0.35)!,
-              fluidColor,
-              Color.lerp(fluidColor, Colors.black, 0.25)!,
+              Color.lerp(inletColor, Colors.white, 0.35)!,
+              inletColor,
+              Color.lerp(inletColor, Colors.black, 0.25)!,
             ],
           ).createShader(window.outerRect),
       );
       _drawFlowChevrons(canvas, window, t);
       canvas.drawRRect(window, outlinePaint);
     }
+    _text(
+      canvas,
+      '${l10n.tubeInlet}  ${_celsius(result.inletTemp)}',
+      Offset((xLeft + xCut) / 2, cy + pipeR + 8),
+      textStyle.copyWith(
+        fontSize: 12,
+        fontWeight: FontWeight.w600,
+        color: palette.text,
+      ),
+      align: TextAlign.center,
+    );
 
     // --- Insulated section ---------------------------------------------------
     final insulationBody = Path.combine(
@@ -156,7 +168,7 @@ class TubePainter extends CustomPainter {
       _ellipse(face, e * f1, fluidR),
       Paint()
         ..shader = RadialGradient(
-          colors: [Color.lerp(fluidColor, Colors.white, 0.3)!, fluidColor],
+          colors: [Color.lerp(outletColor, Colors.white, 0.3)!, outletColor],
         ).createShader(_ellipse(face, e * f1, fluidR)),
     );
     canvas.drawOval(_ellipse(face, e * f1, fluidR), outlinePaint);
@@ -285,7 +297,7 @@ class TubePainter extends CustomPainter {
   ) {
     final kinds = [
       result[HeatStage.outerConvection],
-      result[HeatStage.outerRadiation],
+      if (result.inputs.includeRadiation) result[HeatStage.outerRadiation],
     ];
     if (to - from < 20) return;
 
@@ -336,7 +348,10 @@ class TubePainter extends CustomPainter {
   void _drawLegend(Canvas canvas, Size size, double minX) {
     final style = textStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w600);
     final painters = [
-      for (final stage in [HeatStage.outerRadiation, HeatStage.outerConvection])
+      for (final stage in [
+        if (result.inputs.includeRadiation) HeatStage.outerRadiation,
+        HeatStage.outerConvection,
+      ])
         _layout(
           '${stage == HeatStage.outerConvection ? l10n.mechanismConvection : l10n.mechanismRadiation}'
           '  ${fmt(result[stage].heatRate, 3)} W',
@@ -384,8 +399,8 @@ class TubePainter extends CustomPainter {
         HeatStage.pipeConduction,
       ),
       (
-        l10n.tubeFluid,
-        'T = ${_celsius(result.fluidTemp)}',
+        l10n.tubeOutlet,
+        'T = ${_celsius(result.outletTemp)}',
         f1 * 0.45,
         HeatStage.innerConvection,
       ),

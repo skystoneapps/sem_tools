@@ -97,9 +97,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get statTotalResistance => 'Total resistance';
 
   @override
-  String get lawSeries => 'Thermal resistances in series';
-
-  @override
   String get stepParallel =>
       'Convection and radiation act in parallel at the surface';
 
@@ -181,9 +178,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sectionSurfaces => 'Surfaces';
-
-  @override
-  String get fieldFluidTemperature => 'Fluid';
 
   @override
   String get fieldAmbientTemperature => 'Ambient';
@@ -300,9 +294,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tubeOuterSurface => 'outer surface';
 
   @override
-  String get tubeFluid => 'Fluid';
-
-  @override
   String get tubePipeWall => 'Pipe wall';
 
   @override
@@ -351,17 +342,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get symbolHeatFlowPerMetre => 'Heat flow per metre of tube';
 
   @override
-  String get symbolArea => 'Heat transfer area';
-
-  @override
   String get symbolAreaInner => 'Inner surface area of the pipe';
 
   @override
   String get symbolAreaOuter => 'Outer surface area of the insulation';
-
-  @override
-  String get symbolConvectionCoefficient =>
-      'Convection heat transfer coefficient';
 
   @override
   String get symbolConvectionCoefficientInner =>
@@ -375,17 +359,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get symbolRadiationCoefficient => 'Linearised radiation coefficient';
 
   @override
-  String get symbolConductivity => 'Thermal conductivity';
-
-  @override
   String get symbolConductivityPipe => 'Thermal conductivity of the pipe wall';
 
   @override
   String get symbolConductivityInsulation =>
       'Thermal conductivity of the insulation';
-
-  @override
-  String get symbolFluidTemperature => 'Fluid temperature';
 
   @override
   String get symbolAmbientTemperature => 'Ambient temperature';
@@ -399,9 +377,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get symbolInterfaceTemperature =>
       'Temperature between pipe and insulation';
-
-  @override
-  String get symbolSurroundingsTemperature => 'Temperature of the surroundings';
 
   @override
   String get symbolTemperatureDifference =>
@@ -462,4 +437,93 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get symbolStefanBoltzmann => 'Stefan–Boltzmann constant';
+
+  @override
+  String get fieldInletTemperature => 'Fluid inlet';
+
+  @override
+  String get sectionFlow => 'Flow';
+
+  @override
+  String get fieldMassFlow => 'Mass flow rate';
+
+  @override
+  String get fieldSpecificHeat => 'Specific heat';
+
+  @override
+  String get presetWater => 'Water';
+
+  @override
+  String get presetThermalOil => 'Thermal oil';
+
+  @override
+  String get presetGlycol => 'Water/glycol 50 %';
+
+  @override
+  String get presetAir => 'Air';
+
+  @override
+  String get presetSteam => 'Superheated steam';
+
+  @override
+  String get tubeInlet => 'Inlet';
+
+  @override
+  String get tubeOutlet => 'Outlet';
+
+  @override
+  String get where => 'where';
+
+  @override
+  String get lawEnergyBalance => 'Energy balance on the fluid';
+
+  @override
+  String get stepOutletTemperature =>
+      'Along the tube, the fluid temperature approaches ambient exponentially';
+
+  @override
+  String get stepMeanTemperature =>
+      'Logarithmic mean fluid temperature, used for every stage';
+
+  @override
+  String get stepCheck =>
+      'Check: the same heat flow through the thermal resistances';
+
+  @override
+  String get statInletTemperature => 'Inlet temperature';
+
+  @override
+  String get statOutletTemperature => 'Outlet temperature';
+
+  @override
+  String get statFluidChange => 'Change along the tube';
+
+  @override
+  String get symbolInletTemperature => 'Fluid temperature at the inlet';
+
+  @override
+  String get symbolOutletTemperature =>
+      'Fluid temperature at the outlet (end of the tube)';
+
+  @override
+  String get symbolMeanFluidTemperature => 'Logarithmic mean fluid temperature';
+
+  @override
+  String get symbolMassFlow => 'Mass flow rate of the fluid';
+
+  @override
+  String get symbolSpecificHeat => 'Specific heat capacity of the fluid';
+
+  @override
+  String get ignoreRadiation => 'Ignore radiation';
+
+  @override
+  String get includeRadiation => 'Include radiation';
+
+  @override
+  String get radiationIgnored => 'Radiation is ignored in the calculation.';
+
+  @override
+  String get stepOnlyConvection =>
+      'Radiation is ignored, so only convection acts at the surface';
 }

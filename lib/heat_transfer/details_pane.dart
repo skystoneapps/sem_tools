@@ -5,6 +5,10 @@ import 'formula_text.dart';
 import 'heat_labels.dart';
 import 'heat_model.dart';
 import 'heat_palette.dart';
+import 'results_panel.dart';
+import 'stat_tiles.dart';
+import 'symbol_glossary.dart';
+import 'tex_formula.dart';
 
 /// Right-hand pane: a picker for the stage to inspect, followed by that
 /// stage's step-by-step calculation. A `null` selection shows how the stages
@@ -15,15 +19,19 @@ class DetailsPane extends StatelessWidget {
     required this.result,
     required this.selected,
     required this.onSelected,
+    required this.onIncludeRadiationChanged,
   });
 
   final HeatTransferResult result;
   final HeatStage? selected;
   final ValueChanged<HeatStage?> onSelected;
+  final ValueChanged<bool> onIncludeRadiationChanged;
 
   @override
   Widget build(BuildContext context) {
     final stage = selected;
+    final radiationIgnored =
+        stage == HeatStage.outerRadiation && !result.inputs.includeRadiation;
     return ListView(
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
       children: [
@@ -31,6 +39,8 @@ class DetailsPane extends StatelessWidget {
         const SizedBox(height: 20),
         if (stage == null)
           _TotalDetails(result: result)
+        else if (radiationIgnored)
+          _RadiationIgnored(onIncludeRadiationChanged)
         else
           _StageDetails(result: result, stage: result[stage]),
       ],
@@ -142,108 +152,36 @@ class _PickerLabel extends StatelessWidget {
   }
 }
 
-class _StatTile extends StatelessWidget {
-  const _StatTile({required this.label, required this.value});
+/// A worked step: an explanation and a TeX formula.
+typedef _Step = (String, String);
 
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Container(
-      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
-      decoration: BoxDecoration(
-        border: Border.all(color: theme.colorScheme.outlineVariant),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            overflow: TextOverflow.ellipsis,
-            style: theme.textTheme.labelMedium?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-          const SizedBox(height: 6),
-          FittedBox(
-            fit: BoxFit.scaleDown,
-            alignment: Alignment.centerLeft,
-            child: Text(
-              value,
-              style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w600,
-                fontFeatures: const [FontFeature.tabularFigures()],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// A row of [_StatTile]s that wraps to two columns when narrow.
-class _StatRow extends StatelessWidget {
-  const _StatRow(this.tiles);
-
-  final List<(String, String)> tiles;
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        const spacing = 10.0;
-        final columns = constraints.maxWidth > 140.0 * tiles.length
-            ? tiles.length
-            : 2;
-        final width =
-            (constraints.maxWidth - spacing * (columns - 1)) / columns;
-        return Wrap(
-          spacing: spacing,
-          runSpacing: spacing,
-          children: [
-            for (final (label, value) in tiles)
-              SizedBox(
-                width: width,
-                child: _StatTile(label: label, value: value),
-              ),
-          ],
-        );
-      },
-    );
-  }
-}
-
-/// The law box followed by the worked steps.
+/// The law box, the worked steps and the "where:" list of symbols.
 class _Derivation extends StatelessWidget {
   const _Derivation({
     required this.color,
     required this.law,
     required this.formula,
     required this.steps,
+    required this.symbols,
   });
 
   final Color color;
   final String law;
+
+  /// The governing equation, in TeX.
   final String formula;
   final List<_Step> steps;
+  final List<Sym> symbols;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final formulaStyle = theme.textTheme.bodyMedium?.copyWith(
-      fontFeatures: const [FontFeature.tabularFigures()],
-      height: 1.5,
-    );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           width: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          padding: const EdgeInsets.fromLTRB(14, 10, 14, 14),
           decoration: BoxDecoration(
             color: color.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(10),
@@ -258,14 +196,14 @@ class _Derivation extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              const SizedBox(height: 2),
-              FormulaText(formula, style: theme.textTheme.titleMedium),
+              const SizedBox(height: 8),
+              TexFormula(formula, style: theme.textTheme.titleLarge),
             ],
           ),
         ),
         for (final (index, (label, formula)) in steps.indexed)
           Padding(
-            padding: const EdgeInsets.only(top: 16),
+            padding: const EdgeInsets.only(top: 18),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -288,14 +226,18 @@ class _Derivation extends StatelessWidget {
                           color: theme.colorScheme.onSurfaceVariant,
                         ),
                       ),
-                      const SizedBox(height: 2),
-                      FormulaText(formula, style: formulaStyle),
+                      const SizedBox(height: 6),
+                      TexFormula(formula, style: theme.textTheme.bodyLarge),
                     ],
                   ),
                 ),
               ],
             ),
           ),
+        const SizedBox(height: 20),
+        const Divider(height: 1),
+        const SizedBox(height: 12),
+        SymbolLegend(symbols: symbols),
       ],
     );
   }
@@ -318,13 +260,13 @@ class _StageDetails extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _StatRow([
+        StatRow([
           (l10n.statHeatFlow, '${fmt(stage.heatRate)} W'),
           (l10n.statResistance, '${fmt(stage.resistance)} K/W'),
           (l10n.statTemperatureDrop, '${fmt(stage.deltaT)} K'),
         ]),
         const SizedBox(height: 8),
-        FormulaText(
+        Text(
           '${fmtTemp(stage.tIn)} °C → ${fmtTemp(stage.tOut)} °C',
           style: theme.textTheme.bodySmall?.copyWith(
             color: theme.colorScheme.onSurfaceVariant,
@@ -336,9 +278,10 @@ class _StageDetails extends StatelessWidget {
           law: stage.stage.mechanism.law(l10n),
           formula: _lawFormula(stage.stage),
           steps: _stepsFor(result, stage, l10n),
+          symbols: _symbolsFor(stage.stage),
         ),
         if (outer) ...[
-          const SizedBox(height: 20),
+          const SizedBox(height: 16),
           FormulaText(
             l10n.surfaceIterationNote,
             style: theme.textTheme.bodySmall?.copyWith(
@@ -352,7 +295,41 @@ class _StageDetails extends StatelessWidget {
   }
 }
 
-/// How the stages combine into the total heat flow.
+/// Shown instead of the radiation derivation while radiation is ignored.
+class _RadiationIgnored extends StatelessWidget {
+  const _RadiationIgnored(this.onIncludeRadiationChanged);
+
+  final ValueChanged<bool> onIncludeRadiationChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Container(
+      padding: const EdgeInsets.fromLTRB(16, 8, 8, 8),
+      decoration: BoxDecoration(
+        color: scheme.secondaryContainer,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              AppLocalizations.of(context).radiationIgnored,
+              style: TextStyle(color: scheme.onSecondaryContainer),
+            ),
+          ),
+          RadiationToggle(
+            included: false,
+            onChanged: onIncludeRadiationChanged,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// How the stages combine into the total heat flow, and how the fluid
+/// temperature changes along the tube.
 class _TotalDetails extends StatelessWidget {
   const _TotalDetails({required this.result});
 
@@ -362,55 +339,105 @@ class _TotalDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context);
+    final i = result.inputs;
     final conv = result[HeatStage.outerConvection];
     final rad = result[HeatStage.outerRadiation];
     final series = [
       result[HeatStage.innerConvection],
       result[HeatStage.pipeConduction],
       result[HeatStage.insulationConduction],
-    ].map((s) => fmt(s.resistance)).join(' + ');
+    ].map((s) => texNum(s.resistance)).join(' + ');
+    final sumR = texNum(result.totalResistance);
+    final tIn = texTemp(result.inletTemp);
+    final tInf = _paren(result.ambientTemp, texTemp);
+    final tOut = texFixed(result.outletTemp, 2);
+    final tMean = texFixed(result.meanFluidTemp, 2);
+    final mDot = texInput(i.massFlow);
+    final cp = texInput(i.specificHeat);
+    final q = texNum(result.heatRate);
+    final check =
+        (result.meanFluidTemp - result.ambientTemp) / result.totalResistance;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _StatRow([
+        StatRow([
           (l10n.statHeatFlow, '${fmt(result.heatRate)} W'),
+          (l10n.statOutletTemperature, '${fmtFixed(result.outletTemp, 2)} °C'),
           (l10n.statTotalResistance, '${fmt(result.totalResistance)} K/W'),
-          (
-            l10n.statTemperatureDrop,
-            '${fmt(result.fluidTemp - result.ambientTemp)} K',
-          ),
         ]),
         const SizedBox(height: 20),
         _Derivation(
           color: theme.colorScheme.primary,
-          law: l10n.lawSeries,
-          formula: 'Q = (T_f − T_∞) / ΣR',
+          law: l10n.lawEnergyBalance,
+          formula: r'Q = \dot{m}\,c_p\,(T_{\mathrm{in}} - T_{\mathrm{out}})',
           steps: [
-            (
-              l10n.stepParallel,
-              'R_{out} = (1/R_{conv,o} + 1/R_{rad})^{−1} = '
-                  '(1/${fmt(conv.resistance)} + 1/${fmt(rad.resistance)})^{−1}'
-                  ' = ${fmt(result.outerResistance)} K/W',
-            ),
+            if (!i.includeRadiation)
+              (
+                l10n.stepOnlyConvection,
+                'R_{\\mathrm{out}} = R_{\\mathrm{conv,o}} = '
+                    '${texNum(result.outerResistance)}$texResistance',
+              )
+            else
+              (
+                l10n.stepParallel,
+                'R_{\\mathrm{out}} = \\left(\\frac{1}{R_{\\mathrm{conv,o}}} + '
+                    '\\frac{1}{R_{\\mathrm{rad}}}\\right)^{-1} = '
+                    '\\left(\\frac{1}{${texNum(conv.resistance)}} + '
+                    '\\frac{1}{${texNum(rad.resistance)}}\\right)^{-1} = '
+                    '${texNum(result.outerResistance)}$texResistance',
+              ),
             (
               l10n.stepSeries,
-              'ΣR = R_{conv,i} + R_{pipe} + R_{ins} + R_{out} = $series + '
-                  '${fmt(result.outerResistance)} = '
-                  '${fmt(result.totalResistance)} K/W',
+              '\\Sigma R = R_{\\mathrm{conv,i}} + R_{\\mathrm{pipe}} + '
+                  'R_{\\mathrm{ins}} + R_{\\mathrm{out}} = $series + '
+                  '${texNum(result.outerResistance)} = $sumR$texResistance',
+            ),
+            (
+              l10n.stepOutletTemperature,
+              'T_{\\mathrm{out}} = T_\\infty + (T_{\\mathrm{in}} - T_\\infty)'
+                  '\\exp\\left(-\\frac{1}{\\Sigma R\\,\\dot{m}\\,c_p}\\right) = '
+                  '${texTemp(result.ambientTemp)} + ($tIn - $tInf)'
+                  '\\exp\\left(-\\frac{1}{$sumR \\cdot $mDot \\cdot $cp}\\right)'
+                  ' = $tOut$texCelsius',
             ),
             (
               l10n.stepTotalHeatFlow,
-              'Q = (T_f − T_∞) / ΣR = (${fmtTemp(result.fluidTemp)} − '
-                  '${fmtTemp(result.ambientTemp)}) / '
-                  '${fmt(result.totalResistance)} = ${fmt(result.heatRate)} W',
+              'Q = \\dot{m}\\,c_p\\,(T_{\\mathrm{in}} - T_{\\mathrm{out}}) = '
+                  '$mDot \\cdot $cp \\cdot '
+                  '${_paren(result.inletTemp - result.outletTemp, texNum)}'
+                  '$texKelvin = $q$texWatt',
+            ),
+            (
+              l10n.stepMeanTemperature,
+              'T_m = T_\\infty + \\frac{T_{\\mathrm{in}} - T_{\\mathrm{out}}}'
+                  '{\\ln\\left[(T_{\\mathrm{in}} - T_\\infty)/'
+                  '(T_{\\mathrm{out}} - T_\\infty)\\right]} = '
+                  '$tMean$texCelsius',
+            ),
+            (
+              l10n.stepCheck,
+              'Q = \\frac{T_m - T_\\infty}{\\Sigma R} = '
+                  '\\frac{$tMean - $tInf}{$sumR} = ${texNum(check)}$texWatt',
             ),
             (
               l10n.stepHeatFlowPerMetre,
-              "q' = Q / L = ${fmt(result.heatRate)} / "
-                  '${fmtInput(result.inputs.length)} = '
-                  '${fmt(result.heatRatePerMetre)} W/m',
+              "q' = \\frac{Q}{L} = \\frac{$q}{${texInput(i.length)}} = "
+                  '${texNum(result.heatRatePerMetre)}$texWattPerMetre',
             ),
+          ],
+          symbols: const [
+            Sym.heatFlow,
+            Sym.massFlow,
+            Sym.specificHeat,
+            Sym.inletTemp,
+            Sym.outletTemp,
+            Sym.meanFluidTemp,
+            Sym.ambientTemp,
+            Sym.resistanceTotal,
+            Sym.resistanceOuter,
+            Sym.heatFlowPerMetre,
+            Sym.length,
           ],
         ),
       ],
@@ -418,7 +445,79 @@ class _TotalDetails extends StatelessWidget {
   }
 }
 
-typedef _Step = (String, String);
+/// [format]s [value], in parentheses when negative so it can follow an
+/// operator.
+String _paren(double value, String Function(double) format) =>
+    value < 0 ? '(${format(value)})' : format(value);
+
+String _lawFormula(HeatStage stage) => switch (stage) {
+  HeatStage.innerConvection => r'Q = h_i\,A_i\,(T_m - T_1)',
+  HeatStage.pipeConduction =>
+    r'Q = -k_p\,(2\pi r L)\,\frac{\mathrm{d}T}{\mathrm{d}r}',
+  HeatStage.insulationConduction =>
+    r'Q = -k_{\mathrm{ins}}\,(2\pi r L)\,\frac{\mathrm{d}T}{\mathrm{d}r}',
+  HeatStage.outerConvection =>
+    r'Q_{\mathrm{conv}} = h_o\,A_o\,(T_s - T_\infty)',
+  HeatStage.outerRadiation =>
+    r'Q_{\mathrm{rad}} = \varepsilon\,\sigma\,A_o\,(T_s^4 - T_\infty^4)',
+};
+
+List<Sym> _symbolsFor(HeatStage stage) => switch (stage) {
+  HeatStage.innerConvection => const [
+    Sym.heatFlow,
+    Sym.hInner,
+    Sym.areaInner,
+    Sym.meanFluidTemp,
+    Sym.innerWallTemp,
+    Sym.radiusInner,
+    Sym.length,
+    Sym.resistanceInnerConvection,
+  ],
+  HeatStage.pipeConduction => const [
+    Sym.heatFlow,
+    Sym.kPipe,
+    Sym.radius,
+    Sym.length,
+    Sym.gradient,
+    Sym.radiusInner,
+    Sym.radiusPipe,
+    Sym.innerWallTemp,
+    Sym.interfaceTemp,
+    Sym.resistancePipe,
+  ],
+  HeatStage.insulationConduction => const [
+    Sym.heatFlow,
+    Sym.kInsulation,
+    Sym.radius,
+    Sym.length,
+    Sym.gradient,
+    Sym.radiusPipe,
+    Sym.radiusOuter,
+    Sym.interfaceTemp,
+    Sym.surfaceTemp,
+    Sym.resistanceInsulation,
+  ],
+  HeatStage.outerConvection => const [
+    Sym.heatFlowConvection,
+    Sym.hOuter,
+    Sym.areaOuter,
+    Sym.surfaceTemp,
+    Sym.ambientTemp,
+    Sym.radiusOuter,
+    Sym.length,
+    Sym.resistanceOuterConvection,
+  ],
+  HeatStage.outerRadiation => const [
+    Sym.heatFlowRadiation,
+    Sym.emissivity,
+    Sym.stefanBoltzmann,
+    Sym.areaOuter,
+    Sym.surfaceTemp,
+    Sym.ambientTemp,
+    Sym.hRadiation,
+    Sym.resistanceRadiation,
+  ],
+};
 
 List<_Step> _stepsFor(
   HeatTransferResult result,
@@ -426,129 +525,137 @@ List<_Step> _stepsFor(
   AppLocalizations l10n,
 ) {
   final i = result.inputs;
-  final q = fmt(s.heatRate);
-  final r = fmt(s.resistance);
-  final dt = fmt(s.deltaT);
-  final length = fmtInput(i.length);
+  final q = texNum(s.heatRate);
+  final r = texNum(s.resistance);
+  final dt = _paren(s.deltaT, texNum);
+  final tIn = texTemp(s.tIn);
+  final tOut = _paren(s.tOut, texTemp);
+  final length = texInput(i.length);
   switch (s.stage) {
     case HeatStage.innerConvection:
-      final area = fmt(s.area!);
-      final h = fmtInput(i.hInner);
+      final area = texNum(s.area!);
+      final h = texInput(i.hInner);
       return [
         (
           l10n.stepInnerArea,
-          'A_i = 2π · r_1 · L = 2π · ${fmt(i.r1)} m · $length m = $area m²',
+          'A_i = 2\\pi\\, r_1 L = 2\\pi \\cdot ${texNum(i.r1)}$texMetre '
+              '\\cdot $length$texMetre = $area$texSquareMetre',
         ),
         (
           l10n.stepThermalResistance,
-          'R_{conv,i} = 1 / (h_i · A_i) = 1 / ($h · $area) = $r K/W',
+          'R_{\\mathrm{conv,i}} = \\frac{1}{h_i A_i} = '
+              '\\frac{1}{$h \\cdot $area} = $r$texResistance',
         ),
         (
           l10n.stepInnerHeatFlow,
-          'Q = h_i · A_i · (T_f − T_1) = $h · $area · $dt K = $q W',
+          'Q = h_i A_i\\,(T_m - T_1) = $h \\cdot $area \\cdot '
+              '$dt$texKelvin = $q$texWatt',
         ),
         (
           l10n.stepInnerWallTemperature,
-          'T_1 = T_f − Q · R_{conv,i} = ${fmtTemp(s.tIn)} − $dt = ${fmtTemp(s.tOut)} °C',
+          'T_1 = T_m - Q\\,R_{\\mathrm{conv,i}} = $tIn - $dt = '
+              '${texTemp(s.tOut)}$texCelsius',
         ),
       ];
     case HeatStage.pipeConduction:
-      final k = fmtInput(i.kPipe);
       return [
         (
           l10n.stepIntegratedWall,
-          'Q = 2π · k_p · L · (T_1 − T_2) / ln(r_2 / r_1)',
+          'Q = \\frac{2\\pi\\, k_p L\\,(T_1 - T_2)}{\\ln(r_2/r_1)}',
         ),
         (
           l10n.stepThermalResistance,
-          'R_{pipe} = ln(r_2 / r_1) / (2π · k_p · L) = '
-              'ln(${fmt(i.r2 * 1000)} / ${fmt(i.r1 * 1000)}) / '
-              '(2π · $k · $length) = $r K/W',
+          'R_{\\mathrm{pipe}} = \\frac{\\ln(r_2/r_1)}{2\\pi\\, k_p L} = '
+              '\\frac{\\ln(${texNum(i.r2 * 1000)}/${texNum(i.r1 * 1000)})}'
+              '{2\\pi \\cdot ${texInput(i.kPipe)} \\cdot $length} = '
+              '$r$texResistance',
         ),
         (
           l10n.stepWallHeatFlow,
-          'Q = (T_1 − T_2) / R_{pipe} = $dt K / $r K/W = $q W',
+          'Q = \\frac{T_1 - T_2}{R_{\\mathrm{pipe}}} = '
+              '\\frac{$dt$texKelvin}{$r$texResistance} = $q$texWatt',
         ),
         (
           l10n.stepOuterPipeTemperature,
-          'T_2 = T_1 − Q · R_{pipe} = ${fmtTemp(s.tIn)} − $dt = ${fmtTemp(s.tOut)} °C',
+          'T_2 = T_1 - Q\\,R_{\\mathrm{pipe}} = $tIn - $dt = '
+              '${texTemp(s.tOut)}$texCelsius',
         ),
       ];
     case HeatStage.insulationConduction:
-      final k = fmtInput(i.kInsulation);
       return [
         (
           l10n.stepIntegratedLayer,
-          'Q = 2π · k_{ins} · L · (T_2 − T_s) / ln(r_3 / r_2)',
+          'Q = \\frac{2\\pi\\, k_{\\mathrm{ins}} L\\,(T_2 - T_s)}'
+              '{\\ln(r_3/r_2)}',
         ),
         (
           l10n.stepThermalResistance,
-          'R_{ins} = ln(r_3 / r_2) / (2π · k_{ins} · L) = '
-              'ln(${fmt(i.r3 * 1000)} / ${fmt(i.r2 * 1000)}) / '
-              '(2π · $k · $length) = $r K/W',
+          'R_{\\mathrm{ins}} = \\frac{\\ln(r_3/r_2)}'
+              '{2\\pi\\, k_{\\mathrm{ins}} L} = '
+              '\\frac{\\ln(${texNum(i.r3 * 1000)}/${texNum(i.r2 * 1000)})}'
+              '{2\\pi \\cdot ${texInput(i.kInsulation)} \\cdot $length} = '
+              '$r$texResistance',
         ),
         (
           l10n.stepInsulationHeatFlow,
-          'Q = (T_2 − T_s) / R_{ins} = $dt K / $r K/W = $q W',
+          'Q = \\frac{T_2 - T_s}{R_{\\mathrm{ins}}} = '
+              '\\frac{$dt$texKelvin}{$r$texResistance} = $q$texWatt',
         ),
         (
           l10n.stepSurfaceTemperature,
-          'T_s = T_2 − Q · R_{ins} = ${fmtTemp(s.tIn)} − $dt = ${fmtTemp(s.tOut)} °C',
+          'T_s = T_2 - Q\\,R_{\\mathrm{ins}} = $tIn - $dt = '
+              '${texTemp(s.tOut)}$texCelsius',
         ),
       ];
     case HeatStage.outerConvection:
-      final area = fmt(s.area!);
-      final h = fmtInput(i.hOuter);
+      final area = texNum(s.area!);
+      final h = texInput(i.hOuter);
       return [
         (
           l10n.stepOuterArea,
-          'A_o = 2π · r_3 · L = 2π · ${fmt(i.r3)} m · $length m = $area m²',
+          'A_o = 2\\pi\\, r_3 L = 2\\pi \\cdot ${texNum(i.r3)}$texMetre '
+              '\\cdot $length$texMetre = $area$texSquareMetre',
         ),
         (
           l10n.stepThermalResistance,
-          'R_{conv,o} = 1 / (h_o · A_o) = 1 / ($h · $area) = $r K/W',
+          'R_{\\mathrm{conv,o}} = \\frac{1}{h_o A_o} = '
+              '\\frac{1}{$h \\cdot $area} = $r$texResistance',
         ),
         (
           l10n.stepConvectionHeatFlow,
-          'Q_{conv} = h_o · A_o · (T_s − T_∞) = '
-              '$h · $area · (${fmtTemp(s.tIn)} − ${fmtTemp(s.tOut)}) = $q W',
+          'Q_{\\mathrm{conv}} = h_o A_o\\,(T_s - T_\\infty) = '
+              '$h \\cdot $area \\cdot ($tIn - $tOut) = $q$texWatt',
         ),
       ];
     case HeatStage.outerRadiation:
-      final area = fmt(s.area!);
-      final eps = fmtInput(i.emissivity);
-      final tsK = fmtFixed(s.tIn + kelvinOffset, 2);
-      final tInfK = fmtFixed(s.tOut + kelvinOffset, 2);
-      final offset = fmtFixed(kelvinOffset, 2);
+      final area = texNum(s.area!);
+      final offset = texFixed(kelvinOffset, 2);
+      final tsK = texFixed(s.tIn + kelvinOffset, 2);
+      final tInfK = texFixed(s.tOut + kelvinOffset, 2);
+      final hRad = texNum(s.coefficient!);
       return [
         (
           l10n.stepAbsoluteTemperatures,
-          'T_s = ${fmtTemp(s.tIn)} + $offset = $tsK K\n'
-              'T_∞ = ${fmtTemp(s.tOut)} + $offset = $tInfK K',
+          'T_s = $tIn + $offset = $tsK$texKelvin, \\qquad '
+              'T_\\infty = ${texTemp(s.tOut)} + $offset = $tInfK$texKelvin',
         ),
         (
           l10n.stepRadiatedHeat,
-          'Q_{rad} = ε · σ · A_o · (T_s^4 − T_∞^4) = '
-              '$eps · ${fmt(stefanBoltzmann)} · $area · '
-              '($tsK^4 − $tInfK^4) = $q W',
+          'Q_{\\mathrm{rad}} = \\varepsilon\\,\\sigma\\,A_o\\,'
+              '(T_s^4 - T_\\infty^4) = ${texInput(i.emissivity)} \\cdot '
+              '${texNum(stefanBoltzmann)} \\cdot $area \\cdot '
+              '({$tsK}^4 - {$tInfK}^4) = $q$texWatt',
         ),
         (
           l10n.stepLinearisedCoefficient,
-          'h_{rad} = ε · σ · (T_s^2 + T_∞^2) · (T_s + T_∞) = '
-              '${fmt(s.coefficient!)} W/m²·K',
+          'h_{\\mathrm{rad}} = \\varepsilon\\,\\sigma\\,(T_s^2 + T_\\infty^2)'
+              '(T_s + T_\\infty) = $hRad$texHeatTransferCoefficient',
         ),
         (
           l10n.stepEquivalentResistance,
-          'R_{rad} = 1 / (h_{rad} · A_o) = $r K/W',
+          'R_{\\mathrm{rad}} = \\frac{1}{h_{\\mathrm{rad}} A_o} = '
+              '\\frac{1}{$hRad \\cdot $area} = $r$texResistance',
         ),
       ];
   }
 }
-
-String _lawFormula(HeatStage stage) => switch (stage) {
-  HeatStage.innerConvection ||
-  HeatStage.outerConvection => 'Q = h · A · (T_s − T_∞)',
-  HeatStage.pipeConduction ||
-  HeatStage.insulationConduction => 'Q = −k · A · dT/dr',
-  HeatStage.outerRadiation => 'Q = ε · σ · A · (T_s^4 − T_{sur}^4)',
-};

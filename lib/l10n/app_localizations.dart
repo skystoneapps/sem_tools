@@ -272,12 +272,6 @@ abstract class AppLocalizations {
   /// **'Total resistance'**
   String get statTotalResistance;
 
-  /// No description provided for @lawSeries.
-  ///
-  /// In en, this message translates to:
-  /// **'Thermal resistances in series'**
-  String get lawSeries;
-
   /// No description provided for @stepParallel.
   ///
   /// In en, this message translates to:
@@ -433,12 +427,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Surfaces'**
   String get sectionSurfaces;
-
-  /// No description provided for @fieldFluidTemperature.
-  ///
-  /// In en, this message translates to:
-  /// **'Fluid'**
-  String get fieldFluidTemperature;
 
   /// No description provided for @fieldAmbientTemperature.
   ///
@@ -668,12 +656,6 @@ abstract class AppLocalizations {
   /// **'outer surface'**
   String get tubeOuterSurface;
 
-  /// No description provided for @tubeFluid.
-  ///
-  /// In en, this message translates to:
-  /// **'Fluid'**
-  String get tubeFluid;
-
   /// No description provided for @tubePipeWall.
   ///
   /// In en, this message translates to:
@@ -752,12 +734,6 @@ abstract class AppLocalizations {
   /// **'Heat flow per metre of tube'**
   String get symbolHeatFlowPerMetre;
 
-  /// No description provided for @symbolArea.
-  ///
-  /// In en, this message translates to:
-  /// **'Heat transfer area'**
-  String get symbolArea;
-
   /// No description provided for @symbolAreaInner.
   ///
   /// In en, this message translates to:
@@ -769,12 +745,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Outer surface area of the insulation'**
   String get symbolAreaOuter;
-
-  /// No description provided for @symbolConvectionCoefficient.
-  ///
-  /// In en, this message translates to:
-  /// **'Convection heat transfer coefficient'**
-  String get symbolConvectionCoefficient;
 
   /// No description provided for @symbolConvectionCoefficientInner.
   ///
@@ -794,12 +764,6 @@ abstract class AppLocalizations {
   /// **'Linearised radiation coefficient'**
   String get symbolRadiationCoefficient;
 
-  /// No description provided for @symbolConductivity.
-  ///
-  /// In en, this message translates to:
-  /// **'Thermal conductivity'**
-  String get symbolConductivity;
-
   /// No description provided for @symbolConductivityPipe.
   ///
   /// In en, this message translates to:
@@ -811,12 +775,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Thermal conductivity of the insulation'**
   String get symbolConductivityInsulation;
-
-  /// No description provided for @symbolFluidTemperature.
-  ///
-  /// In en, this message translates to:
-  /// **'Fluid temperature'**
-  String get symbolFluidTemperature;
 
   /// No description provided for @symbolAmbientTemperature.
   ///
@@ -841,12 +799,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Temperature between pipe and insulation'**
   String get symbolInterfaceTemperature;
-
-  /// No description provided for @symbolSurroundingsTemperature.
-  ///
-  /// In en, this message translates to:
-  /// **'Temperature of the surroundings'**
-  String get symbolSurroundingsTemperature;
 
   /// No description provided for @symbolTemperatureDifference.
   ///
@@ -949,6 +901,174 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Stefan–Boltzmann constant'**
   String get symbolStefanBoltzmann;
+
+  /// No description provided for @fieldInletTemperature.
+  ///
+  /// In en, this message translates to:
+  /// **'Fluid inlet'**
+  String get fieldInletTemperature;
+
+  /// No description provided for @sectionFlow.
+  ///
+  /// In en, this message translates to:
+  /// **'Flow'**
+  String get sectionFlow;
+
+  /// No description provided for @fieldMassFlow.
+  ///
+  /// In en, this message translates to:
+  /// **'Mass flow rate'**
+  String get fieldMassFlow;
+
+  /// No description provided for @fieldSpecificHeat.
+  ///
+  /// In en, this message translates to:
+  /// **'Specific heat'**
+  String get fieldSpecificHeat;
+
+  /// No description provided for @presetWater.
+  ///
+  /// In en, this message translates to:
+  /// **'Water'**
+  String get presetWater;
+
+  /// No description provided for @presetThermalOil.
+  ///
+  /// In en, this message translates to:
+  /// **'Thermal oil'**
+  String get presetThermalOil;
+
+  /// No description provided for @presetGlycol.
+  ///
+  /// In en, this message translates to:
+  /// **'Water/glycol 50 %'**
+  String get presetGlycol;
+
+  /// No description provided for @presetAir.
+  ///
+  /// In en, this message translates to:
+  /// **'Air'**
+  String get presetAir;
+
+  /// No description provided for @presetSteam.
+  ///
+  /// In en, this message translates to:
+  /// **'Superheated steam'**
+  String get presetSteam;
+
+  /// No description provided for @tubeInlet.
+  ///
+  /// In en, this message translates to:
+  /// **'Inlet'**
+  String get tubeInlet;
+
+  /// No description provided for @tubeOutlet.
+  ///
+  /// In en, this message translates to:
+  /// **'Outlet'**
+  String get tubeOutlet;
+
+  /// No description provided for @where.
+  ///
+  /// In en, this message translates to:
+  /// **'where'**
+  String get where;
+
+  /// No description provided for @lawEnergyBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Energy balance on the fluid'**
+  String get lawEnergyBalance;
+
+  /// No description provided for @stepOutletTemperature.
+  ///
+  /// In en, this message translates to:
+  /// **'Along the tube, the fluid temperature approaches ambient exponentially'**
+  String get stepOutletTemperature;
+
+  /// No description provided for @stepMeanTemperature.
+  ///
+  /// In en, this message translates to:
+  /// **'Logarithmic mean fluid temperature, used for every stage'**
+  String get stepMeanTemperature;
+
+  /// No description provided for @stepCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'Check: the same heat flow through the thermal resistances'**
+  String get stepCheck;
+
+  /// No description provided for @statInletTemperature.
+  ///
+  /// In en, this message translates to:
+  /// **'Inlet temperature'**
+  String get statInletTemperature;
+
+  /// No description provided for @statOutletTemperature.
+  ///
+  /// In en, this message translates to:
+  /// **'Outlet temperature'**
+  String get statOutletTemperature;
+
+  /// No description provided for @statFluidChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Change along the tube'**
+  String get statFluidChange;
+
+  /// No description provided for @symbolInletTemperature.
+  ///
+  /// In en, this message translates to:
+  /// **'Fluid temperature at the inlet'**
+  String get symbolInletTemperature;
+
+  /// No description provided for @symbolOutletTemperature.
+  ///
+  /// In en, this message translates to:
+  /// **'Fluid temperature at the outlet (end of the tube)'**
+  String get symbolOutletTemperature;
+
+  /// No description provided for @symbolMeanFluidTemperature.
+  ///
+  /// In en, this message translates to:
+  /// **'Logarithmic mean fluid temperature'**
+  String get symbolMeanFluidTemperature;
+
+  /// No description provided for @symbolMassFlow.
+  ///
+  /// In en, this message translates to:
+  /// **'Mass flow rate of the fluid'**
+  String get symbolMassFlow;
+
+  /// No description provided for @symbolSpecificHeat.
+  ///
+  /// In en, this message translates to:
+  /// **'Specific heat capacity of the fluid'**
+  String get symbolSpecificHeat;
+
+  /// No description provided for @ignoreRadiation.
+  ///
+  /// In en, this message translates to:
+  /// **'Ignore radiation'**
+  String get ignoreRadiation;
+
+  /// No description provided for @includeRadiation.
+  ///
+  /// In en, this message translates to:
+  /// **'Include radiation'**
+  String get includeRadiation;
+
+  /// No description provided for @radiationIgnored.
+  ///
+  /// In en, this message translates to:
+  /// **'Radiation is ignored in the calculation.'**
+  String get radiationIgnored;
+
+  /// No description provided for @stepOnlyConvection.
+  ///
+  /// In en, this message translates to:
+  /// **'Radiation is ignored, so only convection acts at the surface'**
+  String get stepOnlyConvection;
 }
 
 class _AppLocalizationsDelegate

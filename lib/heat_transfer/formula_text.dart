@@ -21,14 +21,37 @@ const _superscripts = {
   '-': '⁻',
 };
 
+String get _decimalSeparator =>
+    numberFormatSymbols[Intl.shortLocale(Intl.getCurrentLocale())]
+        ?.DECIMAL_SEP ??
+    '.';
+
 /// Puts a number formatted with `.` and `-` into the notation of the current
 /// [Intl.defaultLocale]: a decimal comma for Dutch, and a proper minus sign.
-String _localise(String number) {
-  final symbols =
-      numberFormatSymbols[Intl.shortLocale(Intl.getCurrentLocale())];
-  final separator = symbols?.DECIMAL_SEP ?? '.';
-  return number.replaceFirst('.', separator).replaceFirst('-', '−');
+String _localise(String number) =>
+    number.replaceFirst('.', _decimalSeparator).replaceFirst('-', '−');
+
+/// The same for TeX, where a decimal comma must be braced (`{,}`) so it is not
+/// typeset as punctuation followed by a space.
+String _texLocalise(String number) =>
+    number.replaceFirst('.', _decimalSeparator == ',' ? '{,}' : '.');
+
+/// [value] with [significant] digits as a mantissa (with `.` and `-`) and,
+/// for very small or very large magnitudes, a power of ten.
+(String, int?) _numberParts(double value, int significant) {
+  final magnitude = value.abs();
+  if (magnitude >= 1e-3 && magnitude < 1e6) {
+    final exponent = (math.log(magnitude) / math.ln10).floor();
+    final decimals = (significant - 1 - exponent).clamp(0, 10);
+    return (value.toStringAsFixed(decimals), null);
+  }
+  final parts = value.toStringAsExponential(significant - 1).split('e');
+  return (parts[0], int.parse(parts[1]));
 }
+
+String _trimmedInput(double value) => value == value.roundToDouble()
+    ? value.toStringAsFixed(0)
+    : value.toStringAsFixed(6).replaceFirst(RegExp(r'0+$'), '');
 
 /// Formats [value] with [significant] digits, switching to ×10ⁿ notation for
 /// very small or very large magnitudes.
@@ -36,18 +59,10 @@ String fmt(double value, [int significant = 4]) {
   if (value.isNaN) return '—';
   if (value.isInfinite) return value > 0 ? '∞' : '−∞';
   if (value == 0) return '0';
-  final magnitude = value.abs();
-  if (magnitude >= 1e-3 && magnitude < 1e6) {
-    final exponent = (math.log(magnitude) / math.ln10).floor();
-    final decimals = (significant - 1 - exponent).clamp(0, 10);
-    return _localise(value.toStringAsFixed(decimals));
-  }
-  final parts = value.toStringAsExponential(significant - 1).split('e');
-  final exponent = int.parse(parts[1])
-      .toString()
-      .split('')
-      .map((c) => _superscripts[c] ?? c);
-  return '${_localise(parts[0])}×10${exponent.join()}';
+  final (mantissa, exponent) = _numberParts(value, significant);
+  if (exponent == null) return _localise(mantissa);
+  final superscript = '$exponent'.split('').map((c) => _superscripts[c] ?? c);
+  return '${_localise(mantissa)}×10${superscript.join()}';
 }
 
 /// Formats a temperature in °C with one decimal.
@@ -58,13 +73,27 @@ String fmtFixed(double value, int decimals) =>
     _localise(value.toStringAsFixed(decimals));
 
 /// Formats a user-entered value without trailing zeros.
-String fmtInput(double value) {
-  if (value == value.roundToDouble()) {
-    return _localise(value.toStringAsFixed(0));
-  }
-  final s = value.toStringAsFixed(6).replaceFirst(RegExp(r'0+$'), '');
-  return _localise(s);
+String fmtInput(double value) => _localise(_trimmedInput(value));
+
+/// TeX version of [fmt].
+String texNum(double value, [int significant = 4]) {
+  if (value.isNaN) return r'	ext{—}';
+  if (value.isInfinite) return value > 0 ? r'\infty' : r'-\infty';
+  if (value == 0) return '0';
+  final (mantissa, exponent) = _numberParts(value, significant);
+  final m = _texLocalise(mantissa);
+  return exponent == null ? m : '$m \\times 10^{$exponent}';
 }
+
+/// TeX version of [fmtFixed].
+String texFixed(double value, int decimals) =>
+    _texLocalise(value.toStringAsFixed(decimals));
+
+/// TeX version of [fmtTemp].
+String texTemp(double celsius) => texFixed(celsius, 1);
+
+/// TeX version of [fmtInput].
+String texInput(double value) => _texLocalise(_trimmedInput(value));
 
 /// Parses a number typed with either a decimal point or comma.
 double? parseNumber(String text) =>
