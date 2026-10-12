@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../l10n/app_localizations.dart';
 import 'details_pane.dart';
-import '../domain/heat_model.dart';
+import '../domain/heat_transfer.dart';
 import 'heat_palette.dart';
 import 'heat_transfer_controller.dart';
 import 'inputs_panel.dart';

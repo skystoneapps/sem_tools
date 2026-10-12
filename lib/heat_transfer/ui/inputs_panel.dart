@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../common/ui/number_format.dart';
 import '../../l10n/app_localizations.dart';
 import 'formula_text.dart';
-import '../domain/heat_model.dart';
+import '../domain/heat_transfer.dart';
 
 /// Describes one editable variable of [TubeInputs].
 class _Field {

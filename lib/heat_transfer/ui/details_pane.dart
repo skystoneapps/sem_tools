@@ -4,7 +4,7 @@ import '../../common/ui/number_format.dart';
 import '../../l10n/app_localizations.dart';
 import 'formula_text.dart';
 import 'heat_labels.dart';
-import '../domain/heat_model.dart';
+import '../domain/heat_transfer.dart';
 import 'heat_palette.dart';
 import 'results_panel.dart';
 import '../../common/ui/stat_tiles.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-import '../domain/heat_model.dart';
+import '../domain/heat_transfer.dart';
 
 /// State of the heat transport module, kept while the user visits other
 /// modules.
