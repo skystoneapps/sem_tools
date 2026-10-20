@@ -7,6 +7,8 @@ import 'package:intl/intl.dart';
 
 import 'package:sem/heat_transfer/ui/details_pane.dart';
 import 'package:sem/common/ui/number_format.dart';
+import 'package:sem/expansion/domain/expansion_model.dart';
+import 'package:sem/expansion/ui/expansion_controller.dart';
 import 'package:sem/heat_transfer/domain/heat_transfer.dart';
 import 'package:sem/heat_transfer/ui/inputs_panel.dart';
 import 'package:sem/main.dart';
@@ -501,6 +503,84 @@ void main() {
         findsOneWidget,
       );
       expect(find.text('Cost per metre'), findsOneWidget);
+    });
+  });
+
+  group('expansion calculation', () {
+    test('volume expansion follows conservation of mass from densities', () {
+      final result = calculateExpansion(const ExpansionInputs());
+      // Defaults: V₀ = 1 m³ (1000 L), ρ₁ = 999.7 kg/m³, ρ₂ = 965.3 kg/m³.
+      expect(result.initialVolume, 1);
+      expect(result.initialLitres, 1000);
+      expect(result.mass, closeTo(999.7, 1e-9));
+      expect(result.finalVolume, closeTo(999.7 / 965.3, 1e-9));
+      expect(result.expansionVolume, closeTo(999.7 / 965.3 - 1, 1e-9));
+      expect(
+        result.expansionLitres,
+        closeTo((999.7 / 965.3 - 1) * 1000, 1e-6),
+      );
+    });
+
+    test('tube geometry mode computes V₀ = π·r₁²·L', () {
+      // D_i = 50 mm (r₁ = 0.025 m), L = 100 m -> π * 0.025² * 100 m³.
+      final result = calculateExpansion(
+        const ExpansionInputs(
+          useTubeGeometry: true,
+          innerDiameter: 50,
+          length: 100,
+        ),
+      );
+      final expectedV0 = math.pi * 0.025 * 0.025 * 100;
+      expect(result.initialVolume, closeTo(expectedV0, 1e-12));
+      expect(result.initialLitres, closeTo(expectedV0 * 1000, 1e-9));
+    });
+
+    test('editing tube dimensions detaches from Heat transport import', () {
+      final controller = ExpansionController()
+        ..importTube(innerDiameterMm: 50, lengthM: 10);
+      expect(controller.fromHeatTransfer, isTrue);
+      controller.inputs = controller.inputs.copyWith(densityHot: 950);
+      expect(controller.fromHeatTransfer, isTrue);
+      controller.inputs = controller.inputs.copyWith(length: 25);
+      expect(controller.fromHeatTransfer, isFalse);
+    });
+
+    testWidgets('switches between direct volume and tube geometry', (
+      tester,
+    ) async {
+      tester.view.physicalSize = const Size(1440, 900);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
+
+      await tester.pumpWidget(const SemToolsApp(initialLocale: Locale('en')));
+      await tester.tap(
+        find.descendant(
+          of: find.byType(NavigationRail),
+          matching: find.text('Expansion'),
+        ),
+      );
+      await tester.pump();
+      expect(find.text('Liquid expansion in a heat network'), findsOneWidget);
+      expect(find.text('Conservation of mass'), findsOneWidget);
+      expect(find.text('35.64 L'), findsOneWidget);
+      expect(find.text('999.70 kg'), findsOneWidget);
+
+      // Switch to tube geometry mode (D_i, L).
+      await tester.tap(find.text('From tube (Dᵢ, L)'));
+      await tester.pump();
+      expect(find.text('Inner radius of the pipe'), findsOneWidget);
+      expect(
+        find.text('Initial liquid volume inside the cylindrical tube'),
+        findsOneWidget,
+      );
+
+      // Import tube dimensions from Heat transport (D_i = 50 mm, L = 10 m).
+      await tester.tap(find.textContaining('Use tube from Heat transport'));
+      await tester.pump();
+      expect(
+        find.textContaining('taken from Heat transport'),
+        findsOneWidget,
+      );
     });
   });
 }

@@ -1337,6 +1337,258 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Provided as is, for educational use. No responsibility is taken for potential errors; always verify results before relying on them.'**
   String get disclaimer;
+
+  /// No description provided for @moduleExpansionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Expansion'**
+  String get moduleExpansionTitle;
+
+  /// No description provided for @moduleExpansionPageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Liquid expansion in a heat network'**
+  String get moduleExpansionPageTitle;
+
+  /// No description provided for @moduleExpansionDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Thermal expansion of a liquid in a heat network from the density change between cold and heated state.'**
+  String get moduleExpansionDescription;
+
+  /// No description provided for @expansionSectionVolume.
+  ///
+  /// In en, this message translates to:
+  /// **'System volume'**
+  String get expansionSectionVolume;
+
+  /// No description provided for @expansionSectionDensity.
+  ///
+  /// In en, this message translates to:
+  /// **'Liquid density'**
+  String get expansionSectionDensity;
+
+  /// No description provided for @expansionModeVolume.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct volume'**
+  String get expansionModeVolume;
+
+  /// No description provided for @expansionModeTube.
+  ///
+  /// In en, this message translates to:
+  /// **'From tube (Dᵢ, L)'**
+  String get expansionModeTube;
+
+  /// No description provided for @expansionFieldVolume.
+  ///
+  /// In en, this message translates to:
+  /// **'Initial volume'**
+  String get expansionFieldVolume;
+
+  /// No description provided for @expansionFieldDensityCold.
+  ///
+  /// In en, this message translates to:
+  /// **'Cold density'**
+  String get expansionFieldDensityCold;
+
+  /// No description provided for @expansionFieldDensityHot.
+  ///
+  /// In en, this message translates to:
+  /// **'Heated density'**
+  String get expansionFieldDensityHot;
+
+  /// No description provided for @presetWater10.
+  ///
+  /// In en, this message translates to:
+  /// **'Water (10 °C)'**
+  String get presetWater10;
+
+  /// No description provided for @presetWater20.
+  ///
+  /// In en, this message translates to:
+  /// **'Water (20 °C)'**
+  String get presetWater20;
+
+  /// No description provided for @presetWater40.
+  ///
+  /// In en, this message translates to:
+  /// **'Water (40 °C)'**
+  String get presetWater40;
+
+  /// No description provided for @presetWater60.
+  ///
+  /// In en, this message translates to:
+  /// **'Water (60 °C)'**
+  String get presetWater60;
+
+  /// No description provided for @presetWater80.
+  ///
+  /// In en, this message translates to:
+  /// **'Water (80 °C)'**
+  String get presetWater80;
+
+  /// No description provided for @presetWater90.
+  ///
+  /// In en, this message translates to:
+  /// **'Water (90 °C)'**
+  String get presetWater90;
+
+  /// No description provided for @presetWater110.
+  ///
+  /// In en, this message translates to:
+  /// **'Water (110 °C)'**
+  String get presetWater110;
+
+  /// No description provided for @presetWater150.
+  ///
+  /// In en, this message translates to:
+  /// **'Water (150 °C)'**
+  String get presetWater150;
+
+  /// No description provided for @expansionUseHeatTransferTube.
+  ///
+  /// In en, this message translates to:
+  /// **'Use tube from Heat transport: Dᵢ = {diameter} mm, L = {length} m'**
+  String expansionUseHeatTransferTube(String diameter, String length);
+
+  /// No description provided for @expansionFromHeatTransfer.
+  ///
+  /// In en, this message translates to:
+  /// **'Tube dimensions (Dᵢ = {diameter} mm, L = {length} m) taken from Heat transport'**
+  String expansionFromHeatTransfer(String diameter, String length);
+
+  /// No description provided for @statExpansionVolume.
+  ///
+  /// In en, this message translates to:
+  /// **'Expansion volume'**
+  String get statExpansionVolume;
+
+  /// No description provided for @statInitialVolume.
+  ///
+  /// In en, this message translates to:
+  /// **'Initial volume'**
+  String get statInitialVolume;
+
+  /// No description provided for @statFinalVolume.
+  ///
+  /// In en, this message translates to:
+  /// **'Heated volume'**
+  String get statFinalVolume;
+
+  /// No description provided for @statMass.
+  ///
+  /// In en, this message translates to:
+  /// **'Liquid mass'**
+  String get statMass;
+
+  /// No description provided for @vesselColdState.
+  ///
+  /// In en, this message translates to:
+  /// **'Cold (initial)'**
+  String get vesselColdState;
+
+  /// No description provided for @vesselHeatedState.
+  ///
+  /// In en, this message translates to:
+  /// **'Heated (expanded)'**
+  String get vesselHeatedState;
+
+  /// No description provided for @vesselConstantMass.
+  ///
+  /// In en, this message translates to:
+  /// **'m = constant'**
+  String get vesselConstantMass;
+
+  /// No description provided for @vesselExpansion.
+  ///
+  /// In en, this message translates to:
+  /// **'Expansion'**
+  String get vesselExpansion;
+
+  /// No description provided for @expansionInvalidDensity.
+  ///
+  /// In en, this message translates to:
+  /// **'The heated density ρ₂ is greater than or equal to the cold density ρ₁, so the liquid does not expand.'**
+  String get expansionInvalidDensity;
+
+  /// No description provided for @lawConservationOfMass.
+  ///
+  /// In en, this message translates to:
+  /// **'Conservation of mass'**
+  String get lawConservationOfMass;
+
+  /// No description provided for @expansionStepRadius.
+  ///
+  /// In en, this message translates to:
+  /// **'Inner radius of the pipe'**
+  String get expansionStepRadius;
+
+  /// No description provided for @expansionStepTubeVolume.
+  ///
+  /// In en, this message translates to:
+  /// **'Initial liquid volume inside the cylindrical tube'**
+  String get expansionStepTubeVolume;
+
+  /// No description provided for @expansionStepMass.
+  ///
+  /// In en, this message translates to:
+  /// **'Mass of the cold liquid (stays constant during heating)'**
+  String get expansionStepMass;
+
+  /// No description provided for @expansionStepFinalVolume.
+  ///
+  /// In en, this message translates to:
+  /// **'Volume of the heated liquid at the lower density'**
+  String get expansionStepFinalVolume;
+
+  /// No description provided for @expansionStepDeltaV.
+  ///
+  /// In en, this message translates to:
+  /// **'Volume expansion of the liquid'**
+  String get expansionStepDeltaV;
+
+  /// No description provided for @expansionStepConvertLitres.
+  ///
+  /// In en, this message translates to:
+  /// **'Converted to litres (1 m³ = 1 000 L)'**
+  String get expansionStepConvertLitres;
+
+  /// No description provided for @symbolInitialVolume.
+  ///
+  /// In en, this message translates to:
+  /// **'Initial liquid volume (cold)'**
+  String get symbolInitialVolume;
+
+  /// No description provided for @symbolFinalVolume.
+  ///
+  /// In en, this message translates to:
+  /// **'Final liquid volume (heated)'**
+  String get symbolFinalVolume;
+
+  /// No description provided for @symbolExpansionVolume.
+  ///
+  /// In en, this message translates to:
+  /// **'Volume expansion of the liquid'**
+  String get symbolExpansionVolume;
+
+  /// No description provided for @symbolDensityCold.
+  ///
+  /// In en, this message translates to:
+  /// **'Liquid density in the cold state'**
+  String get symbolDensityCold;
+
+  /// No description provided for @symbolDensityHot.
+  ///
+  /// In en, this message translates to:
+  /// **'Liquid density in the heated state'**
+  String get symbolDensityHot;
+
+  /// No description provided for @symbolMass.
+  ///
+  /// In en, this message translates to:
+  /// **'Mass of the liquid in the network'**
+  String get symbolMass;
 }
 
 class _AppLocalizationsDelegate

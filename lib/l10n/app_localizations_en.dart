@@ -678,4 +678,140 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get disclaimer =>
       'Provided as is, for educational use. No responsibility is taken for potential errors; always verify results before relying on them.';
+
+  @override
+  String get moduleExpansionTitle => 'Expansion';
+
+  @override
+  String get moduleExpansionPageTitle => 'Liquid expansion in a heat network';
+
+  @override
+  String get moduleExpansionDescription =>
+      'Thermal expansion of a liquid in a heat network from the density change between cold and heated state.';
+
+  @override
+  String get expansionSectionVolume => 'System volume';
+
+  @override
+  String get expansionSectionDensity => 'Liquid density';
+
+  @override
+  String get expansionModeVolume => 'Direct volume';
+
+  @override
+  String get expansionModeTube => 'From tube (Dᵢ, L)';
+
+  @override
+  String get expansionFieldVolume => 'Initial volume';
+
+  @override
+  String get expansionFieldDensityCold => 'Cold density';
+
+  @override
+  String get expansionFieldDensityHot => 'Heated density';
+
+  @override
+  String get presetWater10 => 'Water (10 °C)';
+
+  @override
+  String get presetWater20 => 'Water (20 °C)';
+
+  @override
+  String get presetWater40 => 'Water (40 °C)';
+
+  @override
+  String get presetWater60 => 'Water (60 °C)';
+
+  @override
+  String get presetWater80 => 'Water (80 °C)';
+
+  @override
+  String get presetWater90 => 'Water (90 °C)';
+
+  @override
+  String get presetWater110 => 'Water (110 °C)';
+
+  @override
+  String get presetWater150 => 'Water (150 °C)';
+
+  @override
+  String expansionUseHeatTransferTube(String diameter, String length) {
+    return 'Use tube from Heat transport: Dᵢ = $diameter mm, L = $length m';
+  }
+
+  @override
+  String expansionFromHeatTransfer(String diameter, String length) {
+    return 'Tube dimensions (Dᵢ = $diameter mm, L = $length m) taken from Heat transport';
+  }
+
+  @override
+  String get statExpansionVolume => 'Expansion volume';
+
+  @override
+  String get statInitialVolume => 'Initial volume';
+
+  @override
+  String get statFinalVolume => 'Heated volume';
+
+  @override
+  String get statMass => 'Liquid mass';
+
+  @override
+  String get vesselColdState => 'Cold (initial)';
+
+  @override
+  String get vesselHeatedState => 'Heated (expanded)';
+
+  @override
+  String get vesselConstantMass => 'm = constant';
+
+  @override
+  String get vesselExpansion => 'Expansion';
+
+  @override
+  String get expansionInvalidDensity =>
+      'The heated density ρ₂ is greater than or equal to the cold density ρ₁, so the liquid does not expand.';
+
+  @override
+  String get lawConservationOfMass => 'Conservation of mass';
+
+  @override
+  String get expansionStepRadius => 'Inner radius of the pipe';
+
+  @override
+  String get expansionStepTubeVolume =>
+      'Initial liquid volume inside the cylindrical tube';
+
+  @override
+  String get expansionStepMass =>
+      'Mass of the cold liquid (stays constant during heating)';
+
+  @override
+  String get expansionStepFinalVolume =>
+      'Volume of the heated liquid at the lower density';
+
+  @override
+  String get expansionStepDeltaV => 'Volume expansion of the liquid';
+
+  @override
+  String get expansionStepConvertLitres =>
+      'Converted to litres (1 m³ = 1 000 L)';
+
+  @override
+  String get symbolInitialVolume => 'Initial liquid volume (cold)';
+
+  @override
+  String get symbolFinalVolume => 'Final liquid volume (heated)';
+
+  @override
+  String get symbolExpansionVolume => 'Volume expansion of the liquid';
+
+  @override
+  String get symbolDensityCold => 'Liquid density in the cold state';
+
+  @override
+  String get symbolDensityHot => 'Liquid density in the heated state';
+
+  @override
+  String get symbolMass => 'Mass of the liquid in the network';
 }

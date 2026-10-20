@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../expansion/expansion_module.dart';
 import '../heat_transfer/heat_transfer_module.dart';
 import '../l10n/app_localizations.dart';
 import '../price/price_module.dart';
@@ -29,6 +30,8 @@ class _AppShellState extends State<AppShell> {
       heatTransfer,
       // Can take its heat loss from the heat transport module.
       PriceModule(heatTransfer: heatTransfer.controller),
+      // Can take its tube volume from the heat transport module.
+      ExpansionModule(heatTransfer: heatTransfer.controller),
     ];
   }();
 

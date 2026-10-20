@@ -686,4 +686,141 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get disclaimer =>
       'Aangeboden zoals ze zijn, voor educatief gebruik. Er wordt geen verantwoordelijkheid genomen voor eventuele fouten; controleer resultaten altijd voor je erop vertrouwt.';
+
+  @override
+  String get moduleExpansionTitle => 'Expansie';
+
+  @override
+  String get moduleExpansionPageTitle => 'Vloeistofuitzetting in een warmtenet';
+
+  @override
+  String get moduleExpansionDescription =>
+      'Thermische uitzetting van een vloeistof in een warmtenet uit het dichtheidsverschil tussen koude en warme toestand.';
+
+  @override
+  String get expansionSectionVolume => 'Systeemvolume';
+
+  @override
+  String get expansionSectionDensity => 'Dichtheid vloeistof';
+
+  @override
+  String get expansionModeVolume => 'Direct volume';
+
+  @override
+  String get expansionModeTube => 'Uit buis (Dᵢ, L)';
+
+  @override
+  String get expansionFieldVolume => 'Beginvolume';
+
+  @override
+  String get expansionFieldDensityCold => 'Dichtheid koud';
+
+  @override
+  String get expansionFieldDensityHot => 'Dichtheid warm';
+
+  @override
+  String get presetWater10 => 'Water (10 °C)';
+
+  @override
+  String get presetWater20 => 'Water (20 °C)';
+
+  @override
+  String get presetWater40 => 'Water (40 °C)';
+
+  @override
+  String get presetWater60 => 'Water (60 °C)';
+
+  @override
+  String get presetWater80 => 'Water (80 °C)';
+
+  @override
+  String get presetWater90 => 'Water (90 °C)';
+
+  @override
+  String get presetWater110 => 'Water (110 °C)';
+
+  @override
+  String get presetWater150 => 'Water (150 °C)';
+
+  @override
+  String expansionUseHeatTransferTube(String diameter, String length) {
+    return 'Buis uit Warmtetransport gebruiken: Dᵢ = $diameter mm, L = $length m';
+  }
+
+  @override
+  String expansionFromHeatTransfer(String diameter, String length) {
+    return 'Buisafmetingen (Dᵢ = $diameter mm, L = $length m) overgenomen uit Warmtetransport';
+  }
+
+  @override
+  String get statExpansionVolume => 'Expansievolume';
+
+  @override
+  String get statInitialVolume => 'Beginvolume';
+
+  @override
+  String get statFinalVolume => 'Opgewarmd volume';
+
+  @override
+  String get statMass => 'Massa vloeistof';
+
+  @override
+  String get vesselColdState => 'Koud (begin)';
+
+  @override
+  String get vesselHeatedState => 'Warm (uitgezet)';
+
+  @override
+  String get vesselConstantMass => 'm = constant';
+
+  @override
+  String get vesselExpansion => 'Expansie';
+
+  @override
+  String get expansionInvalidDensity =>
+      'De dichtheid in warme toestand ρ₂ is groter dan of gelijk aan de koude dichtheid ρ₁, waardoor de vloeistof niet uitzet.';
+
+  @override
+  String get lawConservationOfMass => 'Behoud van massa';
+
+  @override
+  String get expansionStepRadius => 'Binnenstraal van de buis';
+
+  @override
+  String get expansionStepTubeVolume =>
+      'Beginvolume van de vloeistof in de cilindrische buis';
+
+  @override
+  String get expansionStepMass =>
+      'Massa van de koude vloeistof (blijft constant bij opwarming)';
+
+  @override
+  String get expansionStepFinalVolume =>
+      'Volume van de warme vloeistof bij de lagere dichtheid';
+
+  @override
+  String get expansionStepDeltaV => 'Volumetoename van de vloeistof';
+
+  @override
+  String get expansionStepConvertLitres =>
+      'Omgerekend naar liter (1 m³ = 1 000 L)';
+
+  @override
+  String get symbolInitialVolume => 'Beginvolume van de vloeistof (koud)';
+
+  @override
+  String get symbolFinalVolume => 'Eindvolume van de vloeistof (warm)';
+
+  @override
+  String get symbolExpansionVolume => 'Volumetoename van de vloeistof';
+
+  @override
+  String get symbolDensityCold =>
+      'Dichtheid van de vloeistof in koude toestand';
+
+  @override
+  String get symbolDensityHot => 'Dichtheid van de vloeistof in warme toestand';
+
+  @override
+  String get symbolMass => 'Massa van de vloeistof in het net';
 }

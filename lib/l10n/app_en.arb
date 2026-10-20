@@ -287,5 +287,67 @@
   "sourceCode": "Source code on GitHub",
   "about": "About",
   "aboutText": "SEM tools are calculation tools for the Sustainable Energy Management advanced bachelor (banaba) of Howest. Open source under the MIT license.",
-  "disclaimer": "Provided as is, for educational use. No responsibility is taken for potential errors; always verify results before relying on them."
+  "disclaimer": "Provided as is, for educational use. No responsibility is taken for potential errors; always verify results before relying on them.",
+  "moduleExpansionTitle": "Expansion",
+  "moduleExpansionPageTitle": "Liquid expansion in a heat network",
+  "moduleExpansionDescription": "Thermal expansion of a liquid in a heat network from the density change between cold and heated state.",
+  "expansionSectionVolume": "System volume",
+  "expansionSectionDensity": "Liquid density",
+  "expansionModeVolume": "Direct volume",
+  "expansionModeTube": "From tube (Dᵢ, L)",
+  "expansionFieldVolume": "Initial volume",
+  "expansionFieldDensityCold": "Cold density",
+  "expansionFieldDensityHot": "Heated density",
+  "presetWater10": "Water (10 °C)",
+  "presetWater20": "Water (20 °C)",
+  "presetWater40": "Water (40 °C)",
+  "presetWater60": "Water (60 °C)",
+  "presetWater80": "Water (80 °C)",
+  "presetWater90": "Water (90 °C)",
+  "presetWater110": "Water (110 °C)",
+  "presetWater150": "Water (150 °C)",
+  "expansionUseHeatTransferTube": "Use tube from Heat transport: Dᵢ = {diameter} mm, L = {length} m",
+  "@expansionUseHeatTransferTube": {
+    "placeholders": {
+      "diameter": {
+        "type": "String"
+      },
+      "length": {
+        "type": "String"
+      }
+    }
+  },
+  "expansionFromHeatTransfer": "Tube dimensions (Dᵢ = {diameter} mm, L = {length} m) taken from Heat transport",
+  "@expansionFromHeatTransfer": {
+    "placeholders": {
+      "diameter": {
+        "type": "String"
+      },
+      "length": {
+        "type": "String"
+      }
+    }
+  },
+  "statExpansionVolume": "Expansion volume",
+  "statInitialVolume": "Initial volume",
+  "statFinalVolume": "Heated volume",
+  "statMass": "Liquid mass",
+  "vesselColdState": "Cold (initial)",
+  "vesselHeatedState": "Heated (expanded)",
+  "vesselConstantMass": "m = constant",
+  "vesselExpansion": "Expansion",
+  "expansionInvalidDensity": "The heated density ρ₂ is greater than or equal to the cold density ρ₁, so the liquid does not expand.",
+  "lawConservationOfMass": "Conservation of mass",
+  "expansionStepRadius": "Inner radius of the pipe",
+  "expansionStepTubeVolume": "Initial liquid volume inside the cylindrical tube",
+  "expansionStepMass": "Mass of the cold liquid (stays constant during heating)",
+  "expansionStepFinalVolume": "Volume of the heated liquid at the lower density",
+  "expansionStepDeltaV": "Volume expansion of the liquid",
+  "expansionStepConvertLitres": "Converted to litres (1 m³ = 1 000 L)",
+  "symbolInitialVolume": "Initial liquid volume (cold)",
+  "symbolFinalVolume": "Final liquid volume (heated)",
+  "symbolExpansionVolume": "Volume expansion of the liquid",
+  "symbolDensityCold": "Liquid density in the cold state",
+  "symbolDensityHot": "Liquid density in the heated state",
+  "symbolMass": "Mass of the liquid in the network"
 }
