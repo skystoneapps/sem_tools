@@ -14,6 +14,8 @@ import 'package:sem/heat_transfer/ui/inputs_panel.dart';
 import 'package:sem/main.dart';
 import 'package:sem/price/domain/price_model.dart';
 import 'package:sem/price/ui/price_controller.dart';
+import 'package:sem/steam/domain/steam_model.dart';
+import 'package:sem/steam/ui/enthalpy_diagram_painter.dart';
 
 /// Opens the heat transport module from the navigation rail.
 Future<void> openHeatTransfer(WidgetTester tester) async {
@@ -515,10 +517,7 @@ void main() {
       expect(result.mass, closeTo(999.7, 1e-9));
       expect(result.finalVolume, closeTo(999.7 / 965.3, 1e-9));
       expect(result.expansionVolume, closeTo(999.7 / 965.3 - 1, 1e-9));
-      expect(
-        result.expansionLitres,
-        closeTo((999.7 / 965.3 - 1) * 1000, 1e-6),
-      );
+      expect(result.expansionLitres, closeTo((999.7 / 965.3 - 1) * 1000, 1e-6));
     });
 
     test('tube geometry mode computes V₀ = π·r₁²·L', () {
@@ -577,10 +576,189 @@ void main() {
       // Import tube dimensions from Heat transport (D_i = 50 mm, L = 10 m).
       await tester.tap(find.textContaining('Use tube from Heat transport'));
       await tester.pump();
-      expect(
-        find.textContaining('taken from Heat transport'),
-        findsOneWidget,
-      );
+      expect(find.textContaining('taken from Heat transport'), findsOneWidget);
     });
+  });
+
+  group('steam calculation', () {
+    test('calculates enthalpies and stage heat from Tables A-4, A-5 and A-6 at 5 bar', () {
+      // Defaults: P = 5 bar (500 kPa = 0.50 MPa), T₁ = 20 °C, T₂ = 200 °C.
+      // Table A-4 at 20 °C: h₁ = 83.915 kJ/kg
+      // Table A-5 at 500 kPa: T_sat = 151.83 °C, h_f = 640.09, h_fg = 2108.0, h_g = 2748.1 kJ/kg
+      // Table A-6 at 0.50 MPa, 200 °C: h₂ = 2855.8 kJ/kg
+      final result = calculateSteam(const SteamInputs());
+      expect(result.tSat, closeTo(151.83, 1e-6));
+      expect(result.h1, closeTo(83.915, 1e-6));
+      expect(result.hf, closeTo(640.09, 1e-6));
+      expect(result.hfg, closeTo(2108.0, 1e-6));
+      expect(result.hg, closeTo(2748.1, 1e-6));
+      expect(result.h2, closeTo(2855.8, 1e-6));
+      expect(result.qLiquid, closeTo(640.09 - 83.915, 1e-6));
+      expect(result.qEvaporation, closeTo(2748.1 - 640.09, 1e-6));
+      expect(result.qSuperheat, closeTo(2855.8 - 2748.1, 1e-6));
+      expect(result.qTotal, closeTo(2855.8 - 83.915, 1e-6));
+      expect(result.temperaturesValid, isTrue);
+      expect(result.isSuperheated, isTrue);
+    });
+
+    test(
+      'saturated steam at T₂ = T_sat has h₂ = h_g and zero superheating heat',
+      () {
+        const inputs = SteamInputs(pressureBar: 1.01325);
+        final saturated = inputs.copyWith(steamTemp: inputs.saturationTemp);
+        final result = calculateSteam(saturated);
+        expect(result.tSat, closeTo(99.97, 1e-6));
+        expect(result.isSuperheated, isFalse);
+        expect(result.h2, closeTo(result.hg, 1e-9));
+        expect(result.qSuperheat, 0);
+        expect(result.qTotal, closeTo(result.hg - result.h1, 1e-9));
+      },
+    );
+
+    test(
+      'steam flow rate (stoomdebiet) in ton/h and kg/s computes power in kW',
+      () {
+        // Default flow rate when enabled: 1.5 ton/h = 1500 / 3600 kg/s = 0.416666... kg/s.
+        final withTonPerHour = calculateSteam(
+          const SteamInputs(
+            includeFlow: true,
+            flowRate: 1.5,
+            flowUnit: SteamFlowUnit.tonPerHour,
+          ),
+        );
+        expect(
+          withTonPerHour.massFlowKgPerS,
+          closeTo(1.5 * 1000 / 3600, 1e-12),
+        );
+        expect(
+          withTonPerHour.powerKw,
+          closeTo((1.5 * 1000 / 3600) * withTonPerHour.qTotal, 1e-9),
+        );
+        expect(
+          withTonPerHour.powerMw,
+          closeTo(withTonPerHour.powerKw / 1000, 1e-12),
+        );
+
+        final withKgPerS = calculateSteam(
+          const SteamInputs(
+            includeFlow: true,
+            flowRate: 0.5,
+            flowUnit: SteamFlowUnit.kgPerSecond,
+          ),
+        );
+        expect(withKgPerS.massFlowKgPerS, 0.5);
+        expect(withKgPerS.powerKw, closeTo(0.5 * withKgPerS.qTotal, 1e-9));
+      },
+    );
+
+    testWidgets(
+      'opens Steam module, enables steam flow rate and selects stages',
+      (tester) async {
+        tester.view.physicalSize = const Size(1440, 900);
+        tester.view.devicePixelRatio = 1;
+        addTearDown(tester.view.reset);
+
+        await tester.pumpWidget(const SemToolsApp(initialLocale: Locale('en')));
+        await tester.tap(
+          find.descendant(
+            of: find.byType(NavigationRail),
+            matching: find.text('Steam'),
+          ),
+        );
+        await tester.pump();
+        expect(find.text('Steam generation & T–h diagram'), findsOneWidget);
+        expect(
+          find.text('Isobaric enthalpy balance (Tables A-4, A-5 & A-6)'),
+          findsOneWidget,
+        );
+
+        // Enable optional steam flow rate (defaults to 1.5 ton/h) and verify power in kW.
+        await tester.ensureVisible(
+          find.text('Include steam flow rate (calculate power in kW)'),
+        );
+        await tester.tap(
+          find.text('Include steam flow rate (calculate power in kW)'),
+        );
+        await tester.pump();
+        expect(find.widgetWithText(TextField, '1.5'), findsOneWidget);
+        await tester.ensureVisible(find.text('Thermal power Q̇'));
+        expect(find.text('Thermal power Q̇'), findsOneWidget);
+
+        // Select evaporation stage from the table.
+        await tester.ensureVisible(find.text('Evaporation (boiling)'));
+        await tester.tap(find.text('Evaporation (boiling)'));
+        await tester.pump();
+        expect(find.text('Share of total'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'hovering points and stages on the T–h diagram displays kJ/kg, T and P',
+      (tester) async {
+        tester.view.physicalSize = const Size(1440, 900);
+        tester.view.devicePixelRatio = 1;
+        addTearDown(tester.view.reset);
+
+        await tester.pumpWidget(const SemToolsApp(initialLocale: Locale('en')));
+        await tester.tap(
+          find.descendant(
+            of: find.byType(NavigationRail),
+            matching: find.text('Steam'),
+          ),
+        );
+        await tester.pump();
+
+        final paintFinder = find.byWidgetPredicate(
+          (w) => w is CustomPaint && w.painter is EnthalpyDiagramPainter,
+        );
+        expect(paintFinder, findsOneWidget);
+        final rect = tester.getRect(paintFinder);
+        final result = calculateSteam(const SteamInputs());
+        final layout = EnthalpyDiagramLayout(size: rect.size, result: result);
+
+        final mouse = await tester.createGesture(kind: PointerDeviceKind.mouse);
+        await mouse.addPointer(location: Offset.zero);
+        addTearDown(mouse.removePointer);
+
+        // Hover over the start liquid point (h₁ at T₁ = 20 °C).
+        final ptStart =
+            rect.topLeft + layout.pointOffset(DiagramStatePoint.startLiquid);
+        await mouse.moveTo(ptStart);
+        await tester.pump();
+        expect(find.text('Start liquid (Table A-4)'), findsOneWidget);
+        expect(
+          find.textContaining('83.92 kJ/kg', findRichText: true),
+          findsOneWidget,
+        );
+
+        // Hover over the saturated liquid phase-change point (h_f at T_sat).
+        final ptSatLiq =
+            rect.topLeft +
+            layout.pointOffset(DiagramStatePoint.saturatedLiquid);
+        await mouse.moveTo(ptSatLiq);
+        await tester.pump();
+        expect(
+          find.text('Saturated liquid — boiling starts (Table A-5)'),
+          findsOneWidget,
+        );
+        expect(
+          find.textContaining(
+            'Tₛₐₜ = 151.83 °C  ·  P = 5 bar (500 kPa)',
+            findRichText: true,
+          ),
+          findsOneWidget,
+        );
+
+        // Hover over the short superheating bar (q₃) at the bottom of the diagram.
+        final q3BarCenter =
+            rect.topLeft + layout.stageBarRect(SteamStage.superheating).center;
+        await mouse.moveTo(q3BarCenter);
+        await tester.pump();
+        expect(
+          find.textContaining('107.70 kJ/kg', findRichText: true),
+          findsWidgets,
+        );
+      },
+    );
   });
 }

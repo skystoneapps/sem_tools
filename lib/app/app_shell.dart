@@ -4,6 +4,7 @@ import '../expansion/expansion_module.dart';
 import '../heat_transfer/heat_transfer_module.dart';
 import '../l10n/app_localizations.dart';
 import '../price/price_module.dart';
+import '../steam/steam_module.dart';
 import 'language_picker.dart';
 import 'overview_page.dart';
 import 'repository_link.dart';
@@ -32,6 +33,7 @@ class _AppShellState extends State<AppShell> {
       PriceModule(heatTransfer: heatTransfer.controller),
       // Can take its tube volume from the heat transport module.
       ExpansionModule(heatTransfer: heatTransfer.controller),
+      SteamModule(),
     ];
   }();
 

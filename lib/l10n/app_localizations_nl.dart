@@ -823,4 +823,264 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get symbolMass => 'Massa van de vloeistof in het net';
+
+  @override
+  String get moduleSteamTitle => 'Stoom';
+
+  @override
+  String get moduleSteamPageTitle => 'Stoomopwekking & T–h-diagram';
+
+  @override
+  String get moduleSteamDescription =>
+      'Benodigde warmte om vloeibaar water om te zetten in (oververhitte) stoom bij een gegeven druk, weergegeven in een temperatuur-enthalpiediagram.';
+
+  @override
+  String get steamSectionConditions => 'Druk & temperaturen';
+
+  @override
+  String get steamSectionFlow => 'Stoomdebiet (optioneel)';
+
+  @override
+  String get steamFieldPressure => 'Absolute druk';
+
+  @override
+  String get steamFieldStartTemp => 'Begintemp. water';
+
+  @override
+  String get steamFieldSteamTemp => 'Eindtemp. stoom';
+
+  @override
+  String get steamFieldFlowRate => 'Stoomdebiet';
+
+  @override
+  String steamTableSummary(
+    String pressure,
+    String pressureKpa,
+    String tSat,
+    String hf,
+    String hfg,
+    String hg,
+  ) {
+    return 'Tabel A-5 bij P = $pressure bar ($pressureKpa kPa): Tₛₐₜ = $tSat °C, h_f = $hf kJ/kg, h_fg = $hfg kJ/kg, h_g = $hg kJ/kg';
+  }
+
+  @override
+  String get steamIncludeFlow =>
+      'Stoomdebiet meenemen (vermogen in kW berekenen)';
+
+  @override
+  String get steamUnitTonPerHour => 'ton/h';
+
+  @override
+  String get steamUnitKgPerSecond => 'kg/s';
+
+  @override
+  String get presetAtmospheric => 'Atmosferisch (1,013 bar)';
+
+  @override
+  String get presetLowPressureSteam => 'Lage druk (2 bar)';
+
+  @override
+  String get presetMediumPressureSteam => 'Middendruk (5 bar)';
+
+  @override
+  String get presetIndustrialSteam => 'Industrieel (10 bar)';
+
+  @override
+  String get presetHighPressureSteam => 'Hoge druk (20 bar)';
+
+  @override
+  String get presetPowerPlantSteam => 'Elektriciteitscentrale (40 bar)';
+
+  @override
+  String get presetBoilingPoint => 'Verzadigde stoom (Tₛₐₜ)';
+
+  @override
+  String get stageLiquidHeating => 'Opwarmen vloeistof';
+
+  @override
+  String get stageLiquidHeatingPath =>
+      'Onderkoeld water T₁ → verzadigd water Tₛₐₜ (Tabel A-4 & A-5)';
+
+  @override
+  String get stageEvaporation => 'Verdamping (koken)';
+
+  @override
+  String get stageEvaporationPath =>
+      'Faseovergang bij constante Tₛₐₜ (Tabel A-5)';
+
+  @override
+  String get stageSuperheating => 'Oververhitting';
+
+  @override
+  String get stageSuperheatingPath =>
+      'Verzadigde stoom Tₛₐₜ → oververhitte stoom T₂ (Tabel A-6)';
+
+  @override
+  String steamTotalPath(String pressure) {
+    return 'Vloeibaar water T₁ → stoom T₂ bij P = $pressure bar';
+  }
+
+  @override
+  String get statSpecificHeatTotal => 'Benodigde warmte q';
+
+  @override
+  String get statBoilingTemperature => 'Kookpunt Tₛₐₜ';
+
+  @override
+  String get statDegreeOfSuperheat => 'Oververhitting ΔTₛᵤₚ';
+
+  @override
+  String get statThermalPower => 'Thermisch vermogen Q̇';
+
+  @override
+  String get statStageSpecificHeat => 'Benodigde warmte';
+
+  @override
+  String get statShareOfTotal => 'Aandeel in totaal';
+
+  @override
+  String get diagramAxisTemp => 'T [°C]';
+
+  @override
+  String get diagramAxisEnthalpy => 'h [kJ/kg]';
+
+  @override
+  String get diagramSaturatedLiquid => 'Verzadigde vloeistof';
+
+  @override
+  String get diagramSaturatedSteam => 'Verzadigde stoom';
+
+  @override
+  String get diagramWetSteam => 'Tweefasengebied (natte stoom)';
+
+  @override
+  String diagramIsobar(String pressure) {
+    return 'P = $pressure bar';
+  }
+
+  @override
+  String steamStartAboveBoiling(String t1, String tSat, String pressure) {
+    return 'De begintemperatuur T₁ ($t1 °C) ligt boven het kookpunt Tₛₐₜ ($tSat °C) bij $pressure bar — het water is al voorbij de vloeistoffase.';
+  }
+
+  @override
+  String steamTargetBelowBoiling(String t2, String tSat, String pressure) {
+    return 'De eindtemperatuur T₂ ($t2 °C) ligt onder het kookpunt Tₛₐₜ ($tSat °C) bij $pressure bar — het water heeft het kookpunt nog niet bereikt.';
+  }
+
+  @override
+  String steamSaturatedNote(String tSat) {
+    return 'T₂ is gelijk aan de kooktemperatuur Tₛₐₜ ($tSat °C): de stoom is droog verzadigd (h₂ = h_g, dus q₃ = 0 kJ/kg).';
+  }
+
+  @override
+  String get lawSensibleHeat => 'Voelbare warmte (Tabel A-4 & A-5)';
+
+  @override
+  String get lawLatentHeat => 'Verdampingswarmte (Tabel A-5)';
+
+  @override
+  String get lawSuperheat => 'Oververhittingsenthalpie (Tabel A-6)';
+
+  @override
+  String get lawIsobaricEnthalpy =>
+      'Isobare enthalpiebalans (Tabel A-4, A-5 & A-6)';
+
+  @override
+  String get steamStepH1 =>
+      'Tabel A-4 — Enthalpie van het beginwater bij T₁ (benadering onderkoelde vloeistof h₁ ≈ h_f(T₁))';
+
+  @override
+  String get steamStepHf =>
+      'Tabel A-5 — Enthalpie van verzadigde vloeistof en kookpunt bij druk P';
+
+  @override
+  String get steamStepLiquidHeat =>
+      'Benodigde warmte om de vloeistof tot het kookpunt op te warmen';
+
+  @override
+  String get steamStepEvaporation =>
+      'Tabel A-5 — Verdampingswarmte bij constante kooktemperatuur Tₛₐₜ';
+
+  @override
+  String get steamStepH2 =>
+      'Tabel A-6 — Enthalpie van oververhitte stoom bij druk P en temperatuur T₂';
+
+  @override
+  String get steamStepSuperheat =>
+      'Benodigde warmte om de verzadigde stoom te oververhitten van Tₛₐₜ naar T₂';
+
+  @override
+  String get steamStepTotalSpecific =>
+      'Totale warmteoverdracht van beginvloeistof tot eindstoom';
+
+  @override
+  String get steamStepMassFlowConvert =>
+      'Stoomdebiet omrekenen van ton/h naar kg/s (1 ton = 1 000 kg, 1 h = 3 600 s)';
+
+  @override
+  String get steamStepThermalPower =>
+      'Benodigd thermisch vermogen bij stoomdebiet ṁ';
+
+  @override
+  String get symbolSpecificHeatTotal => 'Totale specifieke warmteoverdracht';
+
+  @override
+  String get symbolSpecificHeatLiquid =>
+      'Warmte voor opwarmen vloeistof tot kookpunt';
+
+  @override
+  String get symbolSpecificHeatEvap => 'Verdampingswarmte (latente warmte)';
+
+  @override
+  String get symbolSpecificHeatSuper => 'Warmte voor oververhitten van stoom';
+
+  @override
+  String get symbolEnthalpyStart =>
+      'Enthalpie van het beginwater (Tabel A-4 bij T₁)';
+
+  @override
+  String get symbolEnthalpySatLiquid =>
+      'Enthalpie van verzadigd water bij druk P (Tabel A-5)';
+
+  @override
+  String get symbolEnthalpySatVapour =>
+      'Enthalpie van verzadigde stoom bij druk P (Tabel A-5)';
+
+  @override
+  String get symbolEnthalpySteam =>
+      'Enthalpie van de eindstoom bij P en T₂ (Tabel A-6)';
+
+  @override
+  String get symbolPressure => 'Absolute stoomdruk';
+
+  @override
+  String get symbolStartTemp => 'Begintemperatuur van het water';
+
+  @override
+  String get symbolBoilingTemp => 'Verzadigings- (kook)temperatuur bij druk P';
+
+  @override
+  String get symbolSteamTemp => 'Eindtemperatuur van de stoom';
+
+  @override
+  String get symbolSteamFlow => 'Stoomdebiet (massadebiet)';
+
+  @override
+  String get symbolThermalPower => 'Thermisch vermogen';
+
+  @override
+  String get pointStartLiquid => 'Startvloeistof (Tabel A-4)';
+
+  @override
+  String get pointSaturatedLiquid =>
+      'Verzadigde vloeistof — start koken (Tabel A-5)';
+
+  @override
+  String get pointSaturatedSteam =>
+      'Verzadigde stoom — volledig verdampt (Tabel A-5)';
+
+  @override
+  String get pointEndSteam => 'Oververhitte stoom — eindpunt (Tabel A-6)';
 }

@@ -814,4 +814,265 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get symbolMass => 'Mass of the liquid in the network';
+
+  @override
+  String get moduleSteamTitle => 'Steam';
+
+  @override
+  String get moduleSteamPageTitle => 'Steam generation & T–h diagram';
+
+  @override
+  String get moduleSteamDescription =>
+      'Required heat to turn liquid water into (superheated) steam at a given pressure, visualised in a temperature–enthalpy diagram.';
+
+  @override
+  String get steamSectionConditions => 'Pressure & temperatures';
+
+  @override
+  String get steamSectionFlow => 'Steam flow rate (optional)';
+
+  @override
+  String get steamFieldPressure => 'Absolute pressure';
+
+  @override
+  String get steamFieldStartTemp => 'Initial liquid temp.';
+
+  @override
+  String get steamFieldSteamTemp => 'Target steam temp.';
+
+  @override
+  String get steamFieldFlowRate => 'Steam flow rate';
+
+  @override
+  String steamTableSummary(
+    String pressure,
+    String pressureKpa,
+    String tSat,
+    String hf,
+    String hfg,
+    String hg,
+  ) {
+    return 'Table A-5 at P = $pressure bar ($pressureKpa kPa): Tₛₐₜ = $tSat °C, h_f = $hf kJ/kg, h_fg = $hfg kJ/kg, h_g = $hg kJ/kg';
+  }
+
+  @override
+  String get steamIncludeFlow =>
+      'Include steam flow rate (calculate power in kW)';
+
+  @override
+  String get steamUnitTonPerHour => 'ton/h';
+
+  @override
+  String get steamUnitKgPerSecond => 'kg/s';
+
+  @override
+  String get presetAtmospheric => 'Atmospheric (1.013 bar)';
+
+  @override
+  String get presetLowPressureSteam => 'Low pressure (2 bar)';
+
+  @override
+  String get presetMediumPressureSteam => 'Medium pressure (5 bar)';
+
+  @override
+  String get presetIndustrialSteam => 'Industrial (10 bar)';
+
+  @override
+  String get presetHighPressureSteam => 'High pressure (20 bar)';
+
+  @override
+  String get presetPowerPlantSteam => 'Power plant (40 bar)';
+
+  @override
+  String get presetBoilingPoint => 'Saturated steam (Tₛₐₜ)';
+
+  @override
+  String get stageLiquidHeating => 'Liquid heating';
+
+  @override
+  String get stageLiquidHeatingPath =>
+      'Subcooled water T₁ → saturated water Tₛₐₜ (Table A-4 & A-5)';
+
+  @override
+  String get stageEvaporation => 'Evaporation (boiling)';
+
+  @override
+  String get stageEvaporationPath =>
+      'Phase change at constant Tₛₐₜ (Table A-5)';
+
+  @override
+  String get stageSuperheating => 'Superheating';
+
+  @override
+  String get stageSuperheatingPath =>
+      'Saturated steam Tₛₐₜ → superheated steam T₂ (Table A-6)';
+
+  @override
+  String steamTotalPath(String pressure) {
+    return 'Liquid water T₁ → steam T₂ at P = $pressure bar';
+  }
+
+  @override
+  String get statSpecificHeatTotal => 'Required heat q';
+
+  @override
+  String get statBoilingTemperature => 'Boiling point Tₛₐₜ';
+
+  @override
+  String get statDegreeOfSuperheat => 'Superheat ΔTₛᵤₚ';
+
+  @override
+  String get statThermalPower => 'Thermal power Q̇';
+
+  @override
+  String get statStageSpecificHeat => 'Required heat';
+
+  @override
+  String get statShareOfTotal => 'Share of total';
+
+  @override
+  String get diagramAxisTemp => 'T [°C]';
+
+  @override
+  String get diagramAxisEnthalpy => 'h [kJ/kg]';
+
+  @override
+  String get diagramSaturatedLiquid => 'Saturated liquid';
+
+  @override
+  String get diagramSaturatedSteam => 'Saturated steam';
+
+  @override
+  String get diagramWetSteam => 'Two-phase (wet steam)';
+
+  @override
+  String diagramIsobar(String pressure) {
+    return 'P = $pressure bar';
+  }
+
+  @override
+  String steamStartAboveBoiling(String t1, String tSat, String pressure) {
+    return 'The initial temperature T₁ ($t1 °C) is above the boiling point Tₛₐₜ ($tSat °C) at $pressure bar — water is already past the liquid phase.';
+  }
+
+  @override
+  String steamTargetBelowBoiling(String t2, String tSat, String pressure) {
+    return 'The target steam temperature T₂ ($t2 °C) is below the boiling point Tₛₐₜ ($tSat °C) at $pressure bar — water has not reached the boiling point yet.';
+  }
+
+  @override
+  String steamSaturatedNote(String tSat) {
+    return 'T₂ equals the boiling temperature Tₛₐₜ ($tSat °C): the steam is dry saturated (h₂ = h_g, so q₃ = 0 kJ/kg).';
+  }
+
+  @override
+  String get lawSensibleHeat => 'Sensible heat (Table A-4 & A-5)';
+
+  @override
+  String get lawLatentHeat => 'Latent heat of vaporisation (Table A-5)';
+
+  @override
+  String get lawSuperheat => 'Superheating enthalpy (Table A-6)';
+
+  @override
+  String get lawIsobaricEnthalpy =>
+      'Isobaric enthalpy balance (Tables A-4, A-5 & A-6)';
+
+  @override
+  String get steamStepH1 =>
+      'Table A-4 — Initial liquid enthalpy at T₁ (compressed liquid approximation h₁ ≈ h_f(T₁))';
+
+  @override
+  String get steamStepHf =>
+      'Table A-5 — Saturated liquid enthalpy and boiling point at pressure P';
+
+  @override
+  String get steamStepLiquidHeat =>
+      'Heat required to bring the subcooled liquid to the boiling point';
+
+  @override
+  String get steamStepEvaporation =>
+      'Table A-5 — Latent heat of vaporisation at constant boiling temperature Tₛₐₜ';
+
+  @override
+  String get steamStepH2 =>
+      'Table A-6 — Superheated steam enthalpy at pressure P and temperature T₂';
+
+  @override
+  String get steamStepSuperheat =>
+      'Heat required to superheat the saturated steam from Tₛₐₜ to T₂';
+
+  @override
+  String get steamStepTotalSpecific =>
+      'Total specific heat transfer from start liquid to final steam';
+
+  @override
+  String get steamStepMassFlowConvert =>
+      'Convert steam flow rate from ton/h to kg/s (1 ton = 1 000 kg, 1 h = 3 600 s)';
+
+  @override
+  String get steamStepThermalPower =>
+      'Thermal power required for steam mass flow rate ṁ';
+
+  @override
+  String get symbolSpecificHeatTotal => 'Total specific heat transfer';
+
+  @override
+  String get symbolSpecificHeatLiquid =>
+      'Heat for heating liquid water to boiling';
+
+  @override
+  String get symbolSpecificHeatEvap => 'Latent heat of vaporisation';
+
+  @override
+  String get symbolSpecificHeatSuper => 'Heat for superheating steam';
+
+  @override
+  String get symbolEnthalpyStart =>
+      'Enthalpy of initial liquid water (Table A-4 at T₁)';
+
+  @override
+  String get symbolEnthalpySatLiquid =>
+      'Enthalpy of saturated liquid at pressure P (Table A-5)';
+
+  @override
+  String get symbolEnthalpySatVapour =>
+      'Enthalpy of saturated steam at pressure P (Table A-5)';
+
+  @override
+  String get symbolEnthalpySteam =>
+      'Enthalpy of final steam at P and T₂ (Table A-6)';
+
+  @override
+  String get symbolPressure => 'Absolute steam pressure';
+
+  @override
+  String get symbolStartTemp => 'Initial liquid water temperature';
+
+  @override
+  String get symbolBoilingTemp =>
+      'Saturation (boiling) temperature at pressure P';
+
+  @override
+  String get symbolSteamTemp => 'Final (target) steam temperature';
+
+  @override
+  String get symbolSteamFlow => 'Steam mass flow rate';
+
+  @override
+  String get symbolThermalPower => 'Thermal power';
+
+  @override
+  String get pointStartLiquid => 'Start liquid (Table A-4)';
+
+  @override
+  String get pointSaturatedLiquid =>
+      'Saturated liquid — boiling starts (Table A-5)';
+
+  @override
+  String get pointSaturatedSteam =>
+      'Saturated steam — boiling complete (Table A-5)';
+
+  @override
+  String get pointEndSteam => 'Superheated steam — endpoint (Table A-6)';
 }

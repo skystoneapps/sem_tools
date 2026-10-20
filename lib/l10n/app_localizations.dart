@@ -1589,6 +1589,451 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Mass of the liquid in the network'**
   String get symbolMass;
+
+  /// No description provided for @moduleSteamTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Steam'**
+  String get moduleSteamTitle;
+
+  /// No description provided for @moduleSteamPageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Steam generation & T–h diagram'**
+  String get moduleSteamPageTitle;
+
+  /// No description provided for @moduleSteamDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Required heat to turn liquid water into (superheated) steam at a given pressure, visualised in a temperature–enthalpy diagram.'**
+  String get moduleSteamDescription;
+
+  /// No description provided for @steamSectionConditions.
+  ///
+  /// In en, this message translates to:
+  /// **'Pressure & temperatures'**
+  String get steamSectionConditions;
+
+  /// No description provided for @steamSectionFlow.
+  ///
+  /// In en, this message translates to:
+  /// **'Steam flow rate (optional)'**
+  String get steamSectionFlow;
+
+  /// No description provided for @steamFieldPressure.
+  ///
+  /// In en, this message translates to:
+  /// **'Absolute pressure'**
+  String get steamFieldPressure;
+
+  /// No description provided for @steamFieldStartTemp.
+  ///
+  /// In en, this message translates to:
+  /// **'Initial liquid temp.'**
+  String get steamFieldStartTemp;
+
+  /// No description provided for @steamFieldSteamTemp.
+  ///
+  /// In en, this message translates to:
+  /// **'Target steam temp.'**
+  String get steamFieldSteamTemp;
+
+  /// No description provided for @steamFieldFlowRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Steam flow rate'**
+  String get steamFieldFlowRate;
+
+  /// No description provided for @steamTableSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Table A-5 at P = {pressure} bar ({pressureKpa} kPa): Tₛₐₜ = {tSat} °C, h_f = {hf} kJ/kg, h_fg = {hfg} kJ/kg, h_g = {hg} kJ/kg'**
+  String steamTableSummary(
+    String pressure,
+    String pressureKpa,
+    String tSat,
+    String hf,
+    String hfg,
+    String hg,
+  );
+
+  /// No description provided for @steamIncludeFlow.
+  ///
+  /// In en, this message translates to:
+  /// **'Include steam flow rate (calculate power in kW)'**
+  String get steamIncludeFlow;
+
+  /// No description provided for @steamUnitTonPerHour.
+  ///
+  /// In en, this message translates to:
+  /// **'ton/h'**
+  String get steamUnitTonPerHour;
+
+  /// No description provided for @steamUnitKgPerSecond.
+  ///
+  /// In en, this message translates to:
+  /// **'kg/s'**
+  String get steamUnitKgPerSecond;
+
+  /// No description provided for @presetAtmospheric.
+  ///
+  /// In en, this message translates to:
+  /// **'Atmospheric (1.013 bar)'**
+  String get presetAtmospheric;
+
+  /// No description provided for @presetLowPressureSteam.
+  ///
+  /// In en, this message translates to:
+  /// **'Low pressure (2 bar)'**
+  String get presetLowPressureSteam;
+
+  /// No description provided for @presetMediumPressureSteam.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium pressure (5 bar)'**
+  String get presetMediumPressureSteam;
+
+  /// No description provided for @presetIndustrialSteam.
+  ///
+  /// In en, this message translates to:
+  /// **'Industrial (10 bar)'**
+  String get presetIndustrialSteam;
+
+  /// No description provided for @presetHighPressureSteam.
+  ///
+  /// In en, this message translates to:
+  /// **'High pressure (20 bar)'**
+  String get presetHighPressureSteam;
+
+  /// No description provided for @presetPowerPlantSteam.
+  ///
+  /// In en, this message translates to:
+  /// **'Power plant (40 bar)'**
+  String get presetPowerPlantSteam;
+
+  /// No description provided for @presetBoilingPoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Saturated steam (Tₛₐₜ)'**
+  String get presetBoilingPoint;
+
+  /// No description provided for @stageLiquidHeating.
+  ///
+  /// In en, this message translates to:
+  /// **'Liquid heating'**
+  String get stageLiquidHeating;
+
+  /// No description provided for @stageLiquidHeatingPath.
+  ///
+  /// In en, this message translates to:
+  /// **'Subcooled water T₁ → saturated water Tₛₐₜ (Table A-4 & A-5)'**
+  String get stageLiquidHeatingPath;
+
+  /// No description provided for @stageEvaporation.
+  ///
+  /// In en, this message translates to:
+  /// **'Evaporation (boiling)'**
+  String get stageEvaporation;
+
+  /// No description provided for @stageEvaporationPath.
+  ///
+  /// In en, this message translates to:
+  /// **'Phase change at constant Tₛₐₜ (Table A-5)'**
+  String get stageEvaporationPath;
+
+  /// No description provided for @stageSuperheating.
+  ///
+  /// In en, this message translates to:
+  /// **'Superheating'**
+  String get stageSuperheating;
+
+  /// No description provided for @stageSuperheatingPath.
+  ///
+  /// In en, this message translates to:
+  /// **'Saturated steam Tₛₐₜ → superheated steam T₂ (Table A-6)'**
+  String get stageSuperheatingPath;
+
+  /// No description provided for @steamTotalPath.
+  ///
+  /// In en, this message translates to:
+  /// **'Liquid water T₁ → steam T₂ at P = {pressure} bar'**
+  String steamTotalPath(String pressure);
+
+  /// No description provided for @statSpecificHeatTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Required heat q'**
+  String get statSpecificHeatTotal;
+
+  /// No description provided for @statBoilingTemperature.
+  ///
+  /// In en, this message translates to:
+  /// **'Boiling point Tₛₐₜ'**
+  String get statBoilingTemperature;
+
+  /// No description provided for @statDegreeOfSuperheat.
+  ///
+  /// In en, this message translates to:
+  /// **'Superheat ΔTₛᵤₚ'**
+  String get statDegreeOfSuperheat;
+
+  /// No description provided for @statThermalPower.
+  ///
+  /// In en, this message translates to:
+  /// **'Thermal power Q̇'**
+  String get statThermalPower;
+
+  /// No description provided for @statStageSpecificHeat.
+  ///
+  /// In en, this message translates to:
+  /// **'Required heat'**
+  String get statStageSpecificHeat;
+
+  /// No description provided for @statShareOfTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Share of total'**
+  String get statShareOfTotal;
+
+  /// No description provided for @diagramAxisTemp.
+  ///
+  /// In en, this message translates to:
+  /// **'T [°C]'**
+  String get diagramAxisTemp;
+
+  /// No description provided for @diagramAxisEnthalpy.
+  ///
+  /// In en, this message translates to:
+  /// **'h [kJ/kg]'**
+  String get diagramAxisEnthalpy;
+
+  /// No description provided for @diagramSaturatedLiquid.
+  ///
+  /// In en, this message translates to:
+  /// **'Saturated liquid'**
+  String get diagramSaturatedLiquid;
+
+  /// No description provided for @diagramSaturatedSteam.
+  ///
+  /// In en, this message translates to:
+  /// **'Saturated steam'**
+  String get diagramSaturatedSteam;
+
+  /// No description provided for @diagramWetSteam.
+  ///
+  /// In en, this message translates to:
+  /// **'Two-phase (wet steam)'**
+  String get diagramWetSteam;
+
+  /// No description provided for @diagramIsobar.
+  ///
+  /// In en, this message translates to:
+  /// **'P = {pressure} bar'**
+  String diagramIsobar(String pressure);
+
+  /// No description provided for @steamStartAboveBoiling.
+  ///
+  /// In en, this message translates to:
+  /// **'The initial temperature T₁ ({t1} °C) is above the boiling point Tₛₐₜ ({tSat} °C) at {pressure} bar — water is already past the liquid phase.'**
+  String steamStartAboveBoiling(String t1, String tSat, String pressure);
+
+  /// No description provided for @steamTargetBelowBoiling.
+  ///
+  /// In en, this message translates to:
+  /// **'The target steam temperature T₂ ({t2} °C) is below the boiling point Tₛₐₜ ({tSat} °C) at {pressure} bar — water has not reached the boiling point yet.'**
+  String steamTargetBelowBoiling(String t2, String tSat, String pressure);
+
+  /// No description provided for @steamSaturatedNote.
+  ///
+  /// In en, this message translates to:
+  /// **'T₂ equals the boiling temperature Tₛₐₜ ({tSat} °C): the steam is dry saturated (h₂ = h_g, so q₃ = 0 kJ/kg).'**
+  String steamSaturatedNote(String tSat);
+
+  /// No description provided for @lawSensibleHeat.
+  ///
+  /// In en, this message translates to:
+  /// **'Sensible heat (Table A-4 & A-5)'**
+  String get lawSensibleHeat;
+
+  /// No description provided for @lawLatentHeat.
+  ///
+  /// In en, this message translates to:
+  /// **'Latent heat of vaporisation (Table A-5)'**
+  String get lawLatentHeat;
+
+  /// No description provided for @lawSuperheat.
+  ///
+  /// In en, this message translates to:
+  /// **'Superheating enthalpy (Table A-6)'**
+  String get lawSuperheat;
+
+  /// No description provided for @lawIsobaricEnthalpy.
+  ///
+  /// In en, this message translates to:
+  /// **'Isobaric enthalpy balance (Tables A-4, A-5 & A-6)'**
+  String get lawIsobaricEnthalpy;
+
+  /// No description provided for @steamStepH1.
+  ///
+  /// In en, this message translates to:
+  /// **'Table A-4 — Initial liquid enthalpy at T₁ (compressed liquid approximation h₁ ≈ h_f(T₁))'**
+  String get steamStepH1;
+
+  /// No description provided for @steamStepHf.
+  ///
+  /// In en, this message translates to:
+  /// **'Table A-5 — Saturated liquid enthalpy and boiling point at pressure P'**
+  String get steamStepHf;
+
+  /// No description provided for @steamStepLiquidHeat.
+  ///
+  /// In en, this message translates to:
+  /// **'Heat required to bring the subcooled liquid to the boiling point'**
+  String get steamStepLiquidHeat;
+
+  /// No description provided for @steamStepEvaporation.
+  ///
+  /// In en, this message translates to:
+  /// **'Table A-5 — Latent heat of vaporisation at constant boiling temperature Tₛₐₜ'**
+  String get steamStepEvaporation;
+
+  /// No description provided for @steamStepH2.
+  ///
+  /// In en, this message translates to:
+  /// **'Table A-6 — Superheated steam enthalpy at pressure P and temperature T₂'**
+  String get steamStepH2;
+
+  /// No description provided for @steamStepSuperheat.
+  ///
+  /// In en, this message translates to:
+  /// **'Heat required to superheat the saturated steam from Tₛₐₜ to T₂'**
+  String get steamStepSuperheat;
+
+  /// No description provided for @steamStepTotalSpecific.
+  ///
+  /// In en, this message translates to:
+  /// **'Total specific heat transfer from start liquid to final steam'**
+  String get steamStepTotalSpecific;
+
+  /// No description provided for @steamStepMassFlowConvert.
+  ///
+  /// In en, this message translates to:
+  /// **'Convert steam flow rate from ton/h to kg/s (1 ton = 1 000 kg, 1 h = 3 600 s)'**
+  String get steamStepMassFlowConvert;
+
+  /// No description provided for @steamStepThermalPower.
+  ///
+  /// In en, this message translates to:
+  /// **'Thermal power required for steam mass flow rate ṁ'**
+  String get steamStepThermalPower;
+
+  /// No description provided for @symbolSpecificHeatTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total specific heat transfer'**
+  String get symbolSpecificHeatTotal;
+
+  /// No description provided for @symbolSpecificHeatLiquid.
+  ///
+  /// In en, this message translates to:
+  /// **'Heat for heating liquid water to boiling'**
+  String get symbolSpecificHeatLiquid;
+
+  /// No description provided for @symbolSpecificHeatEvap.
+  ///
+  /// In en, this message translates to:
+  /// **'Latent heat of vaporisation'**
+  String get symbolSpecificHeatEvap;
+
+  /// No description provided for @symbolSpecificHeatSuper.
+  ///
+  /// In en, this message translates to:
+  /// **'Heat for superheating steam'**
+  String get symbolSpecificHeatSuper;
+
+  /// No description provided for @symbolEnthalpyStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Enthalpy of initial liquid water (Table A-4 at T₁)'**
+  String get symbolEnthalpyStart;
+
+  /// No description provided for @symbolEnthalpySatLiquid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enthalpy of saturated liquid at pressure P (Table A-5)'**
+  String get symbolEnthalpySatLiquid;
+
+  /// No description provided for @symbolEnthalpySatVapour.
+  ///
+  /// In en, this message translates to:
+  /// **'Enthalpy of saturated steam at pressure P (Table A-5)'**
+  String get symbolEnthalpySatVapour;
+
+  /// No description provided for @symbolEnthalpySteam.
+  ///
+  /// In en, this message translates to:
+  /// **'Enthalpy of final steam at P and T₂ (Table A-6)'**
+  String get symbolEnthalpySteam;
+
+  /// No description provided for @symbolPressure.
+  ///
+  /// In en, this message translates to:
+  /// **'Absolute steam pressure'**
+  String get symbolPressure;
+
+  /// No description provided for @symbolStartTemp.
+  ///
+  /// In en, this message translates to:
+  /// **'Initial liquid water temperature'**
+  String get symbolStartTemp;
+
+  /// No description provided for @symbolBoilingTemp.
+  ///
+  /// In en, this message translates to:
+  /// **'Saturation (boiling) temperature at pressure P'**
+  String get symbolBoilingTemp;
+
+  /// No description provided for @symbolSteamTemp.
+  ///
+  /// In en, this message translates to:
+  /// **'Final (target) steam temperature'**
+  String get symbolSteamTemp;
+
+  /// No description provided for @symbolSteamFlow.
+  ///
+  /// In en, this message translates to:
+  /// **'Steam mass flow rate'**
+  String get symbolSteamFlow;
+
+  /// No description provided for @symbolThermalPower.
+  ///
+  /// In en, this message translates to:
+  /// **'Thermal power'**
+  String get symbolThermalPower;
+
+  /// No description provided for @pointStartLiquid.
+  ///
+  /// In en, this message translates to:
+  /// **'Start liquid (Table A-4)'**
+  String get pointStartLiquid;
+
+  /// No description provided for @pointSaturatedLiquid.
+  ///
+  /// In en, this message translates to:
+  /// **'Saturated liquid — boiling starts (Table A-5)'**
+  String get pointSaturatedLiquid;
+
+  /// No description provided for @pointSaturatedSteam.
+  ///
+  /// In en, this message translates to:
+  /// **'Saturated steam — boiling complete (Table A-5)'**
+  String get pointSaturatedSteam;
+
+  /// No description provided for @pointEndSteam.
+  ///
+  /// In en, this message translates to:
+  /// **'Superheated steam — endpoint (Table A-6)'**
+  String get pointEndSteam;
 }
 
 class _AppLocalizationsDelegate

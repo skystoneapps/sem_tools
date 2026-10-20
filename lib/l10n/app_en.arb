@@ -349,5 +349,147 @@
   "symbolExpansionVolume": "Volume expansion of the liquid",
   "symbolDensityCold": "Liquid density in the cold state",
   "symbolDensityHot": "Liquid density in the heated state",
-  "symbolMass": "Mass of the liquid in the network"
+  "symbolMass": "Mass of the liquid in the network",
+  "moduleSteamTitle": "Steam",
+  "moduleSteamPageTitle": "Steam generation & T–h diagram",
+  "moduleSteamDescription": "Required heat to turn liquid water into (superheated) steam at a given pressure, visualised in a temperature–enthalpy diagram.",
+  "steamSectionConditions": "Pressure & temperatures",
+  "steamSectionFlow": "Steam flow rate (optional)",
+  "steamFieldPressure": "Absolute pressure",
+  "steamFieldStartTemp": "Initial liquid temp.",
+  "steamFieldSteamTemp": "Target steam temp.",
+  "steamFieldFlowRate": "Steam flow rate",
+  "steamTableSummary": "Table A-5 at P = {pressure} bar ({pressureKpa} kPa): Tₛₐₜ = {tSat} °C, h_f = {hf} kJ/kg, h_fg = {hfg} kJ/kg, h_g = {hg} kJ/kg",
+  "@steamTableSummary": {
+    "placeholders": {
+      "pressure": {
+        "type": "String"
+      },
+      "pressureKpa": {
+        "type": "String"
+      },
+      "tSat": {
+        "type": "String"
+      },
+      "hf": {
+        "type": "String"
+      },
+      "hfg": {
+        "type": "String"
+      },
+      "hg": {
+        "type": "String"
+      }
+    }
+  },
+  "steamIncludeFlow": "Include steam flow rate (calculate power in kW)",
+  "steamUnitTonPerHour": "ton/h",
+  "steamUnitKgPerSecond": "kg/s",
+  "presetAtmospheric": "Atmospheric (1.013 bar)",
+  "presetLowPressureSteam": "Low pressure (2 bar)",
+  "presetMediumPressureSteam": "Medium pressure (5 bar)",
+  "presetIndustrialSteam": "Industrial (10 bar)",
+  "presetHighPressureSteam": "High pressure (20 bar)",
+  "presetPowerPlantSteam": "Power plant (40 bar)",
+  "presetBoilingPoint": "Saturated steam (Tₛₐₜ)",
+  "stageLiquidHeating": "Liquid heating",
+  "stageLiquidHeatingPath": "Subcooled water T₁ → saturated water Tₛₐₜ (Table A-4 & A-5)",
+  "stageEvaporation": "Evaporation (boiling)",
+  "stageEvaporationPath": "Phase change at constant Tₛₐₜ (Table A-5)",
+  "stageSuperheating": "Superheating",
+  "stageSuperheatingPath": "Saturated steam Tₛₐₜ → superheated steam T₂ (Table A-6)",
+  "steamTotalPath": "Liquid water T₁ → steam T₂ at P = {pressure} bar",
+  "@steamTotalPath": {
+    "placeholders": {
+      "pressure": {
+        "type": "String"
+      }
+    }
+  },
+  "statSpecificHeatTotal": "Required heat q",
+  "statBoilingTemperature": "Boiling point Tₛₐₜ",
+  "statDegreeOfSuperheat": "Superheat ΔTₛᵤₚ",
+  "statThermalPower": "Thermal power Q̇",
+  "statStageSpecificHeat": "Required heat",
+  "statShareOfTotal": "Share of total",
+  "diagramAxisTemp": "T [°C]",
+  "diagramAxisEnthalpy": "h [kJ/kg]",
+  "diagramSaturatedLiquid": "Saturated liquid",
+  "diagramSaturatedSteam": "Saturated steam",
+  "diagramWetSteam": "Two-phase (wet steam)",
+  "diagramIsobar": "P = {pressure} bar",
+  "@diagramIsobar": {
+    "placeholders": {
+      "pressure": {
+        "type": "String"
+      }
+    }
+  },
+  "steamStartAboveBoiling": "The initial temperature T₁ ({t1} °C) is above the boiling point Tₛₐₜ ({tSat} °C) at {pressure} bar — water is already past the liquid phase.",
+  "@steamStartAboveBoiling": {
+    "placeholders": {
+      "t1": {
+        "type": "String"
+      },
+      "tSat": {
+        "type": "String"
+      },
+      "pressure": {
+        "type": "String"
+      }
+    }
+  },
+  "steamTargetBelowBoiling": "The target steam temperature T₂ ({t2} °C) is below the boiling point Tₛₐₜ ({tSat} °C) at {pressure} bar — water has not reached the boiling point yet.",
+  "@steamTargetBelowBoiling": {
+    "placeholders": {
+      "t2": {
+        "type": "String"
+      },
+      "tSat": {
+        "type": "String"
+      },
+      "pressure": {
+        "type": "String"
+      }
+    }
+  },
+  "steamSaturatedNote": "T₂ equals the boiling temperature Tₛₐₜ ({tSat} °C): the steam is dry saturated (h₂ = h_g, so q₃ = 0 kJ/kg).",
+  "@steamSaturatedNote": {
+    "placeholders": {
+      "tSat": {
+        "type": "String"
+      }
+    }
+  },
+  "lawSensibleHeat": "Sensible heat (Table A-4 & A-5)",
+  "lawLatentHeat": "Latent heat of vaporisation (Table A-5)",
+  "lawSuperheat": "Superheating enthalpy (Table A-6)",
+  "lawIsobaricEnthalpy": "Isobaric enthalpy balance (Tables A-4, A-5 & A-6)",
+  "steamStepH1": "Table A-4 — Initial liquid enthalpy at T₁ (compressed liquid approximation h₁ ≈ h_f(T₁))",
+  "steamStepHf": "Table A-5 — Saturated liquid enthalpy and boiling point at pressure P",
+  "steamStepLiquidHeat": "Heat required to bring the subcooled liquid to the boiling point",
+  "steamStepEvaporation": "Table A-5 — Latent heat of vaporisation at constant boiling temperature Tₛₐₜ",
+  "steamStepH2": "Table A-6 — Superheated steam enthalpy at pressure P and temperature T₂",
+  "steamStepSuperheat": "Heat required to superheat the saturated steam from Tₛₐₜ to T₂",
+  "steamStepTotalSpecific": "Total specific heat transfer from start liquid to final steam",
+  "steamStepMassFlowConvert": "Convert steam flow rate from ton/h to kg/s (1 ton = 1 000 kg, 1 h = 3 600 s)",
+  "steamStepThermalPower": "Thermal power required for steam mass flow rate ṁ",
+  "symbolSpecificHeatTotal": "Total specific heat transfer",
+  "symbolSpecificHeatLiquid": "Heat for heating liquid water to boiling",
+  "symbolSpecificHeatEvap": "Latent heat of vaporisation",
+  "symbolSpecificHeatSuper": "Heat for superheating steam",
+  "symbolEnthalpyStart": "Enthalpy of initial liquid water (Table A-4 at T₁)",
+  "symbolEnthalpySatLiquid": "Enthalpy of saturated liquid at pressure P (Table A-5)",
+  "symbolEnthalpySatVapour": "Enthalpy of saturated steam at pressure P (Table A-5)",
+  "symbolEnthalpySteam": "Enthalpy of final steam at P and T₂ (Table A-6)",
+  "symbolPressure": "Absolute steam pressure",
+  "symbolStartTemp": "Initial liquid water temperature",
+  "symbolBoilingTemp": "Saturation (boiling) temperature at pressure P",
+  "symbolSteamTemp": "Final (target) steam temperature",
+  "symbolSteamFlow": "Steam mass flow rate",
+  "symbolThermalPower": "Thermal power",
+  "pointStartLiquid": "Start liquid (Table A-4)",
+  "pointSaturatedLiquid": "Saturated liquid — boiling starts (Table A-5)",
+  "pointSaturatedSteam": "Saturated steam — boiling complete (Table A-5)",
+  "pointEndSteam": "Superheated steam — endpoint (Table A-6)"
 }

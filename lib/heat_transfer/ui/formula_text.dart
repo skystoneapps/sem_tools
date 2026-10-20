@@ -97,6 +97,9 @@ class FormulaText extends StatelessWidget {
           final end = source.indexOf('}', i + 2);
           group = source.substring(i + 2, end);
           i = end + 1;
+        } else if (c == '_' && source.startsWith('fg', i + 1)) {
+          group = 'fg';
+          i += 3;
         } else {
           group = source[i + 1];
           i += 2;
